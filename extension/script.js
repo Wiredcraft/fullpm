@@ -8,11 +8,28 @@ if (location.href.startsWith('https://github.com/Wiredcraft/data.worldbank.org/i
     buttonListEl = els[0];
     aEl = document.createElement('a');
     aEl.addEventListener('click', function(){
+      issuesEl = document.getElementsByClassName('repository-content')[0]
+      issuesEl.style.display = 'none';
+
+      var containerEl = document.getElementsByClassName('container experiment-repo-nav')[0]
+
       var iframe = document.createElement('iframe');
       iframe.src = chrome.runtime.getURL('frame.html');
-      iframe.style.cssText = 'background-color:pink; position:fixed;top:0;left:0;display:block;' +
-                             'width:300px;height:100%;z-index:1000;';
-      buttonListEl.appendChild(iframe);
+      iframe.style.cssText = 'width:100%;height:100%;border:none';
+      //buttonListEl.appendChild(iframe);
+
+      var divEl = document.createElement('div');
+      divEl.classList = ['repository-content']
+      divEl.appendChild(iframe)
+
+      containerEl.appendChild(divEl)
+
+      var activeLinkEl = document.getElementsByClassName('selected reponav-item')[0]
+      activeLinkEl.classList.remove("selected")
+
+      aEl.classList.add('selected')
+
+
     })
     aEl.text = 'Kanban';
     aEl.href = '#test';
