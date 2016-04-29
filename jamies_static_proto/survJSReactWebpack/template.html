@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+  <title>Boards!</title>
+
+  <meta charset='utf-8'/>
+  <meta http-equiv='Content-Language' content='en'/>
+  <meta name='viewport' content='width=device-width, initial-scale=1'/>
+  <meta name='keywords' content='kanban, boards, github'/>
+  <meta name='description' content='Easily manage your GitHub issues on a kanban.'>
+
+  <link rel='stylesheet' href='/assets/styles.css'>
+</head>
+
+<body>
+  <header id='header'>
+    <h1>Name of my board</h1>
+    <input type='text' placeholder='Filter issues by title' class='search'/>
+    <img src='https://avatars0.githubusercontent.com/u/306868?v=3&s=460' alt='hunvreus'/>
+  </header>
+
+  <section id='main'>
+    <section class='column'>
+      <header class='header'>
+        <div class='controls'>
+          <button class='settings'><span>Settings</span></button>
+        </div>
+        <h2>Backlog</h2>
+      </header>
+      <section class='body'>
+        <article class='issue'>
+          <div class='controls'>
+            <img class='assignee' src='https://avatars0.githubusercontent.com/u/306868?v=3&s=460'/>
+            <button class='bookmark'><span>Bookmark</span></button>
+            <button class='like'><span>Like</span><small>14</small></button>
+          </div>
+          <h3>Name of my issue</h3>
+          <span class='meta'><a>#egg/34</a>, 16 comments</span>
+        </article>
+      </section>
+    </section>
+  </section>
+
+  <aside id='boards'>
+    <input type='' class='filter' placeholder='Filter by name'/>
+    <article class='board active'>
+      <div class='controls'>
+        <button class='settings'><span>Settings</span></button>
+      </div>
+      <h2>Name of the board</h2>
+      <span class='meta'>2 repos, 45 issues</span>
+    </article>
+  </aside>
+
+  <aside id='profile'>
+    <header class='header'>
+      <img class='assignee' src='https://avatars0.githubusercontent.com/u/306868?v=3&s=460'/>
+      <h2>Ronan</h2>
+      <span class='meta'><a>github.com/hunvreus</a></span>
+    </header>
+    <section class='body'>
+      STUFF!
+    </section>
+  </aside>
+
+  <div id='overlay'>
+    <div id='modal'>
+      <header class='header'>
+        <h2>Title of the modal</h2>
+      </header>
+      <section class='body'>
+        STUFF AGAIN!
+      </section>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+@import "../assets/egg/main.scss";
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: #fff;
+  margin: 0;
+}
+
+.columnGhost {
+  opacity: 0.25;
+}
+
+.column {
+  vertical-align: top;
+  width: 250px;
+  background: #eeeded;
+  display: inline-block;
+  min-height: 50vh;
+  margin: 5px;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.16), 0 1px 2px rgba(0,0,0,0.23);
+  transition: min-height 150ms;
+  > header {
+    display: block;
+    height: 50px;
+    width: 100%;
+    background: #dedede;
+    text-align: center;
+    padding-top: 15px;
+    cursor: move;
+  }
+}
+
+.issueGhost {
+  opacity: 0.25;
+}
+
+.issue {
+  display: block;
+  height: 40px;
+  background: #fff;
+  text-align: center;
+  padding-top: 10px;
+  margin: 5px;
+  cursor: move;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.16), 0 1px 2px rgba(0,0,0,0.23);
+}

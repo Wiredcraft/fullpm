@@ -1,0 +1,19 @@
+.button {
+  @include button($light, true);
+  @include font-size($smaller);
+  text-align: center;
+  &.primary {
+    @include button($primary);
+  }
+  &.secondary {
+    @include button($green);
+  }
+}
+
+.bundle .button {
+  @include bundle;
+  &.primary,
+  &.secondary {
+    @include bundle;
+  }
+}
