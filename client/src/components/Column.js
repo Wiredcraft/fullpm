@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import Sortable from 'sortablejs';
+import React, { Component } from 'react'
+import Sortable from 'sortablejs'
 
-import Issue from 'components/Issue';
+import Issue from 'components/Issue'
 
 
 export default class Column extends Component {
-  constructor (props, context) {
-    super(props, context)
+  constructor () {
+    super()
 
-    let arr = [];
-    let seq = 1;
+    let arr = []
+    let seq = 1
 
     for (let i = 0; i < 5; i++) {
       arr.push(seq++)
@@ -30,17 +30,17 @@ export default class Column extends Component {
       onEnd: (e) => { console.log('onEnd', e) },
       onAdd: (e) => { console.log('onAdd', e) },
       onRemove: (e) => { console.log('onRemove', e) }
-    });
+    })
   }
 
   render() {
-    let { arr } = this.state;
+    const { arr } = this.state
+    const { title } = this.props
 
     return (
       <section className='column'>
         <header className='drag-handle'>
-          <span>Column { this.props.id }</span>
-          <button className='button' onClick={ this.handleAddIssue.bind(this) }>Add</button>
+          <span>{ title }</span>
         </header>
         <div ref='list'>
           {
@@ -56,13 +56,13 @@ export default class Column extends Component {
   }
 
   handleAddIssue () {
-    let { seq, arr } = this.state;
+    let { seq, arr } = this.state
 
-    arr.push(seq++);
+    arr.push(seq++)
 
     this.setState({
       seq: seq,
       arr: arr
-    });
+    })
   }
 }

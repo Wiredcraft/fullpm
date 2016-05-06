@@ -1,65 +1,52 @@
-import React from 'react';
-import Sortable from 'sortablejs';
+import React from 'react'
+import Sortable from 'sortablejs'
 import { connect } from 'react-redux'
 
 import 'normalize.css/normalize.css'
 import 'styles/App.scss'
 import Column from 'components/Column'
-import PouchDB from 'pouchdb'
+// import PouchDB from 'pouchdb'
 
 
 
 
 export class AppComponent extends React.Component {
-  constructor (props, context) {
-    super(props, context)
+  constructor () {
+    super()
 
-    let arr = [];
-    let seq = 1;
-
-    for (let i = 0; i < 4; i++) {
-      arr.push(seq++)
-    }
+    let initArr = [
+      { id: 1, name: 'Backlog' },
+      { id: 2, name: 'Doing' },
+      { id: 3, name: 'Done' }
+    ]
+    let seq = initArr.length
 
     this.state = {
       seq: seq,
-      arr: arr
+      arr: initArr
     }
   }
 
   componentDidMount () {
-    const db = new PouchDB('http://localhost:5984/test')
-    db.info().then(info => {
-      console.log(info)
-    })
+    // const db = new PouchDB('http://localhost:5984/test')
     Sortable.create(this.refs.list, {
       group: 'columns',
       ghostClass: 'columnGhost',
       handle: '.drag-handle',
       animation: 150
-    });
+    })
   }
 
   render() {
-    let { arr } = this.state;
-    let { value } = this.props;
+    let { arr } = this.state
 
     return (
       <div>
-        <button
-          className='button primary'
-          onClick={ this.handleAddColumn.bind(this) }
-        >
-          Add Column
-        </button>
-        <p>
-          From store: { value }
-        </p>
         <div ref='list'>
           {
-            arr.map((x, i) => {
+            arr.map((d, i) => {
               return (
-                <Column key={ i } id={ x } />
+                <Column key={ i } id={ d.id } title={ d.name } />
               )
             })
           }
@@ -69,14 +56,14 @@ export class AppComponent extends React.Component {
   }
 
   handleAddColumn () {
-    let { seq, arr } = this.state;
+    let { seq, arr } = this.state
 
-    arr.push(seq++);
+    arr.push(seq++)
 
     this.setState({
       seq: seq,
       arr: arr
-    });
+    })
   }
 }
 
