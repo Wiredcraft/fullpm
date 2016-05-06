@@ -66,8 +66,9 @@
   },
   "dependencies": {
     "core-js": "^2.0.0",
+    "immutable": "^3.7.4",
     "normalize.css": "^4.0.0",
-    "react": "^15.0.0",
+    "react": "^15.0.2",
     "react-dom": "^15.0.0",
     "sortablejs": "^1.4.2"
   }

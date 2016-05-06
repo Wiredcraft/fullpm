@@ -1,12 +1,13 @@
 import React from 'react';
 import Sortable from 'sortablejs';
+import { connect } from 'react-redux'
 
 import 'normalize.css/normalize.css'
 import 'styles/App.scss'
 import Column from 'components/Column'
 
 
-export default class AppComponent extends React.Component {
+export class AppComponent extends React.Component {
   constructor (props, context) {
     super(props, context)
 
@@ -34,15 +35,24 @@ export default class AppComponent extends React.Component {
 
   render() {
     let { arr } = this.state;
+    let { value } = this.props;
 
     return (
       <div>
-        <button className='button primary' onClick={ this.handleAddColumn.bind(this) }>Add Column</button>
+        <button
+          className='button primary'
+          onClick={ this.handleAddColumn.bind(this) }
+        >
+          Add Column
+        </button>
+        <p>
+          From store: { value }
+        </p>
         <div ref='list'>
           {
-            arr.map((x) => {
+            arr.map((x, i) => {
               return (
-                <Column key={ x } id={ x } />
+                <Column key={ i } id={ x } />
               )
             })
           }
@@ -62,3 +72,11 @@ export default class AppComponent extends React.Component {
     });
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    value: state.init.get('value')
+  }
+}
+
+export default connect(mapStateToProps)(AppComponent)

@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 
-// import styles from './Issue.scss'
-// import CSSModules from 'react-css-modules';
-// @CSSModules(styles)
 export default class Issue extends Component {
   constructor (props, context) {
     super(props, context)
