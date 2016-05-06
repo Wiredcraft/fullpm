@@ -6,17 +6,17 @@ import 'normalize.css/normalize.css'
 import 'styles/app.scss'
 import 'styles/main.scss'
 import Column from 'components/Column'
-// import PouchDB from 'pouchdb'
-
+import PouchDB from 'pouchdb'
+const kenhqDb = new PouchDB('kenhq_meta')
 
 export class AppComponent extends React.Component {
   constructor () {
     super()
 
     let initArr = [
-      { id: 1, name: 'Backlog' },
-      { id: 2, name: 'Doing' },
-      { id: 3, name: 'Done' }
+      { id: 1, name: 'Backlog', issues: [] },
+      { id: 2, name: 'Doing', issues: [] },
+      { id: 3, name: 'Done', issues: [] }
     ]
     let seq = initArr.length
 
@@ -26,8 +26,19 @@ export class AppComponent extends React.Component {
     }
   }
 
+  componentWillMount () {
+    const { arr } = this.state
+    let data = []
+    PouchDB.sync('kenhq_meta', 'http://localhost:3000/proxy/meta').then(() => {
+      kenhqDb.allDocs({include_docs: true}).then(res => {
+        data = res.rows.map(d => d.doc)
+        arr[0].issues = data
+        this.setState(arr)
+      })
+    })
+  }
+
   componentDidMount () {
-    // const db = new PouchDB('http://localhost:5984/test')
     Sortable.create(this.refs.list, {
       group: 'columns',
       ghostClass: 'columnGhost',
@@ -45,7 +56,7 @@ export class AppComponent extends React.Component {
           {
             arr.map((d, i) => {
               return (
-                <Column key={ i } id={ d.id } title={ d.name } />
+                <Column key={ i } id={ d.id } title={ d.name } issues={ d.issues } />
               )
             })
           }

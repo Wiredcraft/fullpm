@@ -20,4 +20,9 @@
   .issueGhost {
     opacity: 0.25;
   }
+
+  .issue-list {
+    height: 620px;
+    overflow-y: scroll;
+  }
 }

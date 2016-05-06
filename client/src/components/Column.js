@@ -8,12 +8,6 @@ import 'styles/column.scss'
 export default class Column extends Component {
   constructor () {
     super()
-
-    let arr = [0, 1, 2, 3, 4]
-
-    this.state = {
-      arr: arr
-    }
   }
 
   componentDidMount () {
@@ -29,19 +23,18 @@ export default class Column extends Component {
   }
 
   render() {
-    const { arr } = this.state
-    const { title } = this.props
+    const { title, issues } = this.props
 
     return (
       <section className='Column'>
         <header className='drag-handle'>
           <span>{ title }</span>
         </header>
-        <div ref='list'>
+        <div ref='list' className='issue-list'>
           {
-            arr.map((x) => {
+            issues.map((d, i) => {
               return (
-                <Issue key={ x } col={ this.props.id } id={ x } />
+                <Issue key={ i } col={ this.props.id } id={ d.x } name={ d.title } />
               )
             })
           }
