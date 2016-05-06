@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 
+import 'styles/Issue.scss'
+
+
 export default class Issue extends Component {
   constructor () {
     super()
@@ -17,7 +20,7 @@ export default class Issue extends Component {
 
   render() {
     return (
-      <article className='issue' onClick={ this.handleClick.bind(this) }>An Issue { this.props.id} (Column { this.props.col }) </article>
+      <article className='Issue' onClick={ this.handleClick.bind(this) }>An Issue { this.props.id} (Column { this.props.col }) </article>
     )
   }
 

@@ -2,21 +2,16 @@ import React, { Component } from 'react'
 import Sortable from 'sortablejs'
 
 import Issue from 'components/Issue'
+import 'styles/column.scss'
 
 
 export default class Column extends Component {
   constructor () {
     super()
 
-    let arr = []
-    let seq = 1
-
-    for (let i = 0; i < 5; i++) {
-      arr.push(seq++)
-    }
+    let arr = [0, 1, 2, 3, 4]
 
     this.state = {
-      seq: seq,
       arr: arr
     }
   }
@@ -38,7 +33,7 @@ export default class Column extends Component {
     const { title } = this.props
 
     return (
-      <section className='column'>
+      <section className='Column'>
         <header className='drag-handle'>
           <span>{ title }</span>
         </header>
@@ -56,13 +51,6 @@ export default class Column extends Component {
   }
 
   handleAddIssue () {
-    let { seq, arr } = this.state
 
-    arr.push(seq++)
-
-    this.setState({
-      seq: seq,
-      arr: arr
-    })
   }
 }

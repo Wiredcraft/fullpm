@@ -3,11 +3,10 @@ import Sortable from 'sortablejs'
 import { connect } from 'react-redux'
 
 import 'normalize.css/normalize.css'
-import 'styles/App.scss'
+import 'styles/app.scss'
+import 'styles/main.scss'
 import Column from 'components/Column'
 // import PouchDB from 'pouchdb'
-
-
 
 
 export class AppComponent extends React.Component {
@@ -41,8 +40,8 @@ export class AppComponent extends React.Component {
     let { arr } = this.state
 
     return (
-      <div>
-        <div ref='list'>
+      <div className='AppComponent'>
+        <div ref='list' className='board-area'>
           {
             arr.map((d, i) => {
               return (
