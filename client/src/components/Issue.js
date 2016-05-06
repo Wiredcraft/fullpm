@@ -23,7 +23,7 @@ export default class Issue extends Component {
   componentWillUnmount () {
     clearInterval(this.interval);
   }
-  
+
   render() {
     return (
       <article className='issue' onClick={ this.handleClick.bind(this) }>An Issue { this.props.id} (Column { this.props.col }) ({this.state.secondsElapsed})</article>

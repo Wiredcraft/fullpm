@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import Sortable from 'sortablejs';
-import Issue from '../Issue';
 
-// import styles from './Column.scss';
-// import CSSModules from 'react-css-modules';
-// @CSSModules(styles)
+import Issue from 'components/Issue';
+
+
 export default class Column extends Component {
   constructor (props, context) {
     super(props, context)
@@ -14,7 +13,7 @@ export default class Column extends Component {
 
     for (let i = 0; i < 5; i++) {
       arr.push(seq++)
-    };
+    }
 
     this.state = {
       seq: seq,
