@@ -5,6 +5,9 @@ import { connect } from 'react-redux'
 import 'normalize.css/normalize.css'
 import 'styles/App.scss'
 import Column from 'components/Column'
+import PouchDB from 'pouchdb'
+
+
 
 
 export class AppComponent extends React.Component {
@@ -25,6 +28,10 @@ export class AppComponent extends React.Component {
   }
 
   componentDidMount () {
+    const db = new PouchDB('http://localhost:5984/test')
+    db.info().then(info => {
+      console.log(info)
+    })
     Sortable.create(this.refs.list, {
       group: 'columns',
       ghostClass: 'columnGhost',
