@@ -1,0 +1,42 @@
+{
+  "name": "Meta",
+  "plural": "Meta",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true
+  },
+  "http": {
+    "path": "/meta"
+  },
+  "properties": {
+    "_id": {
+      "type": "string",
+      "id": true
+    },
+    "_rev": {
+      "type": "string",
+      "required": false
+    },
+    "url": {
+      "type": "string",
+      "required": false
+    },
+    "title": {
+      "type": "string",
+      "required": false
+    },
+    "column": {
+      "type": "string",
+      "required": true
+    },
+    "ranking": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

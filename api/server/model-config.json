@@ -12,5 +12,13 @@
       "../common/mixins",
       "./mixins"
     ]
+  },
+  "Meta": {
+    "dataSource": "meta",
+    "public": true
+  },
+  "Github": {
+    "dataSource": null,
+    "public": true
   }
 }
