@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
 
-import init from './init'
+import issues from './issues'
 
 
 export default combineReducers({
-  init
+  issues
 })

@@ -1,37 +1,18 @@
 import React from 'react'
 import Sortable from 'sortablejs'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
 import 'normalize.css/normalize.css'
 import 'styles/app.scss'
 import 'styles/main.scss'
 import Column from 'components/Column'
-import PouchDB from 'pouchdb'
-const kenhqDb = new PouchDB('kenhq_meta')
+import { fetchIssues } from 'actions'
 
 export class AppComponent extends React.Component {
-  constructor () {
-    super()
-
-    const initArr = [
-      { id: 1, name: 'Backlog', issues: [] },
-      { id: 2, name: 'Doing', issues: [] },
-      { id: 3, name: 'Done', issues: [] }
-    ]
-
-    this.state = { arr: initArr }
-  }
-
   componentWillMount () {
-    const { arr } = this.state
-    let data = []
-    PouchDB.sync('kenhq_meta', 'http://localhost:3000/proxy/meta').then(() => {
-      kenhqDb.allDocs({include_docs: true}).then(res => {
-        data = res.rows.map(d => d.doc)
-        arr[0].issues = data
-        this.setState(arr)
-      })
-    })
+    const { fetchIssues } = this.props
+    fetchIssues()
   }
 
   componentDidMount () {
@@ -44,13 +25,13 @@ export class AppComponent extends React.Component {
   }
 
   render() {
-    let { arr } = this.state
+    const { sortedArr } = this.props
 
     return (
       <div className='AppComponent'>
         <div ref='list' className='board-area'>
           {
-            arr.map((d, i) => {
+            sortedArr.map((d, i) => {
               return (
                 <Column key={ i } id={ d.id } title={ d.name } issues={ d.issues } />
               )
@@ -62,10 +43,22 @@ export class AppComponent extends React.Component {
   }
 }
 
+function mapDispatchToProps (dispatch) {
+  return bindActionCreators({ fetchIssues }, dispatch)
+}
+
+function parserTickets(tickets) {
+  return [
+    { id: 1, name: 'Backlog', issues: tickets.filter(d => d.column === 'backlog') },
+    { id: 2, name: 'Doing', issues: [] },
+    { id: 3, name: 'Done', issues: [] }
+  ]
+}
+
 function mapStateToProps(state) {
   return {
-    value: state.init.get('value')
+    sortedArr: parserTickets(state.issues.get('tickets'))
   }
 }
 
-export default connect(mapStateToProps)(AppComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(AppComponent)
