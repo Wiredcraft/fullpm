@@ -1,6 +1,6 @@
 import Immutable from 'immutable'
 
-import { CHANGE_TICKETS } from 'actions/index'
+import { CHANGE_TICKETS } from 'actions/ticketActions'
 
 
 const initialState = Immutable.fromJS({

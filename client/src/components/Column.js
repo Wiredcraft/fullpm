@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 
 import Issue from 'components/Issue'
 import 'styles/column.scss'
-import { updateIssue } from 'actions'
+import { updateIssue } from 'actions/ticketActions'
 
 export class Column extends Component {
   componentDidMount () {
@@ -15,7 +15,6 @@ export class Column extends Component {
       group: 'issues',
       ghostClass: 'issueGhost',
       animation: 150,
-      // onEnd, onAdd, onRemove
       onAdd: (e) => {
         if (e.item.id) {
           updateIssue(e.item.id, e.to.id)

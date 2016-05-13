@@ -3,9 +3,6 @@ import createLogger from 'redux-logger'
 import { createStore, applyMiddleware } from 'redux'
 import rootReducer from 'reducers'
 
-import { CHANGE_TICKETS } from 'actions/index'
-
-
 const loggerMiddleware = createLogger()
 
  const store = createStore(

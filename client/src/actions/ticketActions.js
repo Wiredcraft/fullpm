@@ -27,10 +27,9 @@ export function fetchIssues() {
     return PouchDB.sync('kenhq_meta', 'http://localhost:3000/proxy/meta').then(() => {
       kenhqDb.changes({
         since: 'now',
-        live: true,
-        allDocs: true
+        live: true
       }).on('change', function () {
-        changeTickets(dispatch)
+         setTimeout(() => changeTickets(dispatch), 0)
       })
       changeTickets(dispatch)
     })

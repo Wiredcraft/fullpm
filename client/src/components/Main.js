@@ -7,7 +7,7 @@ import 'normalize.css/normalize.css'
 import 'styles/app.scss'
 import 'styles/main.scss'
 import Column from 'components/Column'
-import { fetchIssues } from 'actions'
+import { fetchIssues } from 'actions/ticketActions'
 import {
   ISSUE_TYPE_BACKLOG,
   ISSUE_TYPE_DOING,
