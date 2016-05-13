@@ -42,7 +42,6 @@ export function fetchIssues(url) {
 }
 
 export function updateIssue(issueID, columnID) {
-  //Maybe add some error handle here later.
   return () => {
     const issueType = ISSUE_TYPE_DICTIONARY[columnID]
     return kenhqDb.get(issueID).then(function (doc) {
@@ -50,9 +49,11 @@ export function updateIssue(issueID, columnID) {
       updated = true
       return kenhqDb.put(doc)
     })
-    // return dispatch({
-    //   type: UPDATE_TICKET,
-    //   payload: { id: issueID, type: issueType }
-    // })
+  }
+}
+
+export function clearIssues() {
+  return (dispatch) => {
+    dispatch({ type: CHANGE_TICKETS, payload: [] })
   }
 }

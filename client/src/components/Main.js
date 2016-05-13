@@ -7,7 +7,7 @@ import 'normalize.css/normalize.css'
 import 'styles/app.scss'
 import 'styles/main.scss'
 import Column from 'components/Column'
-import { fetchIssues } from 'actions/ticketActions'
+import { fetchIssues, clearIssues } from 'actions/ticketActions'
 import { updateRepoSelected } from 'actions/repoActions'
 import {
   ISSUE_TYPE_BACKLOG,
@@ -35,6 +35,11 @@ export class AppComponent extends React.Component {
     updateRepoSelected(true)
   }
 
+  exitRepo() {
+    const { clearIssues, updateRepoSelected } = this.props
+    updateRepoSelected(false)
+  }
+
   render() {
     const {
       repos,
@@ -46,7 +51,9 @@ export class AppComponent extends React.Component {
       <div className='AppComponent'>
         { repoSelected ? (
           <div>
-            <button className='back-btn'>Back</button>
+            <button className='back-btn' onClick={this.exitRepo.bind(this)}>
+              Back
+            </button>
             <div ref='list' className='board-area'>
               {
                 sortedArr.map((d, i) => {
@@ -74,7 +81,11 @@ export class AppComponent extends React.Component {
 }
 
 function mapDispatchToProps (dispatch) {
-  return bindActionCreators({ fetchIssues, updateRepoSelected }, dispatch)
+  return bindActionCreators({
+    clearIssues,
+    fetchIssues,
+    updateRepoSelected
+  }, dispatch)
 }
 
 function parserTickets(tickets) {
