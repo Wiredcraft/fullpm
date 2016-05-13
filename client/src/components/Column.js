@@ -6,19 +6,15 @@ import 'styles/column.scss'
 
 
 export default class Column extends Component {
-  constructor () {
-    super()
-  }
-
   componentDidMount () {
     Sortable.create(this.refs.list, {
       group: 'issues',
       ghostClass: 'issueGhost',
       animation: 150,
-      onStart: (e) => { console.log('onStart', e) },
-      onEnd: (e) => { console.log('onEnd', e) },
-      onAdd: (e) => { console.log('onAdd', e) },
-      onRemove: (e) => { console.log('onRemove', e) }
+      // onStart: (e) => { console.log('onStart', e) },
+      // onEnd: (e) => { console.log('onEnd', e) },
+      // onAdd: (e) => { console.log('onAdd', e) },
+      // onRemove: (e) => { console.log('onRemove', e) }
     })
   }
 
@@ -41,9 +37,5 @@ export default class Column extends Component {
         </div>
       </section>
     )
-  }
-
-  handleAddIssue () {
-
   }
 }

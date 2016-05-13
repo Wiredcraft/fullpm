@@ -13,17 +13,13 @@ export class AppComponent extends React.Component {
   constructor () {
     super()
 
-    let initArr = [
+    const initArr = [
       { id: 1, name: 'Backlog', issues: [] },
       { id: 2, name: 'Doing', issues: [] },
       { id: 3, name: 'Done', issues: [] }
     ]
-    let seq = initArr.length
 
-    this.state = {
-      seq: seq,
-      arr: initArr
-    }
+    this.state = { arr: initArr }
   }
 
   componentWillMount () {
@@ -63,17 +59,6 @@ export class AppComponent extends React.Component {
         </div>
       </div>
     )
-  }
-
-  handleAddColumn () {
-    let { seq, arr } = this.state
-
-    arr.push(seq++)
-
-    this.setState({
-      seq: seq,
-      arr: arr
-    })
   }
 }
 
