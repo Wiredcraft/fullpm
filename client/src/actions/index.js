@@ -8,7 +8,6 @@ import {
 
 
 export const CHANGE_TICKETS = 'CHANGE_TICKETS'
-export const UPDATE_TICKET = 'UPDATE_TICKET'
 
 const ISSUE_TYPE_DICTIONARY = {
   1: ISSUE_TYPE_BACKLOG,
@@ -17,19 +16,30 @@ const ISSUE_TYPE_DICTIONARY = {
 }
 
 export function fetchIssues() {
+  const changeTickets = (dispatch) => {
+    kenhqDb.allDocs({include_docs: true}).then(res => {
+      const tickets = res.rows.map(d => d.doc)
+      dispatch({ type: CHANGE_TICKETS, payload: tickets })
+    })
+  }
+
   return dispatch => {
     return PouchDB.sync('kenhq_meta', 'http://localhost:3000/proxy/meta').then(() => {
-      kenhqDb.allDocs({include_docs: true}).then(res => {
-        const tickets = res.rows.map(d => d.doc)
-        dispatch({ type: CHANGE_TICKETS, payload: tickets })
+      kenhqDb.changes({
+        since: 'now',
+        live: true,
+        allDocs: true
+      }).on('change', function () {
+        changeTickets(dispatch)
       })
+      changeTickets(dispatch)
     })
   }
 }
 
 export function updateIssue(issueID, columnID) {
   //Maybe add some error handle here later.
-  return dispatch => {
+  return () => {
     const issueType = ISSUE_TYPE_DICTIONARY[columnID]
     return kenhqDb.get(issueID).then(function (doc) {
       doc.column = issueType
