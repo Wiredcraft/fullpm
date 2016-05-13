@@ -8,6 +8,7 @@ import {
 
 
 export const CHANGE_TICKETS = 'CHANGE_TICKETS'
+let updated = false
 
 const ISSUE_TYPE_DICTIONARY = {
   1: ISSUE_TYPE_BACKLOG,
@@ -29,7 +30,11 @@ export function fetchIssues() {
         since: 'now',
         live: true
       }).on('change', function () {
-         setTimeout(() => changeTickets(dispatch), 0)
+         if (updated) {
+           updated = false
+           return
+         }
+         changeTickets(dispatch)
       })
       changeTickets(dispatch)
     })
@@ -42,6 +47,7 @@ export function updateIssue(issueID, columnID) {
     const issueType = ISSUE_TYPE_DICTIONARY[columnID]
     return kenhqDb.get(issueID).then(function (doc) {
       doc.column = issueType
+      updated = true
       return kenhqDb.put(doc)
     })
     // return dispatch({
