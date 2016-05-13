@@ -16,7 +16,7 @@ const ISSUE_TYPE_DICTIONARY = {
   3: ISSUE_TYPE_DONE
 }
 
-export function fetchIssues() {
+export function fetchIssues(url) {
   const changeTickets = (dispatch) => {
     kenhqDb.allDocs({include_docs: true}).then(res => {
       const tickets = res.rows.map(d => d.doc)
@@ -25,7 +25,7 @@ export function fetchIssues() {
   }
 
   return dispatch => {
-    return PouchDB.sync('kenhq_meta', 'http://localhost:3000/proxy/meta').then(() => {
+    return PouchDB.sync('kenhq_meta', url).then(() => {
       kenhqDb.changes({
         since: 'now',
         live: true

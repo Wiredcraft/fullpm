@@ -8,6 +8,7 @@ import 'styles/app.scss'
 import 'styles/main.scss'
 import Column from 'components/Column'
 import { fetchIssues } from 'actions/ticketActions'
+import { updateRepoSelected } from 'actions/repoActions'
 import {
   ISSUE_TYPE_BACKLOG,
   ISSUE_TYPE_DOING,
@@ -15,12 +16,11 @@ import {
 } from 'helper/constant'
 
 export class AppComponent extends React.Component {
-  componentWillMount () {
-    const { fetchIssues } = this.props
-    fetchIssues()
-  }
 
-  componentDidMount () {
+  componentDidUpdate () {
+    if (!this.refs.list) {
+      return
+    }
     Sortable.create(this.refs.list, {
       group: 'columns',
       ghostClass: 'columnGhost',
@@ -29,27 +29,52 @@ export class AppComponent extends React.Component {
     })
   }
 
+  enterRepo(url) {
+    const { fetchIssues, updateRepoSelected } = this.props
+    fetchIssues(url)
+    updateRepoSelected(true)
+  }
+
   render() {
-    const { sortedArr } = this.props
+    const {
+      repos,
+      repoSelected,
+      sortedArr
+    } = this.props
 
     return (
       <div className='AppComponent'>
-        <div ref='list' className='board-area'>
-          {
-            sortedArr.map((d, i) => {
-              return (
-                <Column key={i} id={d.id} title={d.name} issues={d.issues} />
-              )
-            })
-          }
-        </div>
+        { repoSelected ? (
+          <div>
+            <button className='back-btn'>Back</button>
+            <div ref='list' className='board-area'>
+              {
+                sortedArr.map((d, i) => {
+                  return (
+                    <Column key={i} id={d.id} title={d.name} issues={d.issues} />
+                  )
+                })
+              }
+            </div>
+          </div>
+        ) : (
+          <div>
+            {
+              repos.map(d => (
+                <button onClick={this.enterRepo.bind(this, d.get('url'))}>
+                  {d.get('name')}
+                </button>
+              ))
+            }
+          </div>
+        )}
       </div>
     )
   }
 }
 
 function mapDispatchToProps (dispatch) {
-  return bindActionCreators({ fetchIssues }, dispatch)
+  return bindActionCreators({ fetchIssues, updateRepoSelected }, dispatch)
 }
 
 function parserTickets(tickets) {
@@ -62,6 +87,8 @@ function parserTickets(tickets) {
 
 function mapStateToProps(state) {
   return {
+    repos: state.repos.get('repos'),
+    repoSelected: state.repos.get('repoSelected'),
     sortedArr: parserTickets(state.issues.get('tickets'))
   }
 }
