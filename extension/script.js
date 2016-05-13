@@ -24,7 +24,7 @@ function appendContentToPage () {
   // Create our content
   var iframe = document.createElement('iframe');
   iframe.src = chrome.runtime.getURL('frame.html');
-  iframe.style.cssText = 'width:100%;height:100%;border:none';
+  iframe.style.cssText = 'width:100%;height:500px;border:none';
 
   // Clear contentElem for our content
   while (contentElem.firstChild) {
