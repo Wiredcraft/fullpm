@@ -8,6 +8,11 @@ import 'styles/app.scss'
 import 'styles/main.scss'
 import Column from 'components/Column'
 import { fetchIssues } from 'actions'
+import {
+  ISSUE_TYPE_BACKLOG,
+  ISSUE_TYPE_DOING,
+  ISSUE_TYPE_DONE
+} from 'helper/constant'
 
 export class AppComponent extends React.Component {
   componentWillMount () {
@@ -33,7 +38,7 @@ export class AppComponent extends React.Component {
           {
             sortedArr.map((d, i) => {
               return (
-                <Column key={ i } id={ d.id } title={ d.name } issues={ d.issues } />
+                <Column key={i} id={d.id} title={d.name} issues={d.issues} />
               )
             })
           }
@@ -49,9 +54,9 @@ function mapDispatchToProps (dispatch) {
 
 function parserTickets(tickets) {
   return [
-    { id: 1, name: 'Backlog', issues: tickets.filter(d => d.column === 'backlog') },
-    { id: 2, name: 'Doing', issues: [] },
-    { id: 3, name: 'Done', issues: [] }
+    { id: 1, name: 'Backlog', issues: tickets.filter(d => d.column === ISSUE_TYPE_BACKLOG) },
+    { id: 2, name: 'Doing', issues: tickets.filter(d => d.column === ISSUE_TYPE_DOING) },
+    { id: 3, name: 'Done', issues: tickets.filter(d => d.column === ISSUE_TYPE_DONE) }
   ]
 }
 

@@ -5,13 +5,13 @@ import 'styles/Issue.scss'
 
 export default class Issue extends Component {
   render() {
-    const { name } = this.props
+    const { name, id } = this.props
 
     return (
-      <article className='Issue' onClick={ this.handleClick.bind(this) }>
+      <article className='Issue' id={id} onClick={this.handleClick.bind(this)}>
         <span className='icon'/>
         <p className='text'>
-          { name }
+          {name}
         </p>
       </article>
     )
