@@ -11,8 +11,10 @@
     "bluebird": "^3.4.0",
     "body-parser": "^1.15.1",
     "compression": "^1.6.2",
+    "connect-redis": "^3.0.2",
     "cors": "^2.5.2",
     "debug": "^2.2.0",
+    "express-session": "^1.13.0",
     "file-register": "^0.1.0",
     "github-api": "^2.2.0",
     "helmet": "^2.1.0",
@@ -28,6 +30,7 @@
     "loopback-extended-lib": "^0.3.3",
     "mixable-object": "^0.1.1",
     "moment": "^2.13.0",
+    "passport-github": "^1.1.0",
     "serve-favicon": "^2.0.1"
   },
   "devDependencies": {

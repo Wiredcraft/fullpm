@@ -4,10 +4,11 @@ MOCHA_OPTS = -b --timeout 5000 --reporter spec
 TESTS = test/*.test.js
 ISTANBUL = ./node_modules/.bin/istanbul
 COVERALLS = ./node_modules/.bin/coveralls
+NODE_BIN = ./node_modules/.bin
 
 lint:
 	@echo "Linting..."
-	@./node_modules/.bin/jscs server
+	@$(NODE_BIN)/jscs server
 test: lint
 	@echo "Testing..."
 	@$(ENV) $(MOCHA) $(MOCHA_OPTS) $(TESTS)

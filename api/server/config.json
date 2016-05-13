@@ -24,5 +24,17 @@
       "disableStackTrace": false
     }
   },
-  "legacyExplorer": false
+  "legacyExplorer": false,
+  "github": {
+    "clientId": "9d0eb0361347cc0017e6",
+    "clientSecret": "b67154d40b1ee8faf61e07e1a8e0cc6a34ca63e8",
+    "callbackURL": "http://local.wiredcraft.com:3000/auth/github/callback"
+  },
+  "cookie": {
+    "secret": "super mario"
+  },
+  "redis": {
+    "host": "127.0.0.1",
+    "port": 6379
+  }
 }
