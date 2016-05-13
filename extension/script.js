@@ -1,11 +1,14 @@
 console.log('loaded')
 console.log(location.href);
 
-if (location.href.startsWith('https://github.com/Wiredcraft/data.worldbank.org/issues')) {
-  els = window.document.getElementsByClassName('js-repo-nav')
+// Append kanban button to page
+function appendButtonToNav () {
+  // Stop if button exists already
+  if (document.getElementById('pmhub')) { return null }
 
-  if (els){
-    buttonListEl = els[0];
+  navElem = document.getElementsByClassName('js-repo-nav')
+  if (navElem) {
+    buttonListEl = navElem[0];
     aEl = document.createElement('a');
     aEl.addEventListener('click', function(){
       issuesEl = document.getElementsByClassName('repository-content')[0]
@@ -28,14 +31,27 @@ if (location.href.startsWith('https://github.com/Wiredcraft/data.worldbank.org/i
       activeLinkEl.classList.remove("selected")
 
       aEl.classList.add('selected')
-
-
     })
+
     aEl.text = 'Kanban';
-    aEl.href = '#test';
+    aEl.id = 'pmhub';
+    aEl.href = '#pmhub';
     aEl.classList = ['js-selected-navigation-item reponav-item']
     buttonListEl.appendChild(aEl)
-
-
   }
 }
+
+// Background script message listener
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  switch (request.type) {
+    case 'complete':
+      appendButtonToNav()
+      break
+    default:
+      console.log('Message received:', request, sender)
+      break
+  }
+})
+
+// Append button on load
+appendButtonToNav()
