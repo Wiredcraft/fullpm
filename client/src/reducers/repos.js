@@ -1,6 +1,6 @@
 import Immutable from 'immutable'
 
-import { CHANGE_SELECTED_REPO, CHANGE_REPOS } from 'actions/repoActions'
+import { CHANGE_REPO_SELECTED, CHANGE_REPOS } from 'actions/repoActions'
 
 
 const initialState = Immutable.fromJS({
@@ -14,7 +14,7 @@ const initialState = Immutable.fromJS({
 
 export default function user (state = initialState, action) {
   switch (action.type) {
-  case CHANGE_SELECTED_REPO:
+  case CHANGE_REPO_SELECTED:
     state = state.set('repoSelected', action.payload)
     return state
   case CHANGE_REPOS:

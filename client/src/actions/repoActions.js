@@ -1,8 +1,8 @@
-export const CHANGE_SELECTED_REPO = 'CHANGE_SELECTED_REPO'
+export const CHANGE_REPO_SELECTED = 'CHANGE_REPO_SELECTED'
 export const CHANGE_REPOS = 'CHANGE_REPOS'
 
 export function updateRepoSelected (selectedRepo) {
   return dispatch => (
-    dispatch({ type: CHANGE_SELECTED_REPO, payload: selectedRepo })
+    dispatch({ type: CHANGE_REPO_SELECTED, payload: selectedRepo })
   )
 }
