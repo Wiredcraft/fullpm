@@ -7,18 +7,31 @@ import Issue from 'components/Issue'
 import 'styles/column.scss'
 import { updateIssue } from 'actions/ticketActions'
 
+let draggingItemID
+
 export class Column extends Component {
   componentDidMount () {
     const { updateIssue } = this.props
-
     Sortable.create(this.refs.list, {
-      group: 'issues',
+      group: { name: 'issues', put: false },
       ghostClass: 'issueGhost',
       animation: 150,
-      onAdd: (e) => {
-        if (e.item.id) {
-          updateIssue(e.item.id, e.to.id)
-        }
+      onStart: (e) => {
+        draggingItemID = e.item.id
+      },
+      onEnd: (e) => {
+        setTimeout(() => {
+          const hoveredItems = document.querySelectorAll(':hover')
+          const pattern = /^column[1-9]$/
+          for (let i = 0; i < hoveredItems.length; i++) {
+            if (pattern.test(hoveredItems[i].id)) {
+              const targetID = hoveredItems[i].id.replace('column', '')
+              if (targetID !== e.from.id) {
+                updateIssue(draggingItemID, targetID)
+              }
+            }
+          }
+        }, 500)
       }
     })
   }
@@ -26,7 +39,10 @@ export class Column extends Component {
   render() {
     const { title, issues, id } = this.props
     return (
-      <section className='Column'>
+      <section
+        id={`column${id}`}
+        className='Column'
+      >
         <header className='drag-handle'>
           <span>{title}</span>
         </header>
