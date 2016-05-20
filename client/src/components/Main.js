@@ -7,6 +7,8 @@ import 'normalize.css/normalize.css'
 import 'styles/app.scss'
 import 'styles/main.scss'
 import Column from 'components/Column'
+import Card from 'components/Card'
+import Container from 'components/Container'
 import { fetchIssues, clearIssues } from 'actions/ticketActions'
 import { updateRepoSelected } from 'actions/repoActions'
 import {
@@ -14,6 +16,9 @@ import {
   ISSUE_TYPE_DOING,
   ISSUE_TYPE_DONE
 } from 'helper/constant'
+import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
+
 
 export class AppComponent extends React.Component {
 
@@ -75,6 +80,9 @@ export class AppComponent extends React.Component {
             }
           </div>
         )}
+        <Card text="HELLO REACT-DND" />
+        <Card text="HELLO REACT-DND2" />
+        <Container />
       </div>
     )
   }
@@ -104,4 +112,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AppComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(AppComponent))
