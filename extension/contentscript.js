@@ -1,29 +1,33 @@
-console.info('pmhub running...', location.href)
-
 // Append kanban button to page
 function appendButtonToNav () {
   // Stop if button exists already
-  if (document.getElementById('pmhub')) { return null }
+  if (document.getElementById('kenhq')) { return null }
 
   navElem = document.getElementsByClassName('js-repo-nav')[0]
   if (navElem) {
     aEl = document.createElement('a');
     aEl.addEventListener('click', appendContentToPage)
     aEl.text = 'Kanban';
-    aEl.id = 'pmhub';
-    aEl.href = '#pmhub';
+    aEl.id = 'kenhq';
+    aEl.href = '#kenhq';
     aEl.classList = ['js-selected-navigation-item reponav-item']
     navElem.appendChild(aEl)
   }
 }
 
 function appendContentToPage () {
+  // Get current user/org name & repo name
+  var pathArray = window.location.pathname.replace('/', '').split('/')
+  var name = pathArray[0]
+  var repo = pathArray[1]
+  var queryString = '?name=' + encodeURIComponent(name) + '&repo=' + encodeURIComponent(repo)
+
   // Tab content element
   contentElem = document.getElementsByClassName('repository-content')[0]
 
   // Create our content
   var iframe = document.createElement('iframe');
-  iframe.src = chrome.runtime.getURL('frame.html');
+  iframe.src = chrome.runtime.getURL('frame/index.html' + queryString);
   iframe.style.cssText = 'width:100%;height:500px;border:none';
 
   // Clear contentElem for our content

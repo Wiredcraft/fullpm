@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "PMHub extension",
-  "description": "PMHub extension",
-  "version": "0.00001",
+  "name": "KenHQ extension",
+  "description": "KenHQ extension",
+  "version": "0.1.0",
   "background" : {
     "scripts" : [
       "background.js"
@@ -34,11 +34,12 @@
         "*://github.com/orgs/*"
       ],
       "js": [
-        "script.js"
+        "contentscript.js"
       ]
     }
   ],
   "web_accessible_resources": [
-    "frame.html"
+    "frame/index.html",
+    "frame/script.js"
   ]
 }
