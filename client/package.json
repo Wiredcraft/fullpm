@@ -65,6 +65,7 @@
     "postcss-loader": "^0.8.0"
   },
   "dependencies": {
+    "babel-preset-stage-0": "^6.5.0",
     "core-js": "^2.0.0",
     "immutable": "^3.7.4",
     "lodash": "^4.12.0",
