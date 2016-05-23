@@ -1,5 +1,4 @@
 import React from 'react'
-import Sortable from 'sortablejs'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
@@ -7,8 +6,6 @@ import 'normalize.css/normalize.css'
 import 'styles/app.scss'
 import 'styles/main.scss'
 import Column from 'components/Column'
-import Card from 'components/Card'
-import Container from 'components/Container'
 import { fetchIssues, clearIssues } from 'actions/ticketActions'
 import { updateRepoSelected } from 'actions/repoActions'
 import {
@@ -19,21 +16,9 @@ import {
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
-
-export class AppComponent extends React.Component {
-
-  componentDidUpdate () {
-    if (!this.refs.list) {
-      return
-    }
-    Sortable.create(this.refs.list, {
-      group: 'columns',
-      ghostClass: 'columnGhost',
-      handle: '.drag-handle',
-      animation: 150
-    })
-  }
-
+@connect(mapStateToProps, mapDispatchToProps)
+@DragDropContext(HTML5Backend)
+export default class AppComponent extends React.Component {
   enterRepo(url) {
     const { fetchIssues, updateRepoSelected } = this.props
     fetchIssues(url)
@@ -43,6 +28,7 @@ export class AppComponent extends React.Component {
   exitRepo() {
     const { clearIssues, updateRepoSelected } = this.props
     updateRepoSelected(false)
+    clearIssues()
   }
 
   render() {
@@ -80,9 +66,6 @@ export class AppComponent extends React.Component {
             }
           </div>
         )}
-        <Card text="HELLO REACT-DND" />
-        <Card text="HELLO REACT-DND2" />
-        <Container name='Hello'/>
       </div>
     )
   }
@@ -111,5 +94,3 @@ function mapStateToProps(state) {
     sortedArr: parserTickets(state.issues.get('tickets'))
   }
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(AppComponent))
