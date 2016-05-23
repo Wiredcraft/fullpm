@@ -6,6 +6,17 @@ const cardSource = {
     return {
       text: props.text
     }
+  },
+
+  endDrag(props, monitor, component) {
+    const item = monitor.getItem();
+    const dropResult = monitor.getDropResult();
+
+    if (dropResult) {
+      window.alert( // eslint-disable-line no-alert
+        `You dropped ${item.text} into ${dropResult.name}!`
+      );
+    }
   }
 }
 

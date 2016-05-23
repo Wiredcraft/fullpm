@@ -82,7 +82,7 @@ export class AppComponent extends React.Component {
         )}
         <Card text="HELLO REACT-DND" />
         <Card text="HELLO REACT-DND2" />
-        <Container />
+        <Container name='Hello'/>
       </div>
     )
   }

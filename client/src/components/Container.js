@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import { DropTarget } from 'react-dnd'
 
 const targetSpec = {
+  drop({ name }) {
+    return { name }
+  }
 }
 
 function collect(connect, monitor) {
