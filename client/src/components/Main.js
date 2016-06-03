@@ -2,9 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import 'normalize.css/normalize.css'
-import 'styles/app.scss'
-import 'styles/main.scss'
 import Column from 'components/Column'
 import { fetchIssues, clearIssues } from 'actions/ticketActions'
 import { updateRepoSelected } from 'actions/repoActions'
@@ -15,10 +12,16 @@ import {
 } from 'helper/constant'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
+import 'styles/main.scss'
 
 @connect(mapStateToProps, mapDispatchToProps)
 @DragDropContext(HTML5Backend)
 export default class AppComponent extends React.Component {
+  componentDidMount() {
+    const { repos } = this.props
+    this.enterRepo(repos.first().get('url'))
+  }
+
   enterRepo(url) {
     const { fetchIssues, updateRepoSelected } = this.props
     fetchIssues(url)
@@ -33,42 +36,24 @@ export default class AppComponent extends React.Component {
 
   render() {
     const {
-      repos,
-      repoSelected,
       sortedArr
     } = this.props
 
     return (
-      <div className='AppComponent'>
-        { repoSelected ? (
+      <div className='row'>
+        <div className='Main small-11 small-centered column'>
           <div>
-            <button className='back-btn button' onClick={this.exitRepo.bind(this)}>
-              Back
-            </button>
             <div ref='list' className='board-area'>
-              {
-                sortedArr.map((d, i) => {
-                  return (
-                    <Column key={i} id={d.id} title={d.name} issues={d.issues} />
-                  )
-                })
-              }
+            {
+              sortedArr.map((d, i) => {
+                return (
+                  <Column key={i} id={d.id} title={d.name} issues={d.issues} />
+                )
+              })
+            }
             </div>
           </div>
-        ) : (
-          <div>
-            {
-              repos.map(d => (
-                <button
-                  className='button'
-                  onClick={this.enterRepo.bind(this, d.get('url'))}
-                >
-                  {d.get('name')}
-                </button>
-              ))
-            }
-          </div>
-        )}
+        </div>
       </div>
     )
   }

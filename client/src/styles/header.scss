@@ -1,0 +1,39 @@
+@import 'node_modules/foundation-sites/scss/foundation';
+
+$titleWidth: 70px;
+
+.Header {
+  background-color: #4f545b;
+  height: 60px;
+  padding: 13px 0 5px 0;
+  & > div span {
+    color: #fff;
+    display: inline-block;
+    font-size: 1.5em;
+    font-weight: bold;
+    width: $titleWidth;
+  }
+  .dropdown {
+    background: #fff;
+    color: #4f545b;
+    width: 205px;
+
+    &::after {
+      border-color: #4f545b transparent transparent;
+    }
+  }
+  .drop-items {
+    background: #fff;
+    left: $titleWidth;
+    list-style: none;
+    margin: 0;
+    position: relative;
+    text-align: center;
+    top: -16px;
+    width: 205px;
+
+    li {
+      padding: 5px 0;
+    }
+  }
+}

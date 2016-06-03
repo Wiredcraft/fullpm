@@ -19,6 +19,7 @@ const source = {
     const { updateIssue } = props
 
     if (dropResult) {
+      console.log(dropResult)
       updateIssue(item.id, dropResult.id)
     }
   }

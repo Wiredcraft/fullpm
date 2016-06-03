@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 
-import App from './components/Main'
+import App from './components/App'
 import store from 'stores'
 
 // Render the main component into the dom
