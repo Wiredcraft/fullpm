@@ -42,7 +42,7 @@ export default class AppComponent extends React.Component {
       <div className='AppComponent'>
         { repoSelected ? (
           <div>
-            <button className='back-btn' onClick={this.exitRepo.bind(this)}>
+            <button className='back-btn button' onClick={this.exitRepo.bind(this)}>
               Back
             </button>
             <div ref='list' className='board-area'>
@@ -59,7 +59,10 @@ export default class AppComponent extends React.Component {
           <div>
             {
               repos.map(d => (
-                <button onClick={this.enterRepo.bind(this, d.get('url'))}>
+                <button
+                  className='button'
+                  onClick={this.enterRepo.bind(this, d.get('url'))}
+                >
                   {d.get('name')}
                 </button>
               ))
