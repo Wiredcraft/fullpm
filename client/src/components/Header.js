@@ -11,14 +11,14 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-      ['onclick', 'click'].forEach(e =>
-        document.addEventListener(e, this.onDefocus, false))
-    }
+    ['onclick', 'click'].forEach(e =>
+      document.addEventListener(e, this.onDefocus, false))
+  }
 
-    componentWillUnmount() {
-      ['onclick', 'click'].forEach(e =>
-        document.removeEventListener(e, this.onDefocus, false))
-    }
+  componentWillUnmount() {
+    ['onclick', 'click'].forEach(e =>
+      document.removeEventListener(e, this.onDefocus, false))
+  }
 
   onDefocus(event) {
     let { style } = this.refs.dropdown
