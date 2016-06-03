@@ -1,0 +1,51 @@
+{
+  "name": "GithubRepo",
+  "plural": "GithubRepos",
+  "base": "PersistedModel",
+  "strict": true,
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true
+  },
+  "http": {
+    "path": "/repos/github"
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "id": true
+    },
+    "owner": {
+      "type": "string",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "required": false
+    },
+    "url": {
+      "type": "string",
+      "required": false
+    },
+    "html_url": {
+      "type": "string",
+      "required": false
+    },
+    "created_at": {
+      "type": "date",
+      "required": false
+    },
+    "updated_at": {
+      "type": "date",
+      "required": false
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

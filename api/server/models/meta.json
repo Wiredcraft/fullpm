@@ -2,32 +2,18 @@
   "name": "Meta",
   "plural": "Meta",
   "base": "PersistedModel",
+  "strict": true,
   "idInjection": false,
   "options": {
     "validateUpsert": true
   },
-  "http": {
-    "path": "/meta"
-  },
   "properties": {
-    "_id": {
+    "id": {
       "type": "string",
       "id": true
     },
-    "_rev": {
-      "type": "string",
-      "required": false
-    },
-    "url": {
-      "type": "string",
-      "required": false
-    },
-    "title": {
-      "type": "string",
-      "required": false
-    },
     "column": {
-      "type": "string",
+      "type": "number",
       "required": true
     },
     "ranking": {

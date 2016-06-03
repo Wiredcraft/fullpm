@@ -33,7 +33,9 @@
   "session": {},
   "auth": {},
   "proxy": {
-    "./middleware/proxy": {}
+    "./middleware/dbProxy": {
+      "paths": "${dbProxyRoot}"
+    }
   },
   "parse": {
     "body-parser#json": {

@@ -13,12 +13,16 @@
       "./mixins"
     ]
   },
-  "Meta": {
-    "dataSource": "meta",
+  "GithubRepo": {
+    "dataSource": "githubRepos",
     "public": true
   },
-  "Github": {
-    "dataSource": null,
-    "public": true
+  "Meta": {
+    "dataSource": "meta",
+    "public": false
+  },
+  "Cache": {
+    "dataSource": "cache",
+    "public": false
   }
 }

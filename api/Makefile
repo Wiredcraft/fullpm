@@ -18,6 +18,8 @@ test-coveralls: test-cov
 	@cat ./coverage/lcov.info | $(COVERALLS) --verbose
 .PHONY: lint test test-cov test-coveralls
 
-start: lint
-	@$(ENV) node .
-.PHONY: start
+start-dev: lint
+	@NODE_ENV=development DEBUG=carcass:*,kenhq:* node .
+install-dev: lint
+	@NODE_ENV=development DEBUG=carcass:*,kenhq:* node ./server/install.js
+.PHONY: start-dev install-dev
