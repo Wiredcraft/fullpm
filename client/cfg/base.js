@@ -32,7 +32,7 @@ module.exports = {
       'src',
       'node_modules'
     ],
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['', '.js', '.jsx', '.scss'],
     alias: {
       actions: `${defaultSettings.srcPath}/actions/`,
       components: `${defaultSettings.srcPath}/components/`,

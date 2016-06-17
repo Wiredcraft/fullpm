@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { DropTarget } from 'react-dnd'
 
 import Issue from 'components/Issue'
-import 'styles/column.scss'
+import 'styles/column'
 import { updateIssue } from 'actions/ticketActions'
 
 const targetSpec = {

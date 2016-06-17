@@ -14,7 +14,7 @@ import {
   ISSUE_TYPE_DONE
 } from 'helper/constant'
 import { baseUrl } from 'setting'
-import 'styles/main.scss'
+import 'styles/main'
 
 @connect(mapStateToProps, mapDispatchToProps)
 @DragDropContext(HTML5Backend)

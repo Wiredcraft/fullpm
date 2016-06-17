@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 
-import '../styles/header.scss'
+import '../styles/header'
 
 
 export default class App extends Component {

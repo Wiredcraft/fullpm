@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import { updateIssue } from 'actions/ticketActions'
-import 'styles/Issue.scss'
+import 'styles/Issue'
 
 const source = {
   beginDrag({ id }) {

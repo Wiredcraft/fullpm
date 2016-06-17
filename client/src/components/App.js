@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
-import 'styles/app.scss'
-import 'styles/Issue.scss'
+import 'styles/app'
+import 'styles/Issue'
 import Main from './Main'
 import Header from './Header'
 
