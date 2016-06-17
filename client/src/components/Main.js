@@ -2,6 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import request from 'superagent'
+import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
 
 import Column from 'components/Column'
 import { fetchIssues, clearIssues } from 'actions/ticketActions'
@@ -11,8 +13,7 @@ import {
   ISSUE_TYPE_DOING,
   ISSUE_TYPE_DONE
 } from 'helper/constant'
-import { DragDropContext } from 'react-dnd'
-import HTML5Backend from 'react-dnd-html5-backend'
+import { baseUrl } from 'setting'
 import 'styles/main.scss'
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -51,7 +52,7 @@ export default class AppComponent extends React.Component {
       if (++progress === 100) progress = 0
       progrssBar.style.width=`${progress}%`
     }, 30)
-    const url = `http://localhost:3000/api/repos/github/${userName}/${repoName}`
+    const url = `${baseUrl}/api/repos/github/${userName}/${repoName}`
     request
       .get(url)
       .end((err, res) => {
@@ -60,8 +61,8 @@ export default class AppComponent extends React.Component {
         clearInterval(intervalID)
         if (!err) {
           const response = JSON.parse(res.text).data
-          const cacheDbUrl = `http://localhost:3000${response.cacheDB}`
-          const metaDbUrl = `http://localhost:3000${response.metaDB}`
+          const cacheDbUrl = `${baseUrl}${response.cacheDB}`
+          const metaDbUrl = `${baseUrl}${response.metaDB}`
           this.enterRepo(cacheDbUrl, metaDbUrl, `${userName}/${repoName}`)
         }
       });
