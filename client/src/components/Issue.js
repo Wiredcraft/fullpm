@@ -36,14 +36,14 @@ function collect(connect, monitor) {
 @DragSource('Issue', source, collect)
 export default class Issue extends Component {
   render() {
-    const { name, id, connectDragSource } = this.props
+    const { url, name, id, connectDragSource } = this.props
 
     return connectDragSource(
       <article className='Issue' id={id}>
         <span className='icon'/>
-        <p className='text'>
+        <a className='text' href={url}>
           { name }
-        </p>
+        </a>
       </article>
     )
   }

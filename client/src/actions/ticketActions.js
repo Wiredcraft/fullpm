@@ -1,34 +1,22 @@
 import PouchDB, { metaDb, cacheDb } from 'helper/pouchDb'
-import _ from 'lodash'
-
-import {
-  ISSUE_TYPE_BACKLOG,
-  ISSUE_TYPE_DOING,
-  ISSUE_TYPE_DONE
-} from 'helper/constant'
-
 
 export const CHANGE_TICKETS = 'CHANGE_TICKETS'
 
-const ISSUE_TYPE_DICTIONARY = {
-  1: ISSUE_TYPE_BACKLOG,
-  2: ISSUE_TYPE_DOING,
-  3: ISSUE_TYPE_DONE
-}
 
-function generateTickets(githubTickets, metaTickets) {
+function generateTickets(githubTickets, metaTickets, name) {
   const metaTicketsMap = {}
   metaTickets.forEach(d => {
     metaTicketsMap[d.id] = d
   })
-  return githubTickets.map(d => {
-    d.column = metaTicketsMap[d.id].column
-    d.ranking = metaTicketsMap[d.id].ranking
-    return d
-  })
+  return githubTickets.filter(d => d.url.indexOf(name) !== -1)
+    .map(d => {
+      d.column = metaTicketsMap[d.id].column
+      d.ranking = metaTicketsMap[d.id].ranking
+      return d
+    })
 }
 
-export function fetchIssues(cacheDbUrl, metaDbUrl) {
+export function fetchIssues(cacheDbUrl, metaDbUrl, name) {
   let metaDBSynced = false
   let cacheDBSynced = false
   const changeTickets = (dispatch) => {
@@ -39,24 +27,11 @@ export function fetchIssues(cacheDbUrl, metaDbUrl) {
       const githubTickets = res.rows.map(d => d.doc)
       metaDb.allDocs({include_docs: true}).then(metaRes => {
         const metaTickets = metaRes.rows.map(d => d.doc)
-        const tickets = generateTickets(githubTickets, metaTickets)
+        const tickets = generateTickets(githubTickets, metaTickets, name)
         dispatch({ type: CHANGE_TICKETS, payload: tickets })
       })
     })
   }
-  //
-  // return dispatch => {
-  //   return PouchDB.sync('kenhq_meta', url).then(() => {
-  //     kenhqDb.changes({
-  //       since: 'now',
-  //       live: true
-  //     }).on('change', function () {
-  //       changeTickets(dispatch)
-  //     })
-  //     changeTickets(dispatch)
-  //   })
-  // }
-
 
   return dispatch => {
     PouchDB.sync('kenhq_cache', cacheDbUrl).then(() => {
@@ -66,16 +41,22 @@ export function fetchIssues(cacheDbUrl, metaDbUrl) {
     return PouchDB.sync('kenhq_meta', metaDbUrl).then(() => {
       cacheDBSynced = true
       changeTickets(dispatch)
+      metaDb.changes({
+        since: 'now',
+        live: true
+      }).on('change', function () {
+        changeTickets(dispatch)
+      })
     })
   }
 }
 
 export function updateIssue(issueID, columnID) {
   return () => {
-    const issueType = ISSUE_TYPE_DICTIONARY[columnID]
-    return kenhqDb.get(issueID).then(function (doc) {
+    const issueType = columnID
+    return metaDb.get(issueID).then(function (doc) {
       doc.column = issueType
-      return kenhqDb.put(doc)
+      return metaDb.put(doc)
     })
   }
 }

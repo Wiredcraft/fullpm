@@ -8,13 +8,13 @@
   box-shadow: 0 1px 3px rgba(0,0,0,0.16), 0 1px 2px rgba(0,0,0,0.23);
   transition: min-height 150ms;
   > header {
+    cursor: default;;
     display: block;
     width: 100%;
     background: #dedede;
     font-weight: bold;
     text-align: center;
     padding: 28px 0;
-    cursor: move;
   }
 
   .issueGhost {

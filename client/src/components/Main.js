@@ -19,13 +19,11 @@ import 'styles/main.scss'
 @DragDropContext(HTML5Backend)
 export default class AppComponent extends React.Component {
   componentDidMount() {
-    // const { repos } = this.props
-    // this.enterRepo(repos.first().get('url'))
   }
 
-  enterRepo(cacheDbUrl, metaDbUrl) {
+  enterRepo(cacheDbUrl, metaDbUrl, name) {
     const { fetchIssues, updateRepoSelected } = this.props
-    fetchIssues(cacheDbUrl, metaDbUrl)
+    fetchIssues(cacheDbUrl, metaDbUrl, name)
     updateRepoSelected(true)
   }
 
@@ -48,7 +46,7 @@ export default class AppComponent extends React.Component {
           const response = JSON.parse(res.text).data
           const cacheDbUrl = `http://localhost:3000${response.cacheDB}`
           const metaDbUrl = `http://localhost:3000${response.metaDB}`
-          this.enterRepo(cacheDbUrl, metaDbUrl)
+          this.enterRepo(cacheDbUrl, metaDbUrl, `${userName}/${repoName}`)
         }
       });
   }
@@ -66,14 +64,14 @@ export default class AppComponent extends React.Component {
             placeholder='Name of user or group'
             ref='user'
             type='text'
-            value='graphql'
+            defaultValue='graphql'
           />
           <input
             className='small-6 column'
             placeholder='Name of repositories'
             ref='repo'
             type='text'
-            value='graphiql'
+            defaultValue='graphiql'
           />
           <button
             className='button'
@@ -109,10 +107,21 @@ function mapDispatchToProps (dispatch) {
 }
 
 function parserTickets(tickets) {
+  console.log(tickets);
   return [
-    { id: 1, name: 'Backlog', issues: tickets.filter(d => d.column === ISSUE_TYPE_BACKLOG) },
-    { id: 2, name: 'Doing', issues: tickets.filter(d => d.column === ISSUE_TYPE_DOING) },
-    { id: 3, name: 'Done', issues: tickets.filter(d => d.column === ISSUE_TYPE_DONE) }
+    {
+      id: ISSUE_TYPE_BACKLOG,
+      name: 'Backlog',
+      issues: tickets.filter(d => d.column === ISSUE_TYPE_BACKLOG)
+    }, {
+      id: ISSUE_TYPE_DOING,
+      name: 'Doing',
+      issues: tickets.filter(d => d.column === ISSUE_TYPE_DOING)
+    }, {
+      id: ISSUE_TYPE_DONE,
+      name: 'Done',
+      issues: tickets.filter(d => d.column === ISSUE_TYPE_DONE)
+    }
   ]
 }
 

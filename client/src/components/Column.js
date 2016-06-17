@@ -37,7 +37,13 @@ export default class Column extends Component {
           {
             issues.map((d, i) => {
               return (
-                <Issue key={i} col={this.props.id} id={d._id} name={d.title} />
+                <Issue
+                  key={i}
+                  col={this.props.id}
+                  id={d._id}
+                  name={d.title}
+                  url={d.htmlUrl}
+                />
               )
             })
           }
