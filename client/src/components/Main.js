@@ -136,7 +136,6 @@ function mapDispatchToProps (dispatch) {
 }
 
 function parserTickets(tickets) {
-  console.log(tickets);
   return [
     {
       id: ISSUE_TYPE_BACKLOG,
