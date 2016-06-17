@@ -34,14 +34,30 @@ export default class AppComponent extends React.Component {
   }
 
   enterBoard() {
-    const { repo: {value : repoName}, user: {value : userName} } = this.refs
+    const {
+      progrssArea,
+      progrssBar,
+      repoBtn,
+      repo: {value : repoName},
+      user: {value : userName}
+    } = this.refs
     if (!repoName || !userName) {
       alert('Please enter some text in input box')
     }
+    let progress = 0
+    repoBtn.disabled = true
+    progrssArea.style.display = 'block'
+    const intervalID = setInterval(() => {
+      if (++progress === 100) progress = 0
+      progrssBar.style.width=`${progress}%`
+    }, 30)
     const url = `http://localhost:3000/api/repos/github/${userName}/${repoName}`
     request
       .get(url)
       .end((err, res) => {
+        repoBtn.disabled = false
+        progrssArea.style.display = 'none'
+        clearInterval(intervalID)
         if (!err) {
           const response = JSON.parse(res.text).data
           const cacheDbUrl = `http://localhost:3000${response.cacheDB}`
@@ -76,9 +92,21 @@ export default class AppComponent extends React.Component {
           <button
             className='button'
             onClick={::this.enterBoard}
+            ref='repoBtn'
           >
             Go to board
           </button>
+          <div
+            className="success progress"
+            ref='progrssArea'
+            style={{ display: 'none' }}
+          >
+            <div
+              className="progress-meter"
+              ref='progrssBar'
+              style={{ width: '0%' }}
+            />
+          </div>
         </div>
         <div className='boards small-centered column'>
           <div>
