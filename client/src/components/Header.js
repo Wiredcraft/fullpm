@@ -34,8 +34,14 @@ export default class App extends Component {
       <div className='Header row'>
         <div className="small-11 small-centered column">
           <span>Ken</span>
-          <button className="dropdown button" ref='button'>Default</button>
-          <ul className='drop-items' ref='dropdown'>
+          <button
+            className="dropdown button"
+            ref='button'
+            style={{ display: 'none' }}
+          >
+            Default
+          </button>
+          <ul className='drop-items' ref='dropdown' style={{ display: 'none' }}>
             <li>Default</li>
           </ul>
         </div>

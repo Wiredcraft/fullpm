@@ -1,6 +1,7 @@
 import PouchDB from 'pouchdb'
 
 
-export const kenhqDb = new PouchDB('kenhq_meta')
+export const metaDb = new PouchDB('kenhq_meta')
+export const cacheDb = new PouchDB('kenhq_cache')
 
 export default PouchDB
