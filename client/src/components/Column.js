@@ -7,6 +7,7 @@ import Issue from 'components/Issue'
 import 'styles/column'
 import { updateIssue } from 'actions/ticketActions'
 
+
 const targetSpec = {
   drop({ id }) {
     return { id }

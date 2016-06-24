@@ -8,18 +8,16 @@ import HTML5Backend from 'react-dnd-html5-backend'
 import Column from 'components/Column'
 import { fetchIssues, clearIssues } from 'actions/ticketActions'
 import { updateRepoSelected } from 'actions/repoActions'
-import {
-  ISSUE_TYPE_BACKLOG,
-  ISSUE_TYPE_DOING,
-  ISSUE_TYPE_DONE
-} from 'helper/constant'
 import { baseUrl } from 'setting'
 import 'styles/main'
+import { parserTickets } from 'helpers/tickets'
+
 
 @connect(mapStateToProps, mapDispatchToProps)
 @DragDropContext(HTML5Backend)
 export default class AppComponent extends React.Component {
   componentDidMount() {
+    //TODO: some prefetch here
   }
 
   enterRepo(cacheDbUrl, metaDbUrl, name) {
@@ -115,7 +113,12 @@ export default class AppComponent extends React.Component {
             {
               sortedArr.map((d, i) => {
                 return (
-                  <Column key={i} id={d.id} title={d.name} issues={d.issues} />
+                  <Column
+                    key={i}
+                    id={d.id}
+                    issues={d.issues}
+                    title={d.name}
+                  />
                 )
               })
             }
@@ -133,24 +136,6 @@ function mapDispatchToProps (dispatch) {
     fetchIssues,
     updateRepoSelected
   }, dispatch)
-}
-
-function parserTickets(tickets) {
-  return [
-    {
-      id: ISSUE_TYPE_BACKLOG,
-      name: 'Backlog',
-      issues: tickets.filter(d => d.column === ISSUE_TYPE_BACKLOG)
-    }, {
-      id: ISSUE_TYPE_DOING,
-      name: 'Doing',
-      issues: tickets.filter(d => d.column === ISSUE_TYPE_DOING)
-    }, {
-      id: ISSUE_TYPE_DONE,
-      name: 'Done',
-      issues: tickets.filter(d => d.column === ISSUE_TYPE_DONE)
-    }
-  ]
 }
 
 function mapStateToProps(state) {

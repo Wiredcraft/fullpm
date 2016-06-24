@@ -1,7 +1,7 @@
-import PouchDB, { metaDb, cacheDb } from 'helper/pouchDb'
+import PouchDB, { metaDb, cacheDb } from 'helpers/pouchDb'
+
 
 export const CHANGE_TICKETS = 'CHANGE_TICKETS'
-
 
 function generateTickets(githubTickets, metaTickets, name) {
   const metaTicketsMap = {}

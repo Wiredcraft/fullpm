@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { updateIssue } from 'actions/ticketActions'
 import 'styles/Issue'
 
+
 const source = {
   beginDrag({ id }) {
     return {
@@ -45,9 +46,6 @@ export default class Issue extends Component {
         </a>
       </article>
     )
-  }
-
-  handleClick () {
   }
 }
 
