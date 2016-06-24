@@ -16,8 +16,25 @@ import { parserTickets } from 'helpers/tickets'
 @connect(mapStateToProps, mapDispatchToProps)
 @DragDropContext(HTML5Backend)
 export default class AppComponent extends React.Component {
+  constructor() {
+    super()
+    this.state = { orgName: undefined, repoName: undefined }
+  }
+
+  componentWillMount() {
+    const { pathname } = location
+    if (pathname.indexOf('boards') !== -1) {
+      const nameArr = location.pathname.split('/')
+      if (nameArr[2] && nameArr[3]) {
+        this.setState({ orgName: nameArr[2], repoName: nameArr[3] })
+      }
+    }
+  }
+
   componentDidMount() {
-    //TODO: some prefetch here
+    if (this.state.orgName) {
+      document.querySelector('#submitBtn').click()
+    }
   }
 
   enterRepo(cacheDbUrl, metaDbUrl, name) {
@@ -67,9 +84,8 @@ export default class AppComponent extends React.Component {
   }
 
   render() {
-    const {
-      sortedArr
-    } = this.props
+    const { sortedArr } = this.props
+    const { orgName, repoName } = this.state
 
     return (
       <div className='Main row'>
@@ -79,21 +95,22 @@ export default class AppComponent extends React.Component {
             placeholder='Name of user or group'
             ref='user'
             type='text'
-            defaultValue='graphql'
+            defaultValue={ orgName || 'graphql' }
           />
           <input
             className='small-6 column'
             placeholder='Name of repositories'
             ref='repo'
             type='text'
-            defaultValue='graphiql'
+            defaultValue={ repoName || 'graphiql' }
           />
           <button
             className='button'
+            id='submitBtn'
             onClick={::this.enterBoard}
             ref='repoBtn'
           >
-            Go to board
+            Change board
           </button>
           <div
             className="success progress"
