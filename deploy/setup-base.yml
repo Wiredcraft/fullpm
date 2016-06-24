@@ -1,0 +1,6 @@
+---
+# Base setup of the servers
+- hosts: all
+  roles:
+    # Base setup
+    - role: wcl-common
