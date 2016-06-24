@@ -1,2 +1,3 @@
 ---
 - include: setup-base.yml
+- include: setup-redis.yml
