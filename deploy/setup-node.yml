@@ -1,6 +1,6 @@
 ---
 # Load all hosts for the inventory
-- hosts: node
+- hosts: nodejs
   tasks:
     - name: ping
       ping: {}
