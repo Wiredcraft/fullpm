@@ -20,7 +20,7 @@
   version: master
 
 - src: https://github.com/wiredcraft-ops/ansible-redis.git
-  name: ansible-redis
+  name: wcl-redis
   version: master
 
 - src: https://github.com/wiredcraft-ops/role-wcl-couchbase.git
