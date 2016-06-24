@@ -1,0 +1,15 @@
+---
+# Load all hosts for the inventory
+- hosts: node
+  tasks:
+    - name: ping
+      ping: {}
+
+- hosts: nodejs
+  roles:
+    - role: wcl-nodejs
+      nodejs_npm_configuration:
+        production: true
+        registry: https://registry.npm.taobao.org
+        prefix: /usr
+    - role: wcl-strongloop
