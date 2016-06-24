@@ -21,11 +21,12 @@ module.exports = {
   },
   devServer: {
     contentBase: './src/',
-    historyApiFallback: true,
     hot: true,
-    port: defaultSettings.port,
     publicPath: defaultSettings.publicPath,
-    noInfo: false
+    noInfo: true,
+    quiet: true,
+    inline: true,
+    stats: { colors: true }
   },
   resolve: {
     modulesDirectories: [
