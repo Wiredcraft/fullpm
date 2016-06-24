@@ -1,0 +1,28 @@
+---
+- src: https://github.com/wiredcraft-ops/role-wcl-common.git
+  name: wcl-common
+  version: master
+
+- src: https://github.com/wiredcraft-ops/role-wcl-nodejs.git
+  name: wcl-nodejs
+  version: master
+
+- src: https://github.com/wiredcraft-ops/role-wcl-strongloop.git
+  name: wcl-strongloop
+  version: master
+
+- src: https://github.com/wiredcraft-ops/role-wcl-nginx.git
+  name: wcl-nginx
+  version: master
+
+- src: https://github.com/wiredcraft-ops/role-wcl-haproxy.git
+  name: wcl-haproxy
+  version: master
+
+- src: https://github.com/wiredcraft-ops/ansible-redis.git
+  name: ansible-redis
+  version: master
+
+- src: https://github.com/wiredcraft-ops/role-wcl-couchbase.git
+  name: wcl-couchbase
+  version: master
