@@ -98,8 +98,7 @@ module.exports = function(GithubRepo) {
     });
   };
 
-  GithubRepo.prototype.syncIssues = function(Meta, Cache) {
-    var github = new GithubAPI({});
+  GithubRepo.prototype.syncIssues = function(github, Meta, Cache) {
     var issues = Promise.promisifyAll(github.getIssues(this.owner, this.name));
     return issues.listIssuesAsync({}).map(function(issue) {
       // Save meta.
@@ -142,9 +141,14 @@ module.exports = function(GithubRepo) {
   /**
    * Repo is auto-created as long as the requesting user has the view access.
    */
-  GithubRepo.findByFullname = function(orgName, repoName) {
+  GithubRepo.findByFullname = function(req, orgName, repoName) {
     debug('finding repo %s/%s', orgName, repoName);
-    var github = new GithubAPI({});
+    var options = {};
+    if (req.user != null && req.user.accessToken != null) {
+      options.token = req.user.accessToken;
+    }
+    debug('options', options);
+    var github = new GithubAPI(options);
     // var org = Promise.promisifyAll(github.getOrganization(orgName));
     var repo = Promise.promisifyAll(github.getRepo(orgName, repoName));
 
@@ -154,7 +158,7 @@ module.exports = function(GithubRepo) {
       .then(this.setAttributes)
       .then(this.replaceOrCreate)
       .then(function(repo) {
-        return Promise.join(repo.ensureMeta(), repo.ensureCache(), repo.syncIssues.bind(repo));
+        return Promise.join(github, repo.ensureMeta(), repo.ensureCache(), repo.syncIssues.bind(repo));
       })
       .catch(utils.reject);
   };
@@ -173,6 +177,10 @@ module.exports = function(GithubRepo) {
       type: 'object'
     },
     accepts: [{
+      arg: 'req',
+      type: 'object',
+      http: { source: 'req' }
+    }, {
       arg: 'orgName',
       type: 'string',
       required: true

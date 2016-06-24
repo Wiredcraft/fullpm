@@ -10,9 +10,7 @@ var lib = require('../lib');
 var app = lib.app;
 // var utils = lib.utils;
 
-module.exports = dbProxy;
-
-function dbProxy(options) {
+module.exports = function(options) {
 
   // Router.
   var router = app.loopback.Router();
@@ -52,4 +50,4 @@ function dbProxy(options) {
   });
 
   return router;
-}
+};

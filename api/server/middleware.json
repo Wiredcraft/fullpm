@@ -31,7 +31,11 @@
     }
   },
   "session": {},
-  "auth": {},
+  "auth": {
+    "./middleware/auth": {
+      "paths": "${authApiRoot}"
+    }
+  },
   "proxy": {
     "./middleware/dbProxy": {
       "paths": "${dbProxyRoot}"
