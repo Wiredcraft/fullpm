@@ -1,7 +1,6 @@
 var lib = require('./lib');
 
 var app = module.exports = lib.app;
-const passport = require('passport');
 
 app.start = function() {
   // start the web server
@@ -28,8 +27,3 @@ app.boot(function(err) {
     app.start();
   }
 });
-
-// Bootstrap
-require('./config/passport')(app, passport);
-require('./config/loopback')(app, passport);
-require('./config/routes')(app, passport);
