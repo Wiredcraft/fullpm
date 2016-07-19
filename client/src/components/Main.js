@@ -22,13 +22,7 @@ export default class AppComponent extends React.Component {
   }
 
   componentWillMount() {
-    const { pathname } = location
-    if (pathname.indexOf('boards') !== -1) {
-      const nameArr = location.pathname.split('/')
-      if (nameArr[2] && nameArr[3]) {
-        this.setState({ orgName: nameArr[2], repoName: nameArr[3] })
-      }
-    }
+    this.setState({ ...this.props.params })
   }
 
   componentDidMount() {

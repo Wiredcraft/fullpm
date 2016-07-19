@@ -11,6 +11,7 @@ import NotFound from './NotFound'
 class Container extends Component {
   render() {
     const { children } = this.props
+
     return (
       <div>
         <Header />
