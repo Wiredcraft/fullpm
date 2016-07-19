@@ -37,7 +37,8 @@ module.exports = function(GithubRepo) {
         return Object.assign(data, {
           // ID is based on the names.
           id: fullName,
-          owner: owner
+          owner: owner,
+          cachedAt: moment().format()
         });
       });
   };
@@ -100,6 +101,7 @@ module.exports = function(GithubRepo) {
 
   GithubRepo.prototype.syncIssues = function(github, Meta, Cache) {
     var issues = Promise.promisifyAll(github.getIssues(this.owner, this.name));
+    // TODO: get closed issues.
     return issues.listIssuesAsync({}).map(function(issue) {
       // Save meta.
       return Meta.findById(issue.id).then(function(meta) {
@@ -117,6 +119,7 @@ module.exports = function(GithubRepo) {
       // Save cache.
       return Cache.findById(issue.id).then(function(meta) {
         if (meta) {
+          // TODO: may update at some point.
           return issue;
         }
         debug('saving new cache');
@@ -147,18 +150,36 @@ module.exports = function(GithubRepo) {
     if (req.user != null && req.user.accessToken != null) {
       options.token = req.user.accessToken;
     }
-    debug('options', options);
     var github = new GithubAPI(options);
-    // var org = Promise.promisifyAll(github.getOrganization(orgName));
-    var repo = Promise.promisifyAll(github.getRepo(orgName, repoName));
 
-    return repo.getDetailsAsync()
+    function syncIssues(repo) {
+      return Promise.join(github, repo.ensureMeta(), repo.ensureCache(), repo.syncIssues.bind(repo));
+    }
+
+    var repoAPI = Promise.promisifyAll(github.getRepo(orgName, repoName));
+    return repoAPI.getDetailsAsync()
       .catchReturn(utils.reject(404)) // TODO: more details?
-      .bind(this)
-      .then(this.setAttributes)
-      .then(this.replaceOrCreate)
-      .then(function(repo) {
-        return Promise.join(github, repo.ensureMeta(), repo.ensureCache(), repo.syncIssues.bind(repo));
+      .then(GithubRepo.setAttributes)
+      .then(function(data) {
+        return GithubRepo.findById(data.id).then(function(repo) {
+          if (repo == null) {
+            // Create.
+            debug('creating:', data.id);
+            var promise = GithubRepo.create(data);
+            // Sync on the side.
+            promise.then(syncIssues);
+          } else if (repo.cachedAt == null || moment().diff(moment(repo.cachedAt)) > 10000) {
+            // Replace.
+            debug('updating:', data.id);
+            var promise = GithubRepo.replaceById(data.id, data);
+            // Sync on the side.
+            promise.then(syncIssues);
+          } else {
+            debug('skipping:', data.id);
+            var promise = repo;
+          }
+          return promise;
+        });
       })
       .catch(utils.reject);
   };

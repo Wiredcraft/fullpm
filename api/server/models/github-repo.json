@@ -42,6 +42,10 @@
     "updated_at": {
       "type": "date",
       "required": false
+    },
+    "cachedAt": {
+      "type": "date",
+      "required": true
     }
   },
   "validations": [],
