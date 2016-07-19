@@ -9,6 +9,7 @@ import Column from 'components/Column'
 import { fetchIssues, clearIssues } from 'actions/ticketActions'
 import { baseUrl } from 'setting'
 import 'styles/main'
+import ProgressBar from 'components/ProgressBar'
 import { parserTickets } from 'helpers/tickets'
 
 
@@ -17,7 +18,7 @@ import { parserTickets } from 'helpers/tickets'
 export default class AppComponent extends React.Component {
   constructor() {
     super()
-    this.state = { orgName: undefined, repoName: undefined }
+    this.state = { orgName: undefined, repoName: undefined, onLoading: false }
   }
 
   componentWillMount() {
@@ -33,8 +34,6 @@ export default class AppComponent extends React.Component {
 
   enterBoard() {
     const {
-      progrssArea,
-      progrssBar,
       repoBtn,
       repo: {value : repoName},
       user: {value : userName}
@@ -48,49 +47,43 @@ export default class AppComponent extends React.Component {
       alert('Please provide name of the user or group')
     }
 
-    let progress = 0
+    this.setState({ onLoading: true })
+
     repoBtn.disabled = true
-    progrssArea.style.display = 'block'
-    const intervalID = setInterval(() => {
-      if (++progress === 100) progress = 0
-      progrssBar.style.width=`${progress}%`
-    }, 30)
     const url = `${baseUrl}/api/repos/github/${userName}/${repoName}`
     request
       .get(url)
       .end((err, res) => {
         repoBtn.disabled = false
-        progrssArea.style.display = 'none'
-        clearInterval(intervalID)
         if (!err) {
           const response = JSON.parse(res.text).data
           const cacheDbUrl = `${baseUrl}${response.cacheDB}`
           const metaDbUrl = `${baseUrl}${response.metaDB}`
-          fetchIssues(cacheDbUrl, metaDbUrl, `${userName}/${repoName}`)
+          fetchIssues(cacheDbUrl, metaDbUrl, `${userName}/${repoName}`, () => this.setState({ onLoading: false }))
         }
       });
   }
 
   render() {
     const { sortedArr } = this.props
-    const { orgName, repoName } = this.state
+    const { orgName, repoName, onLoading } = this.state
 
     return (
       <div className='Main row'>
         <div className='small-8 small-centered column input-area'>
           <input
             className='small-6 column'
+            defaultValue={ orgName || 'graphql' }
             placeholder='Name of user or group'
             ref='user'
             type='text'
-            defaultValue={ orgName || 'graphql' }
           />
           <input
             className='small-6 column'
+            defaultValue={ repoName || 'graphiql' }
             placeholder='Name of repositories'
             ref='repo'
             type='text'
-            defaultValue={ repoName || 'graphiql' }
           />
           <button
             className='button'
@@ -99,34 +92,22 @@ export default class AppComponent extends React.Component {
           >
             Change board
           </button>
-          <div
-            className="success progress"
-            ref='progrssArea'
-            style={{ display: 'none' }}
-          >
-            <div
-              className="progress-meter"
-              ref='progrssBar'
-              style={{ width: '0%' }}
-            />
-          </div>
+          <ProgressBar hide={!onLoading} />
         </div>
         <div className='boards small-centered column'>
-          <div>
-            <div ref='list'>
-            {
-              sortedArr.map((d, i) => {
-                return (
-                  <Column
-                    key={i}
-                    id={d.id}
-                    issues={d.issues}
-                    title={d.name}
-                  />
-                )
-              })
-            }
-            </div>
+          <div ref='list'>
+          {
+            sortedArr.map((d, i) => {
+              return (
+                <Column
+                  key={i}
+                  id={d.id}
+                  issues={d.issues}
+                  title={d.name}
+                />
+              )
+            })
+          }
           </div>
         </div>
       </div>

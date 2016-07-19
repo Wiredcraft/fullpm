@@ -17,7 +17,7 @@ function generateTickets(githubTickets, metaTickets, name) {
     })
 }
 
-export function fetchIssues(cacheDbUrl, metaDbUrl, name) {
+export function fetchIssues(cacheDbUrl, metaDbUrl, name, next) {
   let metaDBSynced = false
   let cacheDBSynced = false
   const changeTickets = (dispatch) => {
@@ -31,6 +31,9 @@ export function fetchIssues(cacheDbUrl, metaDbUrl, name) {
         const tickets = generateTickets(githubTickets, metaTickets, name)
         dispatch({ type: CHANGE_TICKETS, payload: tickets })
         dispatch(updateRepoSelected(true))
+        if (next) {
+          next()
+        }
       })
     })
   }

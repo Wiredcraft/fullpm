@@ -40,7 +40,7 @@ export default class Issue extends Component {
 
     return connectDragSource(
       <article className='Issue' id={id}>
-        <span className='icon'/>
+        <span className='icon' />
         <a className='text' href={url}>
           { name }
         </a>
