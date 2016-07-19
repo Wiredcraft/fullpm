@@ -1,13 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import request from 'superagent'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
 import Column from 'components/Column'
-import { fetchIssues, clearIssues } from 'actions/ticketActions'
-import { baseUrl } from 'setting'
+import { fetchIssues, clearIssues, fetchRepo } from 'actions/ticketActions'
 import 'styles/main'
 import ProgressBar from 'components/ProgressBar'
 import { parserTickets } from 'helpers/tickets'
@@ -28,40 +26,31 @@ export default class AppComponent extends React.Component {
   componentDidMount() {
     const { orgName, repoName } = this.state
     if (orgName && repoName) {
-      this.fetchRepo()
+      this.changeBoard()
     }
   }
 
-  fetchRepo() {
+  changeBoard() {
     const {
       repoBtn,
       repo: {value : repoName},
       user: {value : userName}
     } = this.refs
-    const { fetchIssues } = this.props
+    const { fetchRepo } = this.props
 
     if (!repoName) {
       alert('Please provide name of the repository')
-    }
-    if (!userName) {
+    } else if (!userName) {
       alert('Please provide name of the user or group')
     }
 
     this.setState({ onLoading: true })
-
     repoBtn.disabled = true
-    const url = `${baseUrl}/api/repos/github/${userName}/${repoName}`
-    request
-      .get(url)
-      .end((err, res) => {
-        repoBtn.disabled = false
-        if (!err) {
-          const response = JSON.parse(res.text).data
-          const cacheDbUrl = `${baseUrl}${response.cacheDB}`
-          const metaDbUrl = `${baseUrl}${response.metaDB}`
-          fetchIssues(cacheDbUrl, metaDbUrl, `${userName}/${repoName}`, () => this.setState({ onLoading: false }))
-        }
-      });
+
+    fetchRepo(userName, repoName, () => {
+      this.setState({ onLoading: false })
+      repoBtn.disabled = false
+    })
   }
 
   render() {
@@ -87,7 +76,7 @@ export default class AppComponent extends React.Component {
           />
           <button
             className='button'
-            onClick={::this.fetchRepo}
+            onClick={::this.changeBoard}
             ref='repoBtn'
           >
             Change board
@@ -116,7 +105,8 @@ export default class AppComponent extends React.Component {
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
     clearIssues,
-    fetchIssues
+    fetchIssues,
+    fetchRepo
   }, dispatch)
 }
 
