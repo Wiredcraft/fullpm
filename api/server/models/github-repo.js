@@ -1,29 +1,29 @@
 'use strict';
 
-var debug = require('debug')('kenhq:model:repo');
+const debug = require('debug')('kenhq:model:repo');
 
-var util = require('util');
-var Joi = require('joi');
-var moment = require('moment');
-var Promise = require('bluebird');
-var GithubAPI = require('github-api');
+const util = require('util');
+const Joi = require('joi');
+const moment = require('moment');
+const Promise = require('bluebird');
+const GithubAPI = require('github-api');
 
-var lib = require('../lib');
-var app = lib.app;
-var utils = lib.utils;
+const lib = require('../lib');
+const app = lib.app;
+const utils = lib.utils;
 
 // The repo object from Github.
-var schemaRepo = Joi.object({
+const schemaRepo = Joi.object({
   owner: Joi.object({
     login: Joi.string().trim().lowercase()
   }),
   full_name: Joi.string().trim().lowercase()
 }).strict(false);
 
-var namePattern = '%s/github/%s';
+const namePattern = '%s/github/%s';
 
-var defaultColumn = 0;
-var defaultRanking = 0;
+const defaultColumn = 0;
+const defaultRanking = 0;
 
 module.exports = function(GithubRepo) {
 
@@ -32,15 +32,14 @@ module.exports = function(GithubRepo) {
   GithubRepo.getOwnerName = utils.valueObtainer('getOwnerName', schemaRepo, 'owner.login');
 
   GithubRepo.setAttributes = function(data) {
-    return Promise.join(GithubRepo.getFullName(data), GithubRepo.getOwnerName(data),
-      function(fullName, owner) {
-        return Object.assign(data, {
-          // ID is based on the names.
-          id: fullName,
-          owner: owner,
-          cachedAt: moment().format()
-        });
+    return Promise.join(GithubRepo.getFullName(data), GithubRepo.getOwnerName(data), (fullName, owner) => {
+      return Object.assign(data, {
+        // ID is based on the names.
+        id: fullName,
+        owner: owner,
+        cachedAt: moment().format()
       });
+    });
   };
 
   /**
@@ -48,63 +47,59 @@ module.exports = function(GithubRepo) {
    */
 
   GithubRepo.prototype.ensureDataSource = function(BaseModel) {
-    var settings = BaseModel.getDataSource().settings;
+    const settings = BaseModel.getDataSource().settings;
     // We use DB name as the DS name so it's easier to be matched.
-    var name = util.format(namePattern, settings.database, this.getId());
-    var dataSource = app.dataSources[name];
-    if (dataSource != null) {
-      return Promise.resolve(dataSource);
+    const name = util.format(namePattern, settings.database, this.getId());
+    if (app.dataSources[name] != null) {
+      return Promise.resolve(app.dataSources[name]);
     }
-    dataSource = app.dataSource(name, Object.assign({}, settings, {
+    app.dataSources[name] = app.dataSource(name, Object.assign({}, settings, {
       name: name,
       database: name
     }));
-    return Promise.resolve(dataSource);
+    return Promise.resolve(app.dataSources[name]);
   };
 
   GithubRepo.prototype.ensureChildModel = function(BaseModel) {
-    var name = util.format(namePattern, BaseModel.modelName, this.getId());
-    var ChildModel = app.models[name];
-    if (ChildModel != null) {
-      return Promise.resolve(ChildModel);
+    const name = util.format(namePattern, BaseModel.modelName, this.getId());
+    if (app.models[name] != null) {
+      return Promise.resolve(app.models[name]);
     }
-    return this.ensureDataSource(BaseModel).then(function(dataSource) {
-      ChildModel = BaseModel.extend(name);
-      ChildModel = app.model(ChildModel, { dataSource: dataSource.settings.name });
-      return Promise.resolve(dataSource.autoupdate()).return(ChildModel);
+    return this.ensureDataSource(BaseModel).then((dataSource) => {
+      const ChildModel = BaseModel.extend(name);
+      app.models[name] = app.model(ChildModel, { dataSource: dataSource.settings.name });
+      return Promise.resolve(dataSource.autoupdate()).return(app.models[name]);
     });
   };
 
   GithubRepo.prototype.ensureMeta = function() {
-    var repo = this;
-    return this.ensureChildModel(app.models.Meta).then(function(Model) {
+    return this.ensureChildModel(app.models.Meta).then((Model) => {
       // Using DB URL directly for now.
       // TODO: generate routers dynamically.
-      var dataSource = Model.getDataSource();
-      return dataSource.connector.getDbUrl().then(function(dbUrl) {
-        repo.metaDB = dbUrl.replace(dataSource.settings.url, app.get('dbProxyRoot'));
+      const dataSource = Model.getDataSource();
+      return dataSource.connector.getDbUrl().then((dbUrl) => {
+        this.metaDB = dbUrl.replace(dataSource.settings.url, app.get('dbProxyRoot'));
         return Model;
       });
     });
   };
 
   GithubRepo.prototype.ensureCache = function() {
-    var repo = this;
-    return this.ensureChildModel(app.models.Cache).then(function(Model) {
-      var dataSource = Model.getDataSource();
-      return dataSource.connector.getDbUrl().then(function(dbUrl) {
-        repo.cacheDB = dbUrl.replace(dataSource.settings.url, app.get('dbProxyRoot'));
+    return this.ensureChildModel(app.models.Cache).then((Model) => {
+      const dataSource = Model.getDataSource();
+      return dataSource.connector.getDbUrl().then((dbUrl) => {
+        this.cacheDB = dbUrl.replace(dataSource.settings.url, app.get('dbProxyRoot'));
         return Model;
       });
     });
   };
 
   GithubRepo.prototype.syncIssues = function(github, Meta, Cache) {
-    var issues = Promise.promisifyAll(github.getIssues(this.owner, this.name));
+    const issues = Promise.promisifyAll(github.getIssues(this.owner, this.name));
     // TODO: get closed issues.
-    return issues.listIssuesAsync({}).map(function(issue) {
+    return issues.listIssuesAsync({}).map((issue) => {
       // Save meta.
-      return Meta.findById(issue.id).then(function(meta) {
+      return Meta.findById(issue.id).then((meta) => {
         if (meta) {
           return issue;
         }
@@ -115,9 +110,9 @@ module.exports = function(GithubRepo) {
           ranking: defaultRanking
         })).return(issue);
       });
-    }).map(function(issue) {
+    }).map((issue) => {
       // Save cache.
-      return Cache.findById(issue.id).then(function(meta) {
+      return Cache.findById(issue.id).then((meta) => {
         if (meta) {
           // TODO: may update at some point.
           return issue;
@@ -146,37 +141,43 @@ module.exports = function(GithubRepo) {
    */
   GithubRepo.findByFullname = function(req, orgName, repoName) {
     debug('finding repo %s/%s', orgName, repoName);
-    var options = {};
+    let options = {};
     if (req.user != null && req.user.accessToken != null) {
       options.token = req.user.accessToken;
     }
-    var github = new GithubAPI(options);
+    const github = new GithubAPI(options);
 
+    // TODO: ugly.
     function syncIssues(repo) {
       return Promise.join(github, repo.ensureMeta(), repo.ensureCache(), repo.syncIssues.bind(repo));
     }
 
-    var repoAPI = Promise.promisifyAll(github.getRepo(orgName, repoName));
+    const repoAPI = Promise.promisifyAll(github.getRepo(orgName, repoName));
     return repoAPI.getDetailsAsync()
       .catchReturn(utils.reject(404)) // TODO: more details?
       .then(GithubRepo.setAttributes)
-      .then(function(data) {
-        return GithubRepo.findById(data.id).then(function(repo) {
+      .then((data) => {
+        return GithubRepo.findById(data.id).then((repo) => {
+          let promise;
           if (repo == null) {
             // Create.
             debug('creating:', data.id);
-            var promise = GithubRepo.create(data);
+            promise = GithubRepo.create(data).then((repo) => {
+              return Promise.join(repo.ensureMeta(), repo.ensureCache(), () => repo);
+            });
             // Sync on the side.
             promise.then(syncIssues);
           } else if (repo.cachedAt == null || moment().diff(moment(repo.cachedAt)) > 10000) {
             // Replace.
             debug('updating:', data.id);
-            var promise = GithubRepo.replaceById(data.id, data);
+            promise = GithubRepo.replaceById(data.id, data).then((repo) => {
+              return Promise.join(repo.ensureMeta(), repo.ensureCache(), () => repo);
+            });
             // Sync on the side.
             promise.then(syncIssues);
           } else {
             debug('skipping:', data.id);
-            var promise = repo;
+            promise = repo;
           }
           return promise;
         });
