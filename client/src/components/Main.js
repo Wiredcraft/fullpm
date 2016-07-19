@@ -7,7 +7,6 @@ import HTML5Backend from 'react-dnd-html5-backend'
 
 import Column from 'components/Column'
 import { fetchIssues, clearIssues } from 'actions/ticketActions'
-import { updateRepoSelected } from 'actions/repoActions'
 import { baseUrl } from 'setting'
 import 'styles/main'
 import { parserTickets } from 'helpers/tickets'
@@ -26,21 +25,10 @@ export default class AppComponent extends React.Component {
   }
 
   componentDidMount() {
-    if (this.state.orgName) {
-      document.querySelector('#submitBtn').click()
+    const { orgName, repoName } = this.state
+    if (orgName && repoName) {
+      this.enterBoard()
     }
-  }
-
-  enterRepo(cacheDbUrl, metaDbUrl, name) {
-    const { fetchIssues, updateRepoSelected } = this.props
-    fetchIssues(cacheDbUrl, metaDbUrl, name)
-    updateRepoSelected(true)
-  }
-
-  exitRepo() {
-    const { clearIssues, updateRepoSelected } = this.props
-    updateRepoSelected(false)
-    clearIssues()
   }
 
   enterBoard() {
@@ -51,9 +39,15 @@ export default class AppComponent extends React.Component {
       repo: {value : repoName},
       user: {value : userName}
     } = this.refs
-    if (!repoName || !userName) {
-      alert('Please enter some text in input box')
+    const { fetchIssues } = this.props
+
+    if (!repoName) {
+      alert('Please provide name of the repository')
     }
+    if (!userName) {
+      alert('Please provide name of the user or group')
+    }
+
     let progress = 0
     repoBtn.disabled = true
     progrssArea.style.display = 'block'
@@ -72,7 +66,7 @@ export default class AppComponent extends React.Component {
           const response = JSON.parse(res.text).data
           const cacheDbUrl = `${baseUrl}${response.cacheDB}`
           const metaDbUrl = `${baseUrl}${response.metaDB}`
-          this.enterRepo(cacheDbUrl, metaDbUrl, `${userName}/${repoName}`)
+          fetchIssues(cacheDbUrl, metaDbUrl, `${userName}/${repoName}`)
         }
       });
   }
@@ -100,7 +94,6 @@ export default class AppComponent extends React.Component {
           />
           <button
             className='button'
-            id='submitBtn'
             onClick={::this.enterBoard}
             ref='repoBtn'
           >
@@ -144,8 +137,7 @@ export default class AppComponent extends React.Component {
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
     clearIssues,
-    fetchIssues,
-    updateRepoSelected
+    fetchIssues
   }, dispatch)
 }
 

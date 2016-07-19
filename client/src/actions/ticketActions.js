@@ -1,5 +1,6 @@
 import PouchDB, { metaDb, cacheDb } from 'helpers/pouchDb'
 
+import { updateRepoSelected } from 'actions/repoActions'
 
 export const CHANGE_TICKETS = 'CHANGE_TICKETS'
 
@@ -29,6 +30,7 @@ export function fetchIssues(cacheDbUrl, metaDbUrl, name) {
         const metaTickets = metaRes.rows.map(d => d.doc)
         const tickets = generateTickets(githubTickets, metaTickets, name)
         dispatch({ type: CHANGE_TICKETS, payload: tickets })
+        dispatch(updateRepoSelected(true))
       })
     })
   }
@@ -52,17 +54,19 @@ export function fetchIssues(cacheDbUrl, metaDbUrl, name) {
 }
 
 export function updateIssue(issueID, columnID) {
-  return () => {
+  return dispatch => {
     const issueType = columnID
     return metaDb.get(issueID).then(function (doc) {
       doc.column = issueType
+      dispatch(updateRepoSelected(true))
       return metaDb.put(doc)
     })
   }
 }
 
 export function clearIssues() {
-  return (dispatch) => {
-    dispatch({ type: CHANGE_TICKETS, payload: [] })
+  return dispatch => {
+    dispatch(updateRepoSelected(false))
+    return dispatch({ type: CHANGE_TICKETS, payload: [] })
   }
 }
