@@ -28,11 +28,11 @@ export default class AppComponent extends React.Component {
   componentDidMount() {
     const { orgName, repoName } = this.state
     if (orgName && repoName) {
-      this.enterBoard()
+      this.fetchRepo()
     }
   }
 
-  enterBoard() {
+  fetchRepo() {
     const {
       repoBtn,
       repo: {value : repoName},
@@ -87,7 +87,7 @@ export default class AppComponent extends React.Component {
           />
           <button
             className='button'
-            onClick={::this.enterBoard}
+            onClick={::this.fetchRepo}
             ref='repoBtn'
           >
             Change board
@@ -97,16 +97,14 @@ export default class AppComponent extends React.Component {
         <div className='boards small-centered column'>
           <div ref='list'>
           {
-            sortedArr.map((d, i) => {
-              return (
-                <Column
-                  key={i}
-                  id={d.id}
-                  issues={d.issues}
-                  title={d.name}
-                />
-              )
-            })
+            sortedArr.map((d, i) => (
+              <Column
+                key={i}
+                id={d.id}
+                issues={d.issues}
+                title={d.name}
+              />
+            ))
           }
           </div>
         </div>
