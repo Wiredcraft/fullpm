@@ -1,0 +1,24 @@
+.ProgressBar {
+  margin-bottom: 16px;
+  height: 16px;
+  width: 100%;
+  background-color: #cacaca;
+
+  .progrss {
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+    animation-name: progrss-ani;
+    background-color: #2199e8;
+    height: 16px;
+  }
+
+}
+@keyframes progrss-ani {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
+}
