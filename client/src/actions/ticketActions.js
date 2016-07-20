@@ -31,6 +31,7 @@ export function fetchIssues(cacheDbUrl, metaDbUrl, name, next) {
       metaDb.allDocs({include_docs: true}).then(metaRes => {
         const metaTickets = metaRes.rows.map(d => d.doc)
         const tickets = generateTickets(githubTickets, metaTickets, name)
+
         dispatch({ type: CHANGE_TICKETS, payload: tickets })
         dispatch(updateRepoSelected(true))
         if (next) {
