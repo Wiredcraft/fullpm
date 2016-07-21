@@ -52,11 +52,10 @@ export default class Issue extends Component {
       url
     } = this.props
 
-    const paddingTop = isOver && !isDragging ? 20 : 0
+    const marginTop = isOver && !isDragging ? 20 : 0
 
     return connectDragSource(connectDropTarget(
-      <article className='Issue' id={id} style={{ paddingTop }} >
-        <span className='icon' />
+      <article className='Issue' id={id} style={{ marginTop }} >
         <a className='text' href={url} target='_blank'>
           { `${name}` }
         </a>
