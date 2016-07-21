@@ -1,5 +1,20 @@
 # KenHQ API
 
+## Setup & Running
+##### Prerequisites
+ - Redis
+ - CouchDB
+ - Node.JS & NPM
+
+##### Install Steps
+ - `npm install`
+ - `make install-dev` (while redis & couchdb are running)
+
+##### Running
+ - `redis-server`
+ - `couchdb`
+ - `make start-dev`
+
 ## APIs
 
 ### Auth

@@ -1,4 +1,17 @@
-## Development    
+# KenHQ Client
 
-`npm install`, `npm start`, `npm run serve`.   
-If you need auto-refresh, `npm install browser-sync -g`, `npm run watch-dev`.  
+## Setup & Running
+##### Prerequisites
+ - Node.JS & NPM
+
+##### Install Steps
+ - `npm install`
+
+##### Running
+ - `npm start`
+ - `npm run serve`
+
+##### Extra
+If you need auto-refresh
+ - Install `npm install browser-sync -g`
+ - Run `npm run watch-dev`
