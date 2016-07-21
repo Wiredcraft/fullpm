@@ -9,8 +9,9 @@
     "dist": "webpack --env=dist",
     "serve": "node server.js",
     "watch-client": "webpack --env=dev --watch",
-    "start": "npm run clean && concurrently --kill-others \"npm run watch-client\" \"npm run serve\"",
-    "start-prod": "npm run clean && npm run dist && npm run serve"
+    "start": "npm run clean && npm run watch-client",
+    "start-prod": "npm run clean && npm run dist && npm run serve",
+    "watch-dev": "cd dist && browser-sync start --server --files \"assets/*.*\""
   },
   "repository": "",
   "keywords": [],

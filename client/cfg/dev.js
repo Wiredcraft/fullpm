@@ -12,7 +12,6 @@ let config = Object.assign({}, baseConfig, {
   cache: true,
   devtool: 'eval-source-map',
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
@@ -27,7 +26,7 @@ let config = Object.assign({}, baseConfig, {
 // Add needed loaders to the defaults here
 config.module.loaders.push({
   test: /\.(js|jsx)$/,
-  loader: 'react-hot!babel-loader',
+  loader: 'babel-loader',
   include: [].concat(
     config.additionalPaths,
     [ path.join(__dirname, '/../src') ]
