@@ -1,25 +1,18 @@
 .Issue {
-  border-bottom: solid 1px #c6c6c6;
   display: block;
   background: #fff;
   cursor: move;
-  margin: 0;
-  transition: padding-top 1s ease; 
-
-  .icon {
-    background: #c6c6c6;
-    border-radius: 50%;
-    display: inline-block;
-    height: 20px;
-    left: 12px;
-    top: 4px;
-    position: relative;
-    width: 20px;
-  }
+  margin: 6px 1px;
+  transition: margin-top 1s ease;
 
   .text {
+    color: #9b9b9b;
     display: inline-block;
     margin: 0;
-    padding: 15px 25px;
+    padding: 10px;
+
+    &:hover {
+      color: #4078C0;
+    }
   }
 }
