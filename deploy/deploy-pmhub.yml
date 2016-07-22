@@ -20,3 +20,4 @@
           repo: "{{ pmhub_repo_url }}"
           version: "{{ pmhub_repo_version }}"
           env: "{{ pmhub_repo_env }}"
+          instance_root: "{{ pmhub_instance_root }}"
