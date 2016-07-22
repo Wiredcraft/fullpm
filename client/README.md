@@ -11,6 +11,10 @@
  - `npm start`
  - `npm run serve`
 
+
+ ##### production(Generate static assets)
+  - `npm run build-prod`
+
 ##### Extra
 If you need auto-refresh
  - Install `npm install browser-sync -g`
