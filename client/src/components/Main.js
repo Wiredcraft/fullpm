@@ -14,6 +14,10 @@ import { parserTickets } from 'helpers/tickets'
 @connect(mapStateToProps, mapDispatchToProps)
 @DragDropContext(HTML5Backend)
 export default class AppComponent extends React.Component {
+  static contextTypes = {
+    router: React.PropTypes.object.isRequired
+  }
+
   constructor() {
     super()
     this.state = { orgName: undefined, repoName: undefined, onLoading: false }
@@ -46,7 +50,7 @@ export default class AppComponent extends React.Component {
 
     this.setState({ onLoading: true })
     repoBtn.disabled = true
-
+    this.context.router.push(`/boards/${userName}/${repoName}`)
     fetchRepo(userName, repoName, () => {
       this.setState({ onLoading: false })
       repoBtn.disabled = false
