@@ -44,5 +44,10 @@
 
 ### Auth
 
-- [http://127.0.0.1:3000/auth/github](http://127.0.0.1:3000/auth/github)
-- [http://127.0.0.1:3000/auth/logout](http://127.0.0.1:3000/auth/logout)
+- Requirements:
+    - Use cookie, so either put the API and UI under same domain or use `withCredentials`.
+- Authenticate
+    - Redirect to (not an API, don't use AJAX) `[domain]/auth/github` or `[domain]/auth/github?redirect=/some-page`
+    - It will go to GitHub and upon authenticated, come back to the home page or the `redirect` location
+- Logout
+    - Call the API `[domain]/auth/logout`
