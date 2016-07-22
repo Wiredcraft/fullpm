@@ -5,6 +5,7 @@ let webpack = require('webpack');
 let baseConfig = require('./base');
 let defaultSettings = require('./defaults');
 
+let HtmlWebpackPlugin = require('html-webpack-plugin')
 let config = Object.assign({}, baseConfig, {
   entry: [
     './src/index'
@@ -18,6 +19,11 @@ let config = Object.assign({}, baseConfig, {
         // Useful to reduce the size of client-side libraries, e.g. react
         NODE_ENV: JSON.stringify('production')
       }
+    }),
+    new HtmlWebpackPlugin({
+      hash: true,
+      filename: '../index.html',
+      template: 'src/index.template.html'
     })
   ],
   module: defaultSettings.getDefaultModules()
