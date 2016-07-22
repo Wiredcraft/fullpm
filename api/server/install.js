@@ -1,10 +1,10 @@
 'use strict';
 
-var debug = require('debug')('kenhq:install');
+const debug = require('debug')('kenhq:install');
 
-var lib = require('./lib');
+const lib = require('./lib');
 
-var app = module.exports = lib.app;
+const app = module.exports = lib.app;
 
 app.boot(function(err) {
   if (err) {
@@ -12,14 +12,19 @@ app.boot(function(err) {
   }
 
   // Install data sources.
-  var installed = {};
-  var names = Object.keys(app.dataSources);
-  for (var i = 0; i < names.length; i++) {
-    var dataSource = app.dataSources[names[i]];
+  let installed = {};
+  const names = Object.keys(app.dataSources);
+  for (let i = 0; i < names.length; i++) {
+    const dataSource = app.dataSources[names[i]];
     if (installed[dataSource.settings.name] == null) {
       debug('installing:', names[i], dataSource.settings);
       installed[dataSource.settings.name] = true;
-      dataSource.autoupdate(debug);
+      dataSource.autoupdate((err) => {
+        if (err) {
+          debug('error:', err);
+        }
+        dataSource.disconnect(debug);
+      });
     }
   }
 });

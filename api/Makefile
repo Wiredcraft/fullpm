@@ -24,3 +24,7 @@ start-dev: lint
 install-dev: lint
 	@NODE_ENV=development DEBUG=carcass:*,kenhq:* node ./server/install.js
 .PHONY: start-dev install-dev
+
+start-staging: lint
+	@NODE_ENV=staging DEBUG=carcass:*,kenhq:* node .
+.PHONY: start-staging

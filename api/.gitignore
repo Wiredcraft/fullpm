@@ -1,10 +1,11 @@
 .*
 !.gitignore
+!.npmignore
 !.jscsrc
 !.travis.yml
-!.coveralls.yml
 
 *.orig
+*.local.json
 
 /backup
 /test/debug
@@ -28,5 +29,6 @@ coverage
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
 
-# Dependency directory
+# Dependency directories
 node_modules
+jspm_packages
