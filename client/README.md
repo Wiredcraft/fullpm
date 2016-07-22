@@ -12,8 +12,9 @@
  - `npm run serve`
 
 
- ##### production(Generate static assets)
-  - `npm run build-prod`
+ ##### production
+  - `npm run build-prod` (Generate static assets)
+  - `npm run run-prod` (Generate static assets, and serve)
 
 ##### Extra
 If you need auto-refresh
