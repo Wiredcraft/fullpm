@@ -11,6 +11,7 @@
     "watch-client": "webpack --env=dev --watch",
     "start": "npm run clean && npm run watch-client",
     "build-prod": "npm run clean && npm run dist",
+    "run-prod": "npm run clean && npm run dist && npm run serve",
     "watch-dev": "cd dist && browser-sync start --server --files \"assets/*.*\""
   },
   "repository": "",
