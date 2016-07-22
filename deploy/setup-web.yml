@@ -28,16 +28,11 @@
           - listen 8000
           - server_name _
 
-        api:
+        kenhq:
           - listen 0.0.0.0:80
           - port_in_redirect off
-          - server_name 127.0.0.1
+          - server_name 192.168.1.39
           - location ~* ^(/api|/auth|/proxy)(.*) { proxy_pass http://app; proxy_set_header Host $host;}
-
-        frontend:
-          - listen 0.0.0.0:80
-          - port_in_redirect off
-          - server_name 127.0.0.1
           - location / { root /opt/pmhub/pmhub/client/dist; }
 
         status:
