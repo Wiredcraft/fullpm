@@ -1,7 +1,6 @@
 import PouchDB, { metaDb, cacheDb } from 'helpers/pouchDb'
 
 import { updateRepoSelected } from 'actions/repoActions'
-import { baseUrl } from 'setting'
 import request from 'superagent'
 
 export const CHANGE_TICKETS = 'CHANGE_TICKETS'
@@ -61,14 +60,14 @@ export function fetchIssues(cacheDbUrl, metaDbUrl, name, next) {
 
 export function fetchRepo(userName, repoName, next) {
   return dispatch => {
-    const url = `${baseUrl}/api/repos/github/${userName}/${repoName}`
+    const url = `${API_BASE_URL}/api/repos/github/${userName}/${repoName}`
     request
       .get(url)
       .end((err, res) => {
         if (!err) {
           const response = JSON.parse(res.text).data
-          const cacheDbUrl = `${baseUrl}${response.cacheDB}`
-          const metaDbUrl = `${baseUrl}${response.metaDB}`
+          const cacheDbUrl = `${API_BASE_URL}${response.cacheDB}`
+          const metaDbUrl = `${API_BASE_URL}${response.metaDB}`
           dispatch(fetchIssues(cacheDbUrl, metaDbUrl, `${userName}/${repoName}`,
             next))
         }

@@ -13,8 +13,8 @@
 
 
  ##### production
-  - `npm run build-prod` (Generate static assets)
-  - `npm run run-prod` (Generate static assets, and serve)
+  - `API_BASE_URL=${apiBaseURL} npm run build-prod` (Generate static assets)
+    - Such as `API_BASE_URL=http://137.23.323.323:3000 npm run build-prod`
 
 ##### Extra
 If you need auto-refresh

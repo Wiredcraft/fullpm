@@ -15,10 +15,9 @@ let config = Object.assign({}, baseConfig, {
   plugins: [
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
-      'process.env': {
-        // Useful to reduce the size of client-side libraries, e.g. react
-        NODE_ENV: JSON.stringify('production')
-      }
+      // Put them together will broken build process
+      API_BASE_URL:
+        JSON.stringify(process.env.API_BASE_URL || 'http://localhost:3000')
     }),
     new HtmlWebpackPlugin({
       hash: true,

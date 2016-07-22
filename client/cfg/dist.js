@@ -16,7 +16,10 @@ let config = Object.assign({}, baseConfig, {
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production')
-      }
+      },
+      // Put them together will broken build process
+      API_BASE_URL:
+        JSON.stringify(process.env.API_BASE_URL || 'http://localhost:3000')
     }),
     new webpack.optimize.UglifyJsPlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
