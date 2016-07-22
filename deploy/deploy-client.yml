@@ -1,0 +1,11 @@
+---
+- hosts: pmhub
+  tasks:
+    - name: Run npm install for client folder
+      npm:
+        path=/opt/pmhub/pmhub/client
+
+    - name: Build static site.
+      command: npm run build-prod
+      args:
+        chdir: /opt/pmhub/pmhub/client
