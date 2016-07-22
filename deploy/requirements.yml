@@ -23,6 +23,6 @@
   name: wcl-redis
   version: master
 
-- src: https://github.com/wiredcraft-ops/role-wcl-couchbase.git
-  name: wcl-couchbase
+- src: https://github.com/andrewrothstein/ansible-couchdb.git
+  name: wcl-couchdb
   version: master

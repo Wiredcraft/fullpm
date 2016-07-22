@@ -1,0 +1,68 @@
+---
+- hosts: all
+  tasks:
+    - name: Load the inventory
+      ping: {}
+
+- hosts: web
+  roles:
+    - role: wcl-nginx
+      nginx_user: "{{ web_user }}"
+      nginx_group: "{{ web_group }}"
+      nginx_http_params:
+        - sendfile on
+        - server_tokens off
+        - access_log /var/log/nginx/access.log
+        - error_log /var/log/nginx/error.log
+        - types_hash_max_size 2048
+        - server_name_in_redirect on
+        - port_in_redirect off
+        - server_names_hash_bucket_size 64
+        - gzip on
+        - gzip_disable msie6
+        - gzip_proxied any
+        - gzip_comp_level 6
+        - gzip_buffers 16 8k
+        - gzip_http_version 1.1
+        - gzip_types text/plain text/css application/json application/x-javascript application/javascript text/xml application/xml application/xml+rss text/javascript image/svg+xml font/ttf font/opentype
+
+      nginx_sites:
+        default:
+          - listen {{ nginx_listen }}
+          - server_name _
+
+        status:
+          - listen 127.0.0.1:8001
+          - location /nginx_status { stub_status on; access_log off; }
+
+        app:
+          - listen {{ nginx_listen }}
+          - index index.php
+          - server_name {{ domain }}
+          - root {{ webroot }}
+          - error_page 404 /404.html
+          - error_page 500 403 =404 /404.html
+          - add_header Strict-Transport-Security "max-age=31536000; includeSubDomains"
+          - location ~* \.(?:xml|ogg|mp3|mp4|ogv|svg|svgz|eot|otf|woff|ttf|css|js|jpg|jpeg|gif|png|ico)$ { try_files $uri $core =404; expires max; access_log off; add_header Pragma public; add_header Cache-Control "public, must-revalidate, proxy-revalidate"; add_header Strict-Transport-Security "max-age=31536000; includeSubDomains";}
+
+      nginx_configs:
+        upstream:
+          - upstream app { {% for host in groups['app'] %}server {{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}:{{ php_port }}; {% endfor %} }
+
+  tasks:
+    - name: Ensure mime types are present for the Fonts
+      lineinfile:
+        line={{ item }}
+        dest=/etc/nginx/mime.types
+        insertbefore='\}'
+      with_items:
+        - 'font/ttf        ttf;'
+        - 'font/opentype   otf;'
+
+    - name: Update permissions of nginx folders
+      file:
+        dest=/var/lib/nginx/
+        state=directory
+        recurse=yes
+        owner={{ web_user }}
+        group={{ web_group }}

@@ -1,0 +1,22 @@
+---
+- hosts: all
+  tasks:
+    - name: ping
+      ping: {}
+
+- hosts: pmhub
+  vars_prompt:
+    - name: version_pmhub
+      prompt: 'pmhub repo version'
+      default: "master"
+      private: false
+  roles:
+    - role: wcl-strongloop
+      strongloop_install: false
+      strongloop_deploy: yes
+      strongloop_instances:
+        - name: pmhub
+          update: true
+          repo: "{{ pmhub_repo_url }}"
+          version: "{{ pmhub_repo_version }}"
+          env: "{{ pmhub_repo_env }}"

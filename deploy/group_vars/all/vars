@@ -1,0 +1,4 @@
+webroot: "/var/www/pmhub"
+web_user: www-data
+web_group: www-data
+nginx_listen: 0.0.0.0:80
