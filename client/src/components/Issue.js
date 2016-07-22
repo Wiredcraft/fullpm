@@ -9,11 +9,8 @@ import 'styles/Issue'
 
 const dragSource = {
   spec: {
-    beginDrag(props) {
-      const { id } = props
-      return {
-        id
-      }
+    beginDrag({ id }) {
+      return { id }
     },
 
     endDrag(props, monitor) {
@@ -49,15 +46,16 @@ export default class Issue extends Component {
       isDragging,
       isOver,
       name,
+      number,
       url
     } = this.props
 
-    const marginTop = isOver && !isDragging ? 20 : 0
+    const marginTop = isOver && !isDragging ? 30 : 0
 
     return connectDragSource(connectDropTarget(
       <article className='Issue' id={id} style={{ marginTop }} >
         <a className='text' href={url} target='_blank'>
-          { `${name}` }
+          { `${number}: ${name}` }
         </a>
       </article>
     ))

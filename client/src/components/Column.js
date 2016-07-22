@@ -33,17 +33,16 @@ export default class Column extends Component {
         </header>
         <div ref='list' className='issue-list' id={id}>
           {
-            issues.map((d, i) => {
-              return (
-                <Issue
-                  key={i}
-                  col={this.props.id}
-                  id={d._id}
-                  name={d.title}
-                  url={d.htmlUrl}
-                />
-              )
-            })
+            issues.map((d, i) => (
+              <Issue
+                key={i}
+                col={this.props.id}
+                id={d._id}
+                name={d.title}
+                number={d.number}
+                url={d.htmlUrl}
+              />
+            ))
           }
         </div>
       </section>
@@ -56,7 +55,5 @@ function mapDispatchToProps (dispatch) {
 }
 
 function mapStateToProps(state) {
-  return {
-    tickets: state.issues.get('tickets')
-  }
+  return { tickets: state.issues.get('tickets') }
 }
