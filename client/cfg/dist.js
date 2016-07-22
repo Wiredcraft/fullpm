@@ -5,6 +5,7 @@ let webpack = require('webpack');
 
 let baseConfig = require('./base');
 let defaultSettings = require('./defaults');
+let HtmlWebpackPlugin = require('html-webpack-plugin')
 
 let config = Object.assign({}, baseConfig, {
   entry: path.join(__dirname, '../src/index'),
@@ -20,7 +21,12 @@ let config = Object.assign({}, baseConfig, {
     new webpack.optimize.UglifyJsPlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.AggressiveMergingPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoErrorsPlugin(),
+    new HtmlWebpackPlugin({
+      hash: true,
+      filename: '../index.html',
+      template: 'src/index.template.html'
+    })
   ],
   module: defaultSettings.getDefaultModules()
 });

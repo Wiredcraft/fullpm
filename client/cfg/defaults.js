@@ -35,7 +35,6 @@ function getDefaultModules() {
 
 module.exports = {
   srcPath: srcPath,
-  publicPath: '/assets/',
   port: process.env.PORT || dfltPort,
   getDefaultModules: getDefaultModules
 };
