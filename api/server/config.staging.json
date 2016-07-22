@@ -5,7 +5,7 @@
   "auth": {
     "baseURL": "https://kenhq-staging.wiredcraft.net",
     "github": {
-      "scope": "user:email,read:org,public_repo,notifications",
+      "scope": "user:email,read:org,repo,notifications",
       "clientID": "93bd57c1787e57db3114",
       "clientSecret": "c7bcb74b07e3ac252c1227cf4fb3c4d789f65135"
     }

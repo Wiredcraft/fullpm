@@ -19,12 +19,12 @@ test-coveralls: test-cov
 	@cat ./coverage/lcov.info | $(COVERALLS) --verbose
 .PHONY: lint test test-cov test-coveralls
 
-start-dev: lint
+start-dev:
 	@NODE_ENV=development DEBUG=carcass:*,kenhq:* node .
-install-dev: lint
+install-dev:
 	@NODE_ENV=development DEBUG=carcass:*,kenhq:* node ./server/install.js
 .PHONY: start-dev install-dev
 
-start-staging: lint
+start-staging:
 	@NODE_ENV=staging DEBUG=carcass:*,kenhq:* node .
 .PHONY: start-staging
