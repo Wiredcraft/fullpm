@@ -1,0 +1,3 @@
+- hosts: couchdb
+  roles:
+    - role: wcl-couchdb

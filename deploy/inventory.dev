@@ -3,3 +3,15 @@ dev
 
 [nodejs]
 dev
+
+[couchdb]
+dev
+
+[pmhub]
+dev
+
+[web]
+dev
+
+[dev]
+dev
