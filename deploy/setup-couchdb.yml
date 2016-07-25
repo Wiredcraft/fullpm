@@ -5,6 +5,12 @@
     - role: wcl-couchdb
 
   tasks:
+    - name: Add couchdb user
+      user:
+        name=couchdb
+        createhome=no
+        home=/usr/local/var/lib/couchdb
+
     - name: Change ownership and permission of the couchdb folders.
       file:
         path={{ item }}
@@ -26,3 +32,8 @@
         group=root
         mode=0755
         remote_src=yes
+
+    - name: Start Couchdb
+      service:
+        name=couchdb
+        state=started
