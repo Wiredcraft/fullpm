@@ -7,5 +7,7 @@
 
     - name: Build static site.
       command: npm run build-prod
+      environment:
+        API_BASE_URL: "{{ pmhub_api_base_url }}"
       args:
         chdir: /opt/pmhub/pmhub/client
