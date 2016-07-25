@@ -1,0 +1,20 @@
+---
+- include: "install_debian.yml"
+  when: ansible_os_family == "Debian" and strongloop_install | bool
+
+- include: "install_redhat.yml"
+  when: ansible_os_family == "RedHat" and strongloop_install | bool
+
+#
+# Add the support for multi versions of the same code
+#
+- include: deploy.yml
+  when: strongloop_deploy
+
+- name: Install slc_clean to /usr/local/bin
+  copy:
+    src=files/slc_clean
+    dest=/usr/local/bin/slc_clean
+    owner=root
+    group=root
+    mode=755

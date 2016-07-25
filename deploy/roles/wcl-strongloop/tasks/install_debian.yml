@@ -1,0 +1,31 @@
+---
+- name: Debian | Install Strongloop dependencies
+  apt:
+    name={{ item }}
+    state=present
+  with_items:
+    - gcc
+
+- name: Debian | Install Strongloop Process Manager
+  npm:
+    name={{ item }}
+    global=yes
+    executable='npm --unsafe-perm'
+  with_items:
+    - strong-pm
+    - strongloop
+
+- name: Debian | Install Strongloop Process Manager init script
+  command:
+    creates=/etc/init/strong-pm.conf
+    sl-pm-install
+
+- name: Debian | Enable Strongloop Process Manager service
+  service:
+    name=strong-pm
+    enabled=true
+
+- name: Debian | Start Strongloop Process Manager service
+  service:
+    name=strong-pm
+    state=started
