@@ -21,3 +21,16 @@
           version: "{{ pmhub_repo_version }}"
           env: "{{ pmhub_repo_env }}"
           instance_root: "{{ pmhub_instance_root }}"
+
+- hosts: pmhub
+  tasks:
+    - name: Run npm install for client folder
+      npm:
+        path=/opt/pmhub/pmhub/client
+
+    - name: Build static site.
+      command: npm run build-prod
+      environment:
+        API_BASE_URL: "{{ pmhub_api_base_url }}"
+      args:
+        chdir: /opt/pmhub/pmhub/client
