@@ -1,0 +1,32 @@
+---
+- name: Redhat | Install Strongloop dependencies
+  yum:
+    name={{ item }}
+    state=present
+  with_items:
+    - gcc
+    - gcc-c++
+
+- name: Redhat | Install Strongloop Process Manager
+  npm:
+    name={{ item }}
+    global=yes
+    executable='npm --unsafe-perm'
+  with_items:
+    - strong-pm
+    - strongloop
+
+- name: Redhat | Install Strongloop Process Manager init script
+  command:
+    creates=/etc/systemd/system/strong-pm.service
+    sl-pm-install --systemd
+
+- name: Redhat | Enable Strongloop Process Manager service
+  service:
+    name=strong-pm
+    enabled=true
+
+- name: Redhat | Start Strongloop Process Manager service
+  service:
+    name=strong-pm
+    state=started
