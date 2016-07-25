@@ -15,4 +15,15 @@
         production: true
         registry: https://registry.npm.taobao.org
         prefix: /usr/local
+
+- hosts: nodejs
+  tasks:
+    - name: Install latest npm
+      npm:
+        name=npm@3.10.6
+        global=yes
+        state=present
+
+- hosts: nodejs
+  roles:
     - role: wcl-strongloop
