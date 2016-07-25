@@ -18,7 +18,7 @@
 
 - hosts: nodejs
   tasks:
-    - name: Install latest npm
+    - name: Install npm@3.10.6
       npm:
         name=npm@3.10.6
         global=yes
