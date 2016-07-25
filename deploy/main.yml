@@ -3,4 +3,6 @@
 - include: setup-redis.yml
 - include: setup-couchdb.yml
 - include: setup-node.yml
+- include: setup-web.yml
 - include: deploy-pmhub.yml
+- include: deploy-client.yml
