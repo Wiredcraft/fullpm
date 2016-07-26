@@ -73,7 +73,7 @@ export default class AppComponent extends React.Component {
           />
           <input
             className='small-6 column'
-            defaultValue={ repoName || 'pmhub' }
+            defaultValue={ repoName || 'pipelines' }
             placeholder='Name of repositories'
             ref='repo'
             type='text'

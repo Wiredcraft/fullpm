@@ -29,7 +29,6 @@ export default class App extends Component {
     window.location = url
   }
 
-  // TODO: provide real avatar, provide real check log in
   render() {
     const { isLogin, userName } = this.state
 
