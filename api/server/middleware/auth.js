@@ -1,22 +1,23 @@
 'use strict';
 
-// var debug = require('debug')('kenhq:middleware:auth');
+// const debug = require('debug')('kenhq:middleware:auth');
 
-// var util = require('util');
-// var Promise = require('bluebird');
+// const util = require('util');
+// const Promise = require('bluebird');
 
-var lib = require('../lib');
-var app = lib.app;
+const lib = require('../lib');
+const app = lib.app;
+const middlewares = lib.middlewares;
 
 module.exports = function(options) {
-  var config = app.get('auth');
+  const config = app.get('auth');
 
   // Router.
-  var router = app.loopback.Router();
+  const router = app.loopback.Router();
 
   // Github OAuth.
   // TODO: better redirects.
-  router.get('/github', lib.middlewares.oauthGithub({
+  router.get('/github', middlewares.oauthGithub({
     scope: config.github.scope,
     baseURL: config.baseURL,
     successRedirect: '/',
@@ -24,7 +25,12 @@ module.exports = function(options) {
   }));
 
   // Logout.
-  router.get('/logout', lib.middlewares.logout());
+  router.get('/logout', middlewares.requireLogin, middlewares.logout);
+
+  // The current user.
+  router.get('/user', middlewares.requireLogin, function(req, res) {
+    return res.json(req.user);
+  });
 
   return router;
 };
