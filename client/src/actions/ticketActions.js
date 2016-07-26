@@ -63,7 +63,11 @@ export function fetchRepo(userName, repoName, next) {
     const url = `${API_BASE_URL}/api/repos/github/${userName}/${repoName}`
     request
       .get(url)
+      .withCredentials()
       .end((err, res) => {
+        if (err) {
+          console.error(err);
+        }
         if (!err) {
           const response = JSON.parse(res.text).data
           const cacheDbUrl = `${API_BASE_URL}${response.cacheDB}`

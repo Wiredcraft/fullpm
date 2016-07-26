@@ -66,14 +66,14 @@ export default class AppComponent extends React.Component {
         <div className='small-8 small-centered column input-area'>
           <input
             className='small-6 column'
-            defaultValue={ orgName || 'graphql' }
+            defaultValue={ orgName || 'Wiredcraft' }
             placeholder='Name of user or group'
             ref='user'
             type='text'
           />
           <input
             className='small-6 column'
-            defaultValue={ repoName || 'graphiql' }
+            defaultValue={ repoName || 'pmhub' }
             placeholder='Name of repositories'
             ref='repo'
             type='text'
