@@ -31,9 +31,9 @@
         kenhq:
           - listen 0.0.0.0:80
           - port_in_redirect off
-          - server_name 192.168.1.39
+          - server_name {{ domain }}
           - location ~* ^(/api|/auth|/proxy)(.*) { proxy_pass http://app; proxy_set_header Host $host;}
-          - location / { root /opt/pmhub/pmhub/client/dist; }
+          - location / { root {{ webroot }}; }
 
         status:
           - listen 127.0.0.1:8001
@@ -42,3 +42,13 @@
       nginx_configs:
         upstream:
           - upstream app { server 127.0.0.1:3001; }
+
+- hosts: web
+  tasks:
+    - name: Make sure folder exists.
+      file:
+        path={{ webroot }}
+        state=directory
+        owner={{ web_user }}
+        group={{ web_group }}
+        mode=0755

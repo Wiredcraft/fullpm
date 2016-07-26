@@ -34,3 +34,11 @@
         API_BASE_URL: "{{ pmhub_api_base_url }}"
       args:
         chdir: /opt/pmhub/pmhub/client
+
+    - name: Synchronize the generated static folder to /var/www/
+      synchronize:
+        src=/opt/pmhub/pmhub/client/dist/
+        dest={{ webroot }}
+        recursive=yes
+        delete=yes
+      delegate_to: "{{ inventory_hostname }}"
