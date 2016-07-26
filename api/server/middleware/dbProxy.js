@@ -1,27 +1,28 @@
 'use strict';
 
-var debug = require('debug')('kenhq:middleware:dbProxy');
+const debug = require('debug')('kenhq:middleware:dbProxy');
 
-// var util = require('util');
-// var Promise = require('bluebird');
-var httpProxy = require('http-proxy');
+// const util = require('util');
+// const Promise = require('bluebird');
+const httpProxy = require('http-proxy');
 
-var lib = require('../lib');
-var app = lib.app;
-// var utils = lib.utils;
+const lib = require('../lib');
+const app = lib.app;
+const middlewares = lib.middlewares;
 
 module.exports = function(options) {
 
   // Router.
-  var router = app.loopback.Router();
+  const router = app.loopback.Router();
 
   // Proxy.
-  var proxy = httpProxy.createProxyServer();
+  const proxy = httpProxy.createProxyServer();
   proxy.on('error', debug);
 
-  /**
-   * :dbName
-   */
+  // Middlewares.
+  router.use(middlewares.requireLogin);
+
+  // :dbName
   router.param('dbName', function(req, res, next, dbName) {
     // It's usually encoded.
     dbName = decodeURIComponent(dbName);

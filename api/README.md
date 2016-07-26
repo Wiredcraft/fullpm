@@ -51,3 +51,5 @@
     - It will go to GitHub and upon authenticated, come back to the home page or the `redirect` location
 - Logout
     - Call the API `[domain]/auth/logout`
+- Get the login user
+    - Call the API `[domain]/auth/user`
