@@ -17,7 +17,7 @@ let config = Object.assign({}, baseConfig, {
     new webpack.DefinePlugin({
       // Put them together will broken build process
       API_BASE_URL:
-        JSON.stringify(process.env.API_BASE_URL || 'http://localhost:3000')
+        JSON.stringify(process.env.API_BASE_URL || 'http://127.0.0.1:3000')
     }),
     new HtmlWebpackPlugin({
       hash: true,
