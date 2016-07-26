@@ -24,6 +24,11 @@ export default class App extends Component {
       })
   }
 
+  login() {
+    const url = `${API_BASE_URL}/auth/github?redirect=${window.location.href}`
+    window.location = url
+  }
+
   // TODO: provide real avatar, provide real check log in
   render() {
     const { isLogin, userName } = this.state
@@ -38,7 +43,12 @@ export default class App extends Component {
                 { userName.length > 0 ? userName[0] : 'K' }
               </span>
             ) : (
-              <button className='button float-right'>Log in</button>
+              <button
+                className='button float-right'
+                onClick={() => this.login()}
+              >
+                Log in
+              </button>
             )
           }
         </div>
