@@ -22,6 +22,14 @@
           env: "{{ pmhub_repo_env }}"
           instance_root: "{{ pmhub_instance_root }}"
 
+  tasks:
+    - name: Run DB initialization script
+      environment:
+        NODE_ENV: "{{ node_env }}"
+      command: node ./server/install.js
+      args:
+        chdir: /opt/pmhub/pmhub/{{ pmhub_instance_root }}
+
 - hosts: pmhub
   tasks:
     - name: Run npm install for client folder
@@ -42,3 +50,11 @@
         recursive=yes
         delete=yes
       delegate_to: "{{ inventory_hostname }}"
+
+    - name: Set owner of folder for /var/wwww/pmhub
+      file:
+        path={{ webroot }}
+        state=directory
+        owner={{ web_user }}
+        group={{ web_group }}
+        recurse=yes
