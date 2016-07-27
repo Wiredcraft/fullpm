@@ -3,7 +3,7 @@
     "secret": "super mario"
   },
   "auth": {
-    "baseURL": "https://kenhq-staging.wiredcraft.net",
+    "baseURL": "https://staging-kenhq.wiredcraft.net",
     "github": {
       "scope": "user:email,read:org,repo,notifications",
       "clientID": "93bd57c1787e57db3114",
