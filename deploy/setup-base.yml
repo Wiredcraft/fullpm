@@ -4,3 +4,12 @@
   roles:
     # Base setup
     - role: wcl-common
+      enable_swap: yes
+      swap_size: 4G
+    - role: dj-wasabi.zabbix-agent
+      agent_server: "172.16.1.220,127.0.0.1"
+      # Empty both interface and IP to listen to all
+      agent_listeninterface:
+      agent_listenip: 
+    - role: wcl-zabbix-scripts
+      install_packages: "{{ install_cgi_fcgi | default(False) }}"

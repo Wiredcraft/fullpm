@@ -7,10 +7,6 @@
   name: wcl-nodejs
   version: master
 
-- src: https://github.com/wiredcraft-ops/role-wcl-strongloop.git
-  name: wcl-strongloop
-  version: master
-
 - src: https://github.com/wiredcraft-ops/role-wcl-nginx.git
   name: wcl-nginx
   version: master
@@ -25,4 +21,12 @@
 
 - src: https://github.com/andrewrothstein/ansible-couchdb.git
   name: wcl-couchdb
+  version: master
+
+- src: https://github.com/wiredcraft-ops/role-wcl-zabbix-scripts.git
+  name: wcl-zabbix-scripts
+  version: master
+
+- src: https://github.com/dj-wasabi/ansible-zabbix-agent
+  name: dj-wasabi.zabbix-agent
   version: master
