@@ -1,17 +1,17 @@
 [redis]
-dev
+dev-kenhq-1
 
 [nodejs]
-dev
+dev-kenhq-1
 
 [couchdb]
-dev
+dev-kenhq-1
 
 [pmhub]
-dev
+dev-kenhq-1
 
 [web]
-dev
+dev-kenhq-1
 
 [dev:children]
 redis

@@ -1,17 +1,17 @@
 [redis]
-dev
+staging-kenhq-1
 
 [nodejs]
-dev
+staging-kenhq-1
 
 [couchdb]
-dev
+staging-kenhq-1
 
 [pmhub]
-dev
+staging-kenhq-1
 
 [web]
-dev
+staging-kenhq-1
 
 [staging:children]
 redis
