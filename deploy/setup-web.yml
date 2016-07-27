@@ -29,7 +29,7 @@
           - server_name _
 
         kenhq:
-          - listen 0.0.0.0:80
+          - listen 0.0.0.0:443 ssl
           - port_in_redirect off
           - server_name {{ domain }}
           - location ~* ^(/api|/auth|/proxy)(.*) { proxy_pass http://app; proxy_set_header Host $host;}
@@ -40,6 +40,9 @@
           - location /nginx_status { stub_status on; access_log off; }
 
       nginx_configs:
+        ssl:
+          - ssl_certificate_key {{ ssl_key_path }}
+          - ssl_certificate {{ ssl_cert_path }}
         upstream:
           - upstream app { server 127.0.0.1:3001; }
 
