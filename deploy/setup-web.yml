@@ -33,7 +33,7 @@
           - port_in_redirect off
           - server_name {{ domain }}
           - location ~* ^(/api|/auth|/proxy)(.*) { proxy_pass http://app; proxy_set_header Host $host;}
-          - location / { root {{ webroot }}; }
+          - location / { root {{ webroot }}; try_files $uri $uri/ /index.html; }
 
         status:
           - listen 127.0.0.1:8001
