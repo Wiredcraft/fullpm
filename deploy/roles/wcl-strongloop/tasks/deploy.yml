@@ -1,5 +1,0 @@
----
-- include: instance_deploy.yml
-  when: item.update
-  with_items:
-    "{{ strongloop_instances | default([]) }}"
