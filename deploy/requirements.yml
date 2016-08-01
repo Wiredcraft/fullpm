@@ -7,6 +7,10 @@
   name: wcl-nodejs
   version: master
 
+- src: https://github.com/wiredcraft-ops/role-wcl-strongloop.git
+  name: wcl-strongloop
+  version: master
+
 - src: https://github.com/wiredcraft-ops/role-wcl-nginx.git
   name: wcl-nginx
   version: master
