@@ -1,5 +1,0 @@
----
-- name: restart strong-pm
-  service: 
-    name=strong-pm
-    state=restarted
