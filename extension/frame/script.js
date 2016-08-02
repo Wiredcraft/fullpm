@@ -13,7 +13,7 @@ function generateIframe(queryObj) {
   var iframe = document.createElement('iframe')
 
   var iframe = document.createElement('iframe');
-  iframe.src = 'https://kenhq.com/repos/' + queryObj.name + '/' + queryObj.repo;
+  iframe.src = 'https://staging-kenhq.wiredcraft.net/boards/' + queryObj.name + '/' + queryObj.repo;
   iframe.style.cssText = 'width:100%;height:400px;border:none';
 
   return iframe
