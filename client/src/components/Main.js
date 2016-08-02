@@ -9,6 +9,7 @@ export default class Main extends Component {
   constructor() {
     super()
     this.state = { prompt: '' }
+    // Prevent the flash of content
     setTimeout(() => this.setState({ prompt: 'please login first' }), 1500)
   }
 
@@ -16,7 +17,7 @@ export default class Main extends Component {
     const { isLogin, params } = this.props
     const { prompt } = this.state
 
-    return isLogin ? (<Board params={params}/>) : (
+    return isLogin ? (<Board params={params} />) : (
       <h1 style={{ textAlign: 'center' }}>
         { prompt }
       </h1>
