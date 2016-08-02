@@ -7,7 +7,7 @@ const initialState = Immutable.fromJS({
   tickets: []
 })
 
-export default function user (state = initialState, action) {
+export default function issues (state = initialState, action) {
   switch (action.type) {
   case CHANGE_TICKETS:
     state = state.set('tickets', action.payload)

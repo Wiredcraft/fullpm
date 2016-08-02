@@ -1,25 +1,31 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
 import '../styles/header'
 import request from 'superagent'
+import { updateUserLoginState } from 'actions/userActions'
 
+
+@connect(mapStateToProps, mapDispatchToProps)
 export default class App extends Component {
   constructor() {
     super()
-    this.state = { isLogin: false, userName: '' }
   }
 
   componentWillMount() {
+    const { updateUserLoginState } = this.props
     const url = `${API_BASE_URL}/auth/user`
     request
       .get(url)
       .withCredentials()
       .end((err, res) => {
+        if (res.status === 401) return
         if (err) {
-          console.error(err);
+          console.error(err)
         } else {
           const result = JSON.parse(res.text)
-          this.setState({ isLogin: true, userName: result.login })
+          updateUserLoginState({ isLogin: true, userName: result.login })
         }
       })
   }
@@ -30,7 +36,7 @@ export default class App extends Component {
   }
 
   render() {
-    const { isLogin, userName } = this.state
+    const { isLogin, userName } = this.props
 
     return (
       <div className='Header row'>
@@ -53,5 +59,16 @@ export default class App extends Component {
         </div>
       </div>
     )
+  }
+}
+
+function mapDispatchToProps (dispatch) {
+  return bindActionCreators({ updateUserLoginState }, dispatch)
+}
+
+function mapStateToProps(state) {
+  return {
+    isLogin: state.user.get('isLogin'),
+    userName: state.user.get('userName')
   }
 }

@@ -11,7 +11,7 @@ const initialState = Immutable.fromJS({
   repoSelected: false
 })
 
-export default function user (state = initialState, action) {
+export default function repos (state = initialState, action) {
   switch (action.type) {
   case CHANGE_REPO_SELECTED:
     state = state.set('repoSelected', action.payload)
