@@ -1,3 +1,4 @@
+/* global API_BASE_URL */
 import PouchDB, { metaDb, cacheDb } from 'helpers/pouchDb'
 
 import { updateRepoSelected } from 'actions/repoActions'

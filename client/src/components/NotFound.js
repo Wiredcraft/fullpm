@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import '../styles/notFound'
 
 
-export default class App extends Component {
+export default class NotFound extends Component {
   render() {
     return (
       <div className='NotFound row'>

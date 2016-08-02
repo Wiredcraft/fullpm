@@ -1,3 +1,4 @@
+/* global API_BASE_URL */
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -9,10 +10,6 @@ import { updateUserLoginState } from 'actions/userActions'
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class App extends Component {
-  constructor() {
-    super()
-  }
-
   componentWillMount() {
     const { updateUserLoginState } = this.props
     const url = `${API_BASE_URL}/auth/user`
