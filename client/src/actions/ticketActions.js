@@ -67,7 +67,8 @@ export function fetchRepo(userName, repoName, next) {
       .withCredentials()
       .end((err, res) => {
         if (err) {
-          console.error(err);
+          console.error(err)
+          next()
         } else {
           const response = JSON.parse(res.text).data
           const cacheDbUrl = `${API_BASE_URL}${response.cacheDB}`

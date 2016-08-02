@@ -29,7 +29,6 @@ export default class Board extends React.Component {
 
   componentDidMount() {
     const { orgName, repoName } = this.state
-    console.log('!!!');
     if (orgName && repoName) {
       this.changeBoard()
     }
