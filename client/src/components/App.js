@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 
-import 'styles/App'
-import 'styles/Issue'
+import 'styles/app'
 import Main from './Main'
 import Header from './Header'
 import NotFound from './NotFound'

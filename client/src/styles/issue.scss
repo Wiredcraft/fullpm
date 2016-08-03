@@ -1,0 +1,18 @@
+.Issue {
+  display: block;
+  background: #fff;
+  cursor: move;
+  margin: 6px 0;
+  transition: margin-top 1s ease;
+
+  .text {
+    color: #9b9b9b;
+    display: inline-block;
+    margin: 0;
+    padding: 10px;
+
+    &:hover {
+      color: #4078C0;
+    }
+  }
+}
