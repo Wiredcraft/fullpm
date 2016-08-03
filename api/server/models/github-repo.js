@@ -177,7 +177,7 @@ module.exports = function(GithubRepo) {
             promise.then(syncIssues);
           } else {
             debug('skipping:', data.id);
-            promise = repo;
+            promise = Promise.join(repo.ensureMeta(), repo.ensureCache(), () => repo);
           }
           return promise;
         });
