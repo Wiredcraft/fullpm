@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import 'styles/ProgressBar'
+import 'styles/progressBar'
 
 export default class ProgressBar extends Component {
   render() {

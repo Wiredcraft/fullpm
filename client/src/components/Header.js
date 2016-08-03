@@ -1,32 +1,12 @@
 /* global API_BASE_URL */
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 
 import '../styles/header'
-import request from 'superagent'
-import { updateUserLoginState } from 'actions/userActions'
 
 
-@connect(mapStateToProps, mapDispatchToProps)
+@connect(mapStateToProps)
 export default class App extends Component {
-  componentWillMount() {
-    const { updateUserLoginState } = this.props
-    const url = `${API_BASE_URL}/auth/user`
-    request
-      .get(url)
-      .withCredentials()
-      .end((err, res) => {
-        if (res.status === 401) return
-        if (err) {
-          console.error(err)
-        } else {
-          const result = JSON.parse(res.text)
-          updateUserLoginState({ isLogin: true, userName: result.login })
-        }
-      })
-  }
-
   login() {
     const url = `${API_BASE_URL}/auth/github?redirect=${window.location.href}`
     window.location = url
@@ -57,10 +37,6 @@ export default class App extends Component {
       </div>
     )
   }
-}
-
-function mapDispatchToProps (dispatch) {
-  return bindActionCreators({ updateUserLoginState }, dispatch)
 }
 
 function mapStateToProps(state) {
