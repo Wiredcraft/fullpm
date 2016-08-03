@@ -3,7 +3,7 @@ import { DragSource, DropTarget } from 'react-dnd'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { updateIssue } from 'actions/ticketActions'
+import { updateIssue } from 'actions/issueActions'
 import 'styles/Issue'
 
 

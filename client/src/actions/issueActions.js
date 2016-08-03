@@ -62,6 +62,7 @@ export function fetchIssues(cacheDbUrl, metaDbUrl, name, next) {
 export function fetchRepo(userName, repoName, next) {
   return dispatch => {
     const url = `${API_BASE_URL}/api/repos/github/${userName}/${repoName}`
+
     request
       .get(url)
       .withCredentials()

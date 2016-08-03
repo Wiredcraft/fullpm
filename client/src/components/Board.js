@@ -5,7 +5,7 @@ import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
 import Column from 'components/Column'
-import { fetchIssues, clearIssues, fetchRepo } from 'actions/ticketActions'
+import { fetchIssues, clearIssues, fetchRepo } from 'actions/issueActions'
 import 'styles/main'
 import ProgressBar from 'components/ProgressBar'
 import { parserTickets } from 'helpers/tickets'
@@ -124,8 +124,6 @@ function mapDispatchToProps (dispatch) {
 
 function mapStateToProps(state) {
   return {
-    repos: state.repos.get('repos'),
-    repoSelected: state.repos.get('repoSelected'),
     sortedArr: parserTickets(state.issues.get('tickets'))
   }
 }

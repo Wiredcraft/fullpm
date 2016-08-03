@@ -5,7 +5,7 @@ import { DropTarget } from 'react-dnd'
 
 import Issue from 'components/Issue'
 import 'styles/column'
-import { updateIssue } from 'actions/ticketActions'
+import { updateIssue } from 'actions/issueActions'
 
 
 const targetSpec = {
