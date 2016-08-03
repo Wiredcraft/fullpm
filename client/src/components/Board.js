@@ -20,7 +20,12 @@ export default class Board extends React.Component {
 
   constructor() {
     super()
-    this.state = { orgName: undefined, repoName: undefined, onLoading: false }
+    this.state = {
+      orgName: undefined,
+      repoName: undefined,
+      onLoading: false,
+      notFound: false
+    }
   }
 
   componentWillMount() {
@@ -40,18 +45,20 @@ export default class Board extends React.Component {
       repo: {value : repoName},
       user: {value : userName}
     } = this.refs
-    const { fetchRepo } = this.props
+    const { clearIssues, fetchRepo } = this.props
 
     if (!repoName) {
       alert('Please provide name of the repository')
     } else if (!userName) {
       alert('Please provide name of the user or group')
     }
-
+    clearIssues()
     this.setState({ onLoading: true })
     repoBtn.disabled = true
     this.context.router.push(`/boards/${userName}/${repoName}`)
-    fetchRepo(userName, repoName, () => {
+    fetchRepo(userName, repoName, (notFound) => {
+      if (notFound) this.setState({ notFound: true })
+      else this.setState({ notFound: false })
       this.setState({ onLoading: false })
       repoBtn.disabled = false
     })
@@ -59,7 +66,7 @@ export default class Board extends React.Component {
 
   render() {
     const { sortedArr } = this.props
-    const { orgName, repoName, onLoading } = this.state
+    const { orgName, repoName, onLoading, notFound } = this.state
 
     return (
       <div className='Main row'>
@@ -85,6 +92,7 @@ export default class Board extends React.Component {
           >
             Change board
           </button>
+          { notFound && <p>Repo not found</p> }
           <ProgressBar hide={!onLoading} />
         </div>
         <div className='boards small-centered column'>
