@@ -166,7 +166,7 @@ module.exports = function(GithubRepo) {
               return Promise.join(repo.ensureMeta(), repo.ensureCache(), () => repo);
             });
             // Sync on the side.
-            promise.then(syncIssues);
+            return promise.then(syncIssues);
           } else if (repo.cachedAt == null || moment().diff(moment(repo.cachedAt)) > 10000) {
             // Replace.
             debug('updating:', data.id);
