@@ -92,7 +92,7 @@ export default class Board extends React.Component {
               />
               <button
                 className='button'
-                onClick={::this.changeBoard}
+                onClick={() => this.changeBoard()}
                 ref='repoBtn'
               >
                 Change board
