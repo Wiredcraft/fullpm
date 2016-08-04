@@ -107,7 +107,7 @@ module.exports = function(GithubRepo) {
         return Promise.resolve(Meta.create({
           id: issue.id,
           column: defaultColumn,
-          ranking: defaultRanking
+          ranking: issue.number
         })).return(issue);
       });
     }).map((issue) => {
