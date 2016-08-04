@@ -126,6 +126,8 @@ module.exports = function(GithubRepo) {
           title: issue.title,
           createdAt: issue.created_at,
           updatedAt: issue.updated_at,
+          assignees: issue.assignees || [],
+          comments: issue.comments,
           cachedAt: moment().format()
         })).return(issue);
       });
