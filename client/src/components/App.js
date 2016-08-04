@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 
 import 'styles/app'
+import 'normalize.css/normalize.css'
 import Main from './Main'
 import Header from './Header'
 import NotFound from './NotFound'
