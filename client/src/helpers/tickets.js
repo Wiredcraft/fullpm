@@ -21,6 +21,8 @@ function sortTickets(tickets) {
 
 export function parserTickets(tickets) {
   sortTickets(tickets)
+  // Hide pull requests
+  tickets = tickets.filter(d => d.htmlUrl.indexOf('/pull/') === -1)
 
   return [
     {
