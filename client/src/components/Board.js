@@ -6,9 +6,10 @@ import HTML5Backend from 'react-dnd-html5-backend'
 
 import Column from 'components/Column'
 import { fetchIssues, clearIssues, fetchRepo } from 'actions/issueActions'
-import 'styles/main'
+import 'styles/board'
 import ProgressBar from 'components/ProgressBar'
 import { parserTickets } from 'helpers/tickets'
+import { isDevMode } from '../helper/dev'
 
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -35,32 +36,34 @@ export default class Board extends React.Component {
   componentDidMount() {
     const { orgName, repoName } = this.state
     if (orgName && repoName) {
-      this.changeBoard()
+      this.changeBoard(orgName, repoName)
     }
   }
 
-  changeBoard() {
-    const {
-      repoBtn,
-      repo: {value : repoName},
-      user: {value : userName}
-    } = this.refs
+  changeBoard(userNameFromUrl, repoNameFromUrl) {
+    const { repoBtn, repo, user } = this.refs
     const { clearIssues, fetchRepo } = this.props
+    const { search } = location
 
+    const userName = userNameFromUrl || (user ? user.value : undefined)
+    const repoName = repoNameFromUrl || (repo ? repo.value : undefined)
     if (!repoName) {
       alert('Please provide name of the repository')
     } else if (!userName) {
       alert('Please provide name of the user or group')
     }
+
     clearIssues()
     this.setState({ onLoading: true })
-    repoBtn.disabled = true
-    this.context.router.push(`/boards/${userName}/${repoName}`)
+    if (repoBtn) repoBtn.disabled = true
+
+    this.context.router.push(`/boards/${userName}/${repoName}${search}`)
+
     fetchRepo(userName, repoName, (notFound) => {
       if (notFound) this.setState({ notFound: true })
       else this.setState({ notFound: false })
       this.setState({ onLoading: false })
-      repoBtn.disabled = false
+      if (repoBtn) repoBtn.disabled = false
     })
   }
 
@@ -69,29 +72,33 @@ export default class Board extends React.Component {
     const { orgName, repoName, onLoading, notFound } = this.state
 
     return (
-      <div className='Main row'>
+      <div className='Board row'>
         <div className='small-8 small-centered column input-area'>
-          <input
-            className='small-6 column'
-            defaultValue={ orgName || 'Wiredcraft' }
-            placeholder='Name of user or group'
-            ref='user'
-            type='text'
-          />
-          <input
-            className='small-6 column'
-            defaultValue={ repoName || 'pipelines' }
-            placeholder='Name of repositories'
-            ref='repo'
-            type='text'
-          />
-          <button
-            className='button'
-            onClick={::this.changeBoard}
-            ref='repoBtn'
-          >
-            Change board
-          </button>
+          { isDevMode && (
+            <div>
+              <input
+                className='small-6 column'
+                defaultValue={ orgName || 'Wiredcraft' }
+                placeholder='Name of user or group'
+                ref='user'
+                type='text'
+              />
+              <input
+                className='small-6 column'
+                defaultValue={ repoName || 'pipelines' }
+                placeholder='Name of repositories'
+                ref='repo'
+                type='text'
+              />
+              <button
+                className='button'
+                onClick={::this.changeBoard}
+                ref='repoBtn'
+              >
+                Change board
+              </button>
+            </div>
+          )}
           { notFound && <p>Repo not found</p> }
           <ProgressBar hide={!onLoading} />
         </div>

@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import { updateIssue } from 'actions/issueActions'
-import 'styles/Issue'
+import 'styles/issue'
 
 
 const dragSource = {

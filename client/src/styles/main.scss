@@ -1,11 +1,9 @@
 .Main {
-  float: none;
-  .input-area {
-    margin: 15px auto;
+  h1 {
     text-align: center;
   }
-  .boards {
-    margin-bottom: 40px;
-    text-align: center;
+
+  button {
+    margin-left: 20px;
   }
 }

@@ -21,7 +21,7 @@ function collect(connect, monitor) {
   }
 }
 
-@connect(mapStateToProps, mapDispatchToProps)
+@connect(null, mapDispatchToProps)
 @DropTarget('Issue', targetSpec, collect)
 export default class Column extends Component {
   render() {
@@ -52,8 +52,4 @@ export default class Column extends Component {
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({ updateIssue }, dispatch)
-}
-
-function mapStateToProps(state) {
-  return { tickets: state.issues.get('tickets') }
 }
