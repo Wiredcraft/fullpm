@@ -14,6 +14,7 @@
     - role: wcl-strongloop
       strongloop_install: false
       strongloop_deploy: yes
+      use_package: yes
       strongloop_instances:
         - name: pmhub
           update: true
