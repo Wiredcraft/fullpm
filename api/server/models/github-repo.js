@@ -107,7 +107,7 @@ module.exports = function(GithubRepo) {
         return Promise.resolve(Meta.create({
           id: issue.id,
           column: defaultColumn,
-          ranking: defaultRanking
+          ranking: issue.number
         })).return(issue);
       });
     }).map((issue) => {
@@ -177,7 +177,7 @@ module.exports = function(GithubRepo) {
             promise.then(syncIssues);
           } else {
             debug('skipping:', data.id);
-            promise = repo;
+            promise = Promise.join(repo.ensureMeta(), repo.ensureCache(), () => repo);
           }
           return promise;
         });
