@@ -4,10 +4,10 @@
     - name: ping
       ping: {}
 
-- hosts: pmhub
+- hosts: fullpm
   vars_prompt:
-    - name: version_pmhub
-      prompt: 'pmhub repo version'
+    - name: version_fullpm
+      prompt: 'fullpm repo version'
       default: "master"
       private: false
   roles:
@@ -16,12 +16,12 @@
       strongloop_deploy: yes
       use_package: yes
       strongloop_instances:
-        - name: pmhub
+        - name: fullpm
           update: true
-          repo: "{{ pmhub_repo_url }}"
-          version: "{{ pmhub_repo_version }}"
-          env: "{{ pmhub_repo_env }}"
-          instance_root: "{{ pmhub_instance_root }}"
+          repo: "{{ fullpm_repo_url }}"
+          version: "{{ fullpm_repo_version }}"
+          env: "{{ fullpm_repo_env }}"
+          instance_root: "{{ fullpm_instance_root }}"
 
   tasks:
     - name: Run DB initialization script
@@ -29,30 +29,30 @@
         NODE_ENV: "{{ node_env }}"
       command: node ./server/install.js
       args:
-        chdir: /opt/pmhub/pmhub/{{ pmhub_instance_root }}
+        chdir: /opt/fullpm/fullpm/{{ fullpm_instance_root }}
 
-- hosts: pmhub
+- hosts: fullpm
   tasks:
     - name: Run npm install for client folder
       npm:
-        path=/opt/pmhub/pmhub/client
+        path=/opt/fullpm/fullpm/client
 
     - name: Build static site.
       command: npm run build-prod
       environment:
-        API_BASE_URL: "{{ pmhub_api_base_url }}"
+        API_BASE_URL: "{{ fullpm_api_base_url }}"
       args:
-        chdir: /opt/pmhub/pmhub/client
+        chdir: /opt/fullpm/fullpm/client
 
     - name: Synchronize the generated static folder to /var/www/
       synchronize:
-        src=/opt/pmhub/pmhub/client/dist/
+        src=/opt/fullpm/fullpm/client/dist/
         dest={{ webroot }}
         recursive=yes
         delete=yes
       delegate_to: "{{ inventory_hostname }}"
 
-    - name: Set owner of folder for /var/wwww/pmhub
+    - name: Set owner of folder for /var/wwww/fullpm
       file:
         path={{ webroot }}
         state=directory

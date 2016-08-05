@@ -46,7 +46,7 @@ ansible-playbook -i inventory.xxx main.yml
 This step is part of the build process. If you only want to redeploy code, then use this command.
 
 ```
-ansible-playbook -i inventory.xxx deploy-pmhub.yml
+ansible-playbook -i inventory.xxx deploy-fullpm.yml
 ```
 
 ## Server Specification
