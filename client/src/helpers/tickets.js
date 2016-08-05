@@ -21,20 +21,12 @@ function sortTickets(tickets) {
 
 export function parserTickets(tickets, filter, sorted) {
   if (sorted) {
-    if (filter === '') {
-      return tickets.map(d => {
-        d.issues = d.issues.map(issue => {
-          issue.hide = false
-          return issue
-        })
-        return d
-      })
-    }
-
     return tickets.map(d => {
       d.issues = d.issues.map(issue => {
-        issue.hide = !(issue.title.toLowerCase()
+        if (filter === '') issue.hide = false
+        else issue.hide = !(issue.title.toLowerCase()
           .indexOf(filter.toLowerCase()) !== -1)
+
         return issue
       })
       return d
