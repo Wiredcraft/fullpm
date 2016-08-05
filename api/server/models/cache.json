@@ -39,6 +39,14 @@
     "cachedAt": {
       "type": "date",
       "required": true
+    },
+    "assignees": [
+      {
+        "type": "Object"
+      }
+    ],
+    "comments": {
+      "type": "number"
     }
   },
   "validations": [],

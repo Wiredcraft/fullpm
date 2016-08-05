@@ -5,7 +5,6 @@ import 'styles/app'
 import 'normalize.css/normalize.css'
 import Main from './Main'
 import NotFound from './NotFound'
-import { isDevMode } from '../helper/dev'
 
 
 class Container extends Component {
