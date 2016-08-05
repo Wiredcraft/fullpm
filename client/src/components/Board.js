@@ -66,6 +66,15 @@ export default class Board extends React.Component {
       this.setState({ onLoading: false })
       if (repoBtn) repoBtn.disabled = false
     })
+    this.setState({ orgName: userName, repoName })
+  }
+
+  newIssue() {
+    const { orgName, repoName } = this.state
+    window.open(
+      `https://github.com/${orgName}/${repoName}/issues/new`,
+      '_blank'
+    )
   }
 
   logout() {
@@ -113,7 +122,14 @@ export default class Board extends React.Component {
         { notFound && <p>Repo not found</p> }
         <ProgressBar hide={!onLoading} />
         <header className='controls'>
-          <button className='button primary'>New issue</button>
+          {
+            orgName && (<button
+              className='button primary'
+              onClick={() => this.newIssue()}
+            >
+              New issue
+            </button>)
+          }
           <input
             placeholder='Filter issues by title'
             type='search'
