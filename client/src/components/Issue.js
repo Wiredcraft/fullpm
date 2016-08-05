@@ -67,6 +67,7 @@ export default class Issue extends Component {
       comments,
       connectDragSource,
       connectDropTarget,
+      hide,
       id,
       isDragging,
       isOver,
@@ -75,8 +76,16 @@ export default class Issue extends Component {
       url
     } = this.props
 
+    const marginTop = (isOver && !isDragging) ? 20 : 0
     return connectDragSource(connectDropTarget(
-      <article className={`${className} issue ${isDragging ? 'dragged' : ''}`} id={id}>
+      <article
+        className={`${className} issue ${isDragging ? 'dragged' : ''}`}
+        id={id}
+        style={{
+          display: hide ? 'none' : 'block',
+          marginTop
+        }}
+      >
         <aside className='assignees'>
           { (assignees || []).map((d, i) => (
               <img key={i} src={ d.avatar_url }/>

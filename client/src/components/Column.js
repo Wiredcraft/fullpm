@@ -58,6 +58,7 @@ export default class Column extends Component {
                 col={this.props.id}
                 comments={d.comments}
                 id={d._id}
+                hide={d.hide}
                 name={d.title}
                 number={d.number}
                 ranking={d.ranking}

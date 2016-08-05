@@ -19,7 +19,27 @@ function sortTickets(tickets) {
   }
 }
 
-export function parserTickets(tickets) {
+export function parserTickets(tickets, filter, sorted) {
+  if (sorted) {
+    if (filter === '') {
+      return tickets.map(d => {
+        d.issues = d.issues.map(issue => {
+          issue.hide = false
+          return issue
+        })
+        return d
+      })
+    }
+
+    return tickets.map(d => {
+      d.issues = d.issues.map(issue => {
+        issue.hide = !(issue.title.toLowerCase()
+          .indexOf(filter.toLowerCase()) !== -1)
+        return issue
+      })
+      return d
+    })
+  }
   sortTickets(tickets)
   // Hide pull requests
   tickets = tickets.filter(d => d.htmlUrl.indexOf('/pull/') === -1)

@@ -7,5 +7,6 @@ export function calcColumnBodyHeight(id) {
   const windowHeight = window.innerHeight
   const headerHeight = header.offsetHeight
 
-  return windowHeight - domOffsetTop - headerHeight
+  // 4 come from border of column.
+  return windowHeight - domOffsetTop - headerHeight - 4
 }

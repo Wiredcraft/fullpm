@@ -6,7 +6,12 @@ import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
 import Column from 'components/Column'
-import { fetchIssues, clearIssues, fetchRepo } from 'actions/issueActions'
+import {
+  changeFilter,
+  clearIssues,
+  fetchIssues,
+  fetchRepo
+} from 'actions/issueActions'
 import 'styles/board'
 import ProgressBar from 'components/ProgressBar'
 import { isDevMode } from '../helper/dev'
@@ -83,6 +88,10 @@ export default class Board extends React.Component {
     setTimeout(() => window.location.reload(), 500)
   }
 
+  changeFilter(e) {
+    this.props.changeFilter(e.target.value)
+  }
+
   render() {
     const { sortedArr } = this.props
     const { orgName, repoName, onLoading, notFound } = this.state
@@ -132,6 +141,7 @@ export default class Board extends React.Component {
           }
           <input
             placeholder='Filter issues by title'
+            onChange={e => this.changeFilter(e)}
             type='search'
           />
         </header>
@@ -155,6 +165,7 @@ export default class Board extends React.Component {
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
+    changeFilter,
     clearIssues,
     fetchIssues,
     fetchRepo
