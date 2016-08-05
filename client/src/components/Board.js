@@ -1,3 +1,4 @@
+/* global API_BASE_URL */
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -67,6 +68,12 @@ export default class Board extends React.Component {
     })
   }
 
+  logout() {
+    const url = `${API_BASE_URL}/auth/logout`
+    window.location = url
+    setTimeout(() => window.location.reload(), 500)
+  }
+
   render() {
     const { sortedArr } = this.props
     const { orgName, repoName, onLoading, notFound } = this.state
@@ -94,6 +101,12 @@ export default class Board extends React.Component {
               ref='repoBtn'
             >
               Change board
+            </button>
+            <button
+              className='button'
+              onClick={() => this.logout()}
+            >
+              Log out
             </button>
           </header>
         )}
