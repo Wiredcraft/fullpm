@@ -88,15 +88,11 @@ export default class Issue extends Component {
       >
         <aside className='assignees'>
           { (assignees || []).map((d, i) => (
-              <img key={i} src={ d.avatar_url }/>
+              <a href={ `https://github.com/${d.login}` } target='_blank' title={ d.login }>
+                <img key={i} src={ d.avatar_url }/>
+              </a>
             ))
           }
-          <span className='tooltip'> Assigned to
-            { (assignees || []).map((d, i) => (
-                <span key={i}>{ d.login }</span>
-              ))
-            }
-          </span>
         </aside>
         <a className='title' href={url} target='_blank'>{ name }</a>
         <span className='meta'>
