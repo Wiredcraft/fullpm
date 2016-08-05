@@ -69,14 +69,13 @@ export default class Issue extends Component {
     return connectDragSource(connectDropTarget(
       <article className={`issue ${isDragging ? 'dragged' : ''}`} id={id}>
         <a className='title' href={url} target='_blank'>{ name }</a>
-        <span className='meta'>#{ number }</span>
+        <span className='meta'>#{ number } · {comments} comment(s)</span>
         <div>
           { assignees.map((d, i) => (
               <img key={i} src={ d.avatar_url }/>
             ))
           }
         </div>
-        <span>comments: {comments}</span>
       </article>
     ))
   }
