@@ -1,16 +1,18 @@
 import Immutable from 'immutable'
 
 import { CHANGE_TICKETS } from 'actions/issueActions'
+import { parserTickets } from 'helpers/tickets'
 
 
-const initialState = Immutable.fromJS({
+let initialState = Immutable.fromJS({
   tickets: []
 })
+initialState = initialState.set('tickets', parserTickets([]))
 
 export default function issues (state = initialState, action) {
   switch (action.type) {
   case CHANGE_TICKETS:
-    state = state.set('tickets', action.payload)
+    state = state.set('tickets', parserTickets(action.payload))
     return state
   default:
     return state

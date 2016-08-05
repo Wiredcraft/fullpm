@@ -131,6 +131,6 @@ function mapDispatchToProps (dispatch) {
 
 function mapStateToProps(state) {
   return {
-    sortedArr: parserTickets(state.issues.get('tickets'))
+    sortedArr: state.issues.get('tickets')
   }
 }

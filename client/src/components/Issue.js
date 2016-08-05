@@ -4,9 +4,12 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import { updateIssue } from 'actions/issueActions'
+import DropManager from 'helper/dropManager'
+import { calcRanking } from 'helper/ranking'
 import 'styles/issue'
 
-
+//TODO move this to redux store
+const dropManager = new DropManager()
 const dragSource = {
   spec: {
     beginDrag({ id }) {
@@ -16,10 +19,14 @@ const dragSource = {
     endDrag(props, monitor) {
       const item = monitor.getItem()
       const dropResult = monitor.getDropResult()
-      const { updateIssue } = props
-
+      const { updateIssue, issueList, ranking } = props
       if (dropResult) {
-        updateIssue(item.id, dropResult.id)
+        const { containerId } = dropResult
+        const { hoveringIssueID } = dropManager
+        const newRanking =
+          calcRanking(hoveringIssueID, containerId, ranking, issueList)
+        updateIssue(item.id, containerId, newRanking)
+        dropManager.clearhoveringIssue()
       }
     }
   },
@@ -31,8 +38,15 @@ const dragSource = {
   }
 }
 
-@connect(null, mapDispatchToProps)
-@DropTarget('Issue', {}, (connect, monitor) => ({
+const targetSpec = {
+  drop({ id }) {
+    dropManager.updatehoveringIssue(id)
+    return undefined
+  }
+}
+
+@connect(mapStateToProps, mapDispatchToProps)
+@DropTarget('Issue', targetSpec, (connect, monitor) => ({
   connectDropTarget: connect.dropTarget(),
   isOver: monitor.isOver()
 }))
@@ -59,6 +73,12 @@ export default class Issue extends Component {
         </a>
       </article>
     ))
+  }
+}
+
+function mapStateToProps(state) {
+  return {
+    issueList: state.issues.get('tickets')
   }
 }
 

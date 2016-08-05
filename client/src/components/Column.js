@@ -10,7 +10,7 @@ import { updateIssue } from 'actions/issueActions'
 
 const targetSpec = {
   drop({ id }) {
-    return { id }
+    return { containerId: id }
   }
 }
 
@@ -40,6 +40,7 @@ export default class Column extends Component {
                 id={d._id}
                 name={d.title}
                 number={d.number}
+                ranking={d.ranking}
                 url={d.htmlUrl}
               />
             ))
