@@ -30,4 +30,8 @@
       float: right;
     }
   }
+  .columns {
+    overflow-x: scroll;
+    white-space: nowrap;
+  }
 }
