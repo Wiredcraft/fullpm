@@ -41,9 +41,10 @@ export default class Column extends Component {
     const { connectDropTarget, title, issues, id } = this.props
     const { bodyMaxHeight } = this.state
 
+    const count = issues.filter(d => !d.hide).length
     return connectDropTarget(
       <section className='column' id={`column${id}`}>
-        <header className='header'>{ title }</header>
+        <header className='header'>{ title } { count }</header>
         <div
           className='body'
           id={id}
