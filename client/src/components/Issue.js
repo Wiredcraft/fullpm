@@ -90,7 +90,9 @@ export default class Issue extends Component {
           </span>
         </aside>
         <a className='title' href={url} target='_blank'>{ name }</a>
-        <span className='meta'>#{ number } · {comments} comment(s)</span>
+        <span className='meta'>
+          #{ number } · {comments ? comments : 0} comment{ comments > 1 ? 's' : ''}
+        </span>
       </article>
     ))
   }
