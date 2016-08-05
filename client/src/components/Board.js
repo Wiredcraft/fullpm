@@ -99,18 +99,23 @@ export default class Board extends React.Component {
         )}
         { notFound && <p>Repo not found</p> }
         <ProgressBar hide={!onLoading} />
-          <div className='columns'>
-          {
-            sortedArr.map((d, i) => (
-              <Column
-                key={i}
-                id={d.id}
-                issues={d.issues}
-                title={d.name}
-              />
-            ))
-          }
-          </div>
+        <input
+          placeholder='Title of issue'
+          type='text'
+        />
+        <button>New issue</button>
+        <div className='columns'>
+        {
+          sortedArr.map((d, i) => (
+            <Column
+              key={i}
+              id={d.id}
+              issues={d.issues}
+              title={d.name}
+            />
+          ))
+        }
+        </div>
       </div>
     )
   }
