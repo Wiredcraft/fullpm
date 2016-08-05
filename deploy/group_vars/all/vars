@@ -1,4 +1,4 @@
-webroot: "/var/www/pmhub"
+webroot: "/var/www/fullpm"
 web_user: www-data
 web_group: www-data
 ssl_key_path: "/etc/nginx/ssl/star.wiredcraft.net.key"
