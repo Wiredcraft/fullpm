@@ -6,7 +6,7 @@ import { DropTarget } from 'react-dnd'
 import Issue from 'components/Issue'
 import 'styles/column'
 import { updateIssue } from 'actions/issueActions'
-import { checkIsColumnNeedScroll } from '../helper/column'
+import { calcColumnBodyHeight } from '../helper/column'
 
 
 const targetSpec = {
@@ -27,24 +27,29 @@ function collect(connect, monitor) {
 export default class Column extends Component {
   constructor() {
     super()
-    this.state = { needScroll: false }
+    this.state = { bodyMaxHeight: 0 }
   }
 
   componentWillMount() {
     const { id } = this.props
     setInterval(() => {
-      this.setState({ needScroll: checkIsColumnNeedScroll(id) })
+      this.setState({ bodyMaxHeight: calcColumnBodyHeight(id) })
     }, 50)
   }
 
   render() {
     const { connectDropTarget, title, issues, id } = this.props
-    const { needScroll } = this.state
+    const { bodyMaxHeight } = this.state
 
     return connectDropTarget(
       <section className='column' id={`column${id}`}>
         <header className='header'>{ title }</header>
-        <div ref='list' className='body' id={id}>
+        <div
+          className='body'
+          id={id}
+          ref='list'
+          style={{ maxHeight: bodyMaxHeight }}
+        >
           {
             issues.map((d, i) => (
               <Issue
