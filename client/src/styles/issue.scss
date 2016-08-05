@@ -1,3 +1,6 @@
+@import './variables.scss';
+@import 'node_modules/bourbon/app/assets/stylesheets/_bourbon.scss';
+
 .issue {
   background: #fff;
   border: 1px solid #d8d8d8;
@@ -15,25 +18,36 @@
     opacity: 0.4;
   }
   &.grabbed {
-    transform: rotate(3deg);
+    transfor: rotate(3deg);
     width: 248px;
   }
   .assignees {
     float: right;
-    margin: 0 0 5px 5px;
+    height: 20px;
+    margin: 0 -1px 5px 5px;
+    overflow: visible;
+    position: relative;
+    width: 20px;
+    z-index: 999;
+    &:hover {
+      a {
+        margin-left: -40px;
+      }
+    }
+    a {
+      display: inline-block;
+      margin-left: -26px;
+      @include transition-property(margin, opacity);
+      @include transition-duration(0.2s);
+      &:first-child {
+        margin-left: 0;
+      }
+    }
     img {
       border-right: 1px solid #fff;
       border-radius: 2px;
       height: 20px;
       width: 20px;
-    }
-    .tooltip {
-      display: none;
-    }
-    &:hover {
-      .assignee {
-        // display: inline-block;
-      }
     }
   }
   .title {
