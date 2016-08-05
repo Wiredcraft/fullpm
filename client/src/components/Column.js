@@ -10,7 +10,7 @@ import { updateIssue } from 'actions/issueActions'
 
 const targetSpec = {
   drop({ id }) {
-    return { id }
+    return { containerId: id }
   }
 }
 
@@ -29,7 +29,7 @@ export default class Column extends Component {
     return connectDropTarget(
       <section className='column' id={`column${id}`}>
         <header className='header'>{ title }</header>
-        <div ref='list' className='issue-list' id={id}>
+        <div ref='list' className='body' id={id}>
           {
             issues.map((d, i) => (
               <Issue
@@ -38,6 +38,7 @@ export default class Column extends Component {
                 id={d._id}
                 name={d.title}
                 number={d.number}
+                ranking={d.ranking}
                 url={d.htmlUrl}
               />
             ))

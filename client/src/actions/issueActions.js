@@ -33,10 +33,7 @@ export function fetchIssues(cacheDbUrl, metaDbUrl, name, next) {
         const tickets = generateTickets(githubTickets, metaTickets, name)
 
         dispatch({ type: CHANGE_TICKETS, payload: tickets })
-        dispatch(updateRepoSelected(true))
-        if (next) {
-          next()
-        }
+        if (next) next()
       })
     })
   }
@@ -81,12 +78,12 @@ export function fetchRepo(userName, repoName, next) {
   }
 }
 
-export function updateIssue(issueID, columnID) {
-  return dispatch => {
+export function updateIssue(issueID, columnID, ranking) {
+  return () => {
     const issueType = columnID
     return metaDb.get(issueID).then(function (doc) {
       doc.column = issueType
-      dispatch(updateRepoSelected(true))
+      if (ranking) doc.ranking = ranking
       return metaDb.put(doc)
     })
   }
@@ -94,7 +91,6 @@ export function updateIssue(issueID, columnID) {
 
 export function clearIssues() {
   return dispatch => {
-    dispatch(updateRepoSelected(false))
     return dispatch({ type: CHANGE_TICKETS, payload: [] })
   }
 }
