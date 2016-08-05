@@ -50,13 +50,10 @@ export default class Issue extends Component {
       url
     } = this.props
 
-    const marginTop = isOver && !isDragging ? 30 : 0
-
     return connectDragSource(connectDropTarget(
-      <article className='Issue' id={id} style={{ marginTop }} >
-        <a className='text' href={url} target='_blank'>
-          { `${number}: ${name}` }
-        </a>
+      <article className={`issue ${isDragging ? 'dragged' : ''}`} id={id}>
+        <a className='title' href={url} target='_blank'>{ name }</a>
+        <span className='meta'>#{ number }</span>
       </article>
     ))
   }

@@ -27,10 +27,8 @@ export default class Column extends Component {
   render() {
     const { connectDropTarget, title, issues, id } = this.props
     return connectDropTarget(
-      <section className='Column' id={`column${id}`}>
-        <header className='drag-handle'>
-          <span>{ title }</span>
-        </header>
+      <section className='column' id={`column${id}`}>
+        <header className='header'>{ title }</header>
         <div ref='list' className='issue-list' id={id}>
           {
             issues.map((d, i) => (

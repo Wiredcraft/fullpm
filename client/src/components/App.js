@@ -4,7 +4,6 @@ import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 import 'styles/app'
 import 'normalize.css/normalize.css'
 import Main from './Main'
-import Header from './Header'
 import NotFound from './NotFound'
 import { isDevMode } from '../helper/dev'
 
@@ -13,7 +12,6 @@ class Container extends Component {
   render() {
     return (
       <div>
-        { isDevMode && <Header /> }
         { this.props.children }
       </div>
     )

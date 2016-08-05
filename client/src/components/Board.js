@@ -72,38 +72,34 @@ export default class Board extends React.Component {
     const { orgName, repoName, onLoading, notFound } = this.state
 
     return (
-      <div className='Board row'>
-        <div className='small-8 small-centered column input-area'>
-          { isDevMode && (
-            <div>
-              <input
-                className='small-6 column'
-                defaultValue={ orgName || 'Wiredcraft' }
-                placeholder='Name of user or group'
-                ref='user'
-                type='text'
-              />
-              <input
-                className='small-6 column'
-                defaultValue={ repoName || 'pipelines' }
-                placeholder='Name of repositories'
-                ref='repo'
-                type='text'
-              />
-              <button
-                className='button'
-                onClick={() => this.changeBoard()}
-                ref='repoBtn'
-              >
-                Change board
-              </button>
-            </div>
-          )}
-          { notFound && <p>Repo not found</p> }
-          <ProgressBar hide={!onLoading} />
-        </div>
-        <div className='boards small-centered column'>
-          <div ref='list'>
+      <div className='board'>
+        { isDevMode && (
+          <header className='toolbar'>
+            <span className='logo'>FullPM</span>
+            <input
+              defaultValue={ orgName || 'Wiredcraft' }
+              placeholder='Name of user or group'
+              ref='user'
+              type='text'
+            />
+            <input
+              defaultValue={ repoName || 'pipelines' }
+              placeholder='Name of repositories'
+              ref='repo'
+              type='text'
+            />
+            <button
+              className='button'
+              onClick={() => this.changeBoard()}
+              ref='repoBtn'
+            >
+              Change board
+            </button>
+          </header>
+        )}
+        { notFound && <p>Repo not found</p> }
+        <ProgressBar hide={!onLoading} />
+          <div className='columns'>
           {
             sortedArr.map((d, i) => (
               <Column
@@ -115,7 +111,6 @@ export default class Board extends React.Component {
             ))
           }
           </div>
-        </div>
       </div>
     )
   }
