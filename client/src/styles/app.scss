@@ -63,9 +63,22 @@ textarea {
   &.primary {
     background-color: #60b044;
     @include linear-gradient(#8add6d, #60b044);
-    border: 1px solid #5ca941;
+    border-color: #5ca941;
     color: #fff;
     text-shadow: 0 -1px 0 rgba(0,0,0,0.15);
+    &:hover {
+      background-color: #569e3d;
+      @include linear-gradient(#79d858, #569e3d);
+      border-color: #4a993e;
+    }
+    &:active {
+      background: #569e3d;
+      border-color: #418737;
+      text-shadow: 0 1px 0 rgba(0,0,0,0.15);
+      &:focus {
+        box-shadow: 0 0 5px rgba(81,167,232,0.5), 0 2px 4px rgba(0,0,0,0.15) inset;
+      }
+    }
   }
 }
 

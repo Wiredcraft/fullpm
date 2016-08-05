@@ -7,9 +7,7 @@ export default class ProgressBar extends Component {
     const { hide } = this.props
     const display = hide ? 'none' : 'block'
     return (
-      <div className='ProgressBar' style={{ display }}>
-        <div className='progrss' />
-      </div>
+      <div className='loader' style={{ display }}></div>
     )
   }
 }
