@@ -63,6 +63,7 @@ export default class Issue extends Component {
   render() {
     const {
       assignees,
+      className,
       comments,
       connectDragSource,
       connectDropTarget,
@@ -75,7 +76,7 @@ export default class Issue extends Component {
     } = this.props
 
     return connectDragSource(connectDropTarget(
-      <article className={`issue ${isDragging ? 'dragged' : ''}`} id={id}>
+      <article className={`${className} issue ${isDragging ? 'dragged' : ''}`} id={id}>
         <aside className='assignees'>
           { (assignees || []).map((d, i) => (
               <img key={i} src={ d.avatar_url }/>

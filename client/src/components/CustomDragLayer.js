@@ -57,6 +57,7 @@ export default class CustomDragLayer extends Component {
             number={d.number}
             ranking={d.ranking}
             url={d.htmlUrl}
+            className='grabbed'
           />
         </div>
       </div>

@@ -8,6 +8,16 @@
   margin-bottom: 5px;
   padding: 6px 8px;
   text-align: left;
+  &:hover {
+    border: 1px solid #ccc;
+  }
+  &.dragged {
+    opacity: 0.4;
+  }
+  &.grabbed {
+    transform: rotate(3deg);
+    width: 248px;
+  }
   .assignees {
     float: right;
     margin: 0 0 5px 5px;
