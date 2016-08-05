@@ -72,7 +72,7 @@ export default class Board extends React.Component {
     const { orgName, repoName, onLoading, notFound } = this.state
 
     return (
-      <div className={`board ${isDevMode ? 'toolbar': ''}`}>
+      <div className={`board ${isDevMode ? 'dev': ''}`}>
         { isDevMode && (
           <header className='toolbar'>
             <span className='logo'>FullPM</span>
@@ -99,18 +99,25 @@ export default class Board extends React.Component {
         )}
         { notFound && <p>Repo not found</p> }
         <ProgressBar hide={!onLoading} />
-          <div className='columns'>
-          {
-            sortedArr.map((d, i) => (
-              <Column
-                key={i}
-                id={d.id}
-                issues={d.issues}
-                title={d.name}
-              />
-            ))
-          }
-          </div>
+        <header className='controls'>
+          <button className='button primary'>New issue</button>
+          <input
+            placeholder='Filter issues by title'
+            type='search'
+          />
+        </header>
+        <div className='columns'>
+        {
+          sortedArr.map((d, i) => (
+            <Column
+              key={i}
+              id={d.id}
+              issues={d.issues}
+              title={d.name}
+            />
+          ))
+        }
+        </div>
       </div>
     )
   }

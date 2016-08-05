@@ -18,8 +18,15 @@
       padding: 3px 10px;
     }
   }
-  .boards {
-    margin-bottom: 40px;
-    text-align: center;
+  .controls {
+    margin-bottom: 10px;
+    input,
+    .button {
+      font-size: 12px;
+      padding: 3px 10px;
+    }
+    .primary {
+      float: right;
+    }
   }
 }

@@ -8,6 +8,24 @@
   margin-bottom: 5px;
   padding: 6px 8px;
   text-align: left;
+  .assignees {
+    float: right;
+    margin: 0 0 5px 5px;
+    img {
+      border-right: 1px solid #fff;
+      border-radius: 2px;
+      height: 20px;
+      width: 20px;
+    }
+    .tooltip {
+      display: none;
+    }
+    &:hover {
+      .assignee {
+        // display: inline-block;
+      }
+    }
+  }
   .title {
     color: inherit;
     font-weight: bold;
