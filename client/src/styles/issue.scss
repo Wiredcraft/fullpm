@@ -18,7 +18,7 @@
     opacity: 0.4;
   }
   &.grabbed {
-    transfor: rotate(3deg);
+    transform: rotate(3deg);
     width: 248px;
   }
   .assignees {
@@ -28,8 +28,8 @@
     overflow: visible;
     position: relative;
     width: 20px;
-    z-index: 999;
     &:hover {
+      z-index: 999;
       a {
         margin-left: -40px;
       }
