@@ -7,7 +7,7 @@ dev-kenhq-1
 [couchdb]
 dev-kenhq-1
 
-[pmhub]
+[fullpm]
 dev-kenhq-1
 
 [web]
@@ -17,6 +17,6 @@ dev-kenhq-1
 redis
 nodejs
 couchdb
-pmhub
+fullpm
 web
 
