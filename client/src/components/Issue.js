@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { DragSource, DropTarget } from 'react-dnd'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { getEmptyImage } from 'react-dnd-html5-backend'
 
 import { updateIssue } from 'actions/issueActions'
 import DropManager from 'helper/dropManager'
@@ -12,8 +13,8 @@ import 'styles/issue'
 const dropManager = new DropManager()
 const dragSource = {
   spec: {
-    beginDrag({ id }) {
-      return { id }
+    beginDrag(props) {
+      return props
     },
 
     endDrag(props, monitor) {
@@ -32,6 +33,7 @@ const dragSource = {
   },
   collect(connect, monitor) {
     return {
+      connectDragPreview: connect.dragPreview(),
       connectDragSource: connect.dragSource(),
       isDragging: monitor.isDragging()
     }
@@ -52,6 +54,12 @@ const targetSpec = {
 }))
 @DragSource('Issue', dragSource.spec, dragSource.collect)
 export default class Issue extends Component {
+  componentWillMount() {
+    this.props.connectDragPreview(getEmptyImage(), {
+      captureDraggingState: true
+    })
+  }
+
   render() {
     const {
       assignees,

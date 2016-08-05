@@ -8,8 +8,8 @@ import Column from 'components/Column'
 import { fetchIssues, clearIssues, fetchRepo } from 'actions/issueActions'
 import 'styles/board'
 import ProgressBar from 'components/ProgressBar'
-import { parserTickets } from 'helpers/tickets'
 import { isDevMode } from '../helper/dev'
+import CustomDragLayer from './CustomDragLayer'
 
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -118,6 +118,7 @@ export default class Board extends React.Component {
           ))
         }
         </div>
+        <CustomDragLayer />
       </div>
     )
   }
