@@ -1,0 +1,6 @@
+- hosts: redis
+  roles:
+    - role: wcl-redis
+      redis_bind: 0.0.0.0
+      redis_max_clients: 10000
+      redis_appendonly: "yes"

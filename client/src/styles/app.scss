@@ -1,0 +1,15 @@
+@import './variables.scss';
+@import 'node_modules/bourbon/app/assets/stylesheets/_bourbon.scss';
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: #fff;
+  margin: 0;
+}
+
+.button {
+  border-radius: 6px;
+}

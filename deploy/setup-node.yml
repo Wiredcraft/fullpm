@@ -1,0 +1,29 @@
+---
+# Load all hosts for the inventory
+- hosts: nodejs
+  tasks:
+    - name: ping
+      ping: {}
+
+- hosts: nodejs
+  roles:
+    - role: wcl-nodejs
+      nodejs_install: bin
+      nodejs_version: 4.4.6
+      # nodejs_bin_url: "https://npm.taobao.org/mirrors/node/v{{nodejs_version}}/node-v{{nodejs_version}}-{{ansible_system|lower}}-x{{ansible_userspace_bits|replace('32', '86')}}.tar.gz"
+      nodejs_npm_configuration:
+        production: true
+        # registry: https://registry.npm.taobao.org
+        prefix: /usr/local
+
+- hosts: nodejs
+  tasks:
+    - name: Install npm@3.10.6
+      npm:
+        name=npm@3.10.6
+        global=yes
+        state=present
+
+- hosts: nodejs
+  roles:
+    - role: wcl-strongloop

@@ -1,18 +1,19 @@
 import React, { Component } from 'react'
-
-import 'styles/App'
-import 'styles/Issue'
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
+
+import 'styles/app'
+import 'normalize.css/normalize.css'
 import Main from './Main'
 import Header from './Header'
 import NotFound from './NotFound'
+import { isDevMode } from '../helper/dev'
 
 
 class Container extends Component {
   render() {
     return (
       <div>
-        <Header />
+        { isDevMode && <Header /> }
         { this.props.children }
       </div>
     )

@@ -1,0 +1,57 @@
+---
+- hosts: web
+  tasks:
+    - name: ping
+      ping: {}
+
+  roles:
+    - role: wcl-nginx
+      nginx_user: "{{ web_user }}"
+      nginx_group: "{{ web_group }}"
+      nginx_http_params:
+        - sendfile on
+        - server_tokens off
+        - access_log /var/log/nginx/access.log
+        - error_log /var/log/nginx/error.log
+        - types_hash_max_size 2048
+        - server_names_hash_bucket_size 512
+        - gzip on
+        - gzip_disable msie6
+        - gzip_proxied any
+        - gzip_comp_level 6
+        - gzip_buffers 16 8k
+        - gzip_http_version 1.1
+        - gzip_types text/plain text/css application/json application/x-javascript application/javascript text/xml application/xml application/xml+rss text/javascript image/svg+xml
+
+      nginx_sites:
+        default:
+          - listen 8000
+          - server_name _
+
+        kenhq:
+          - listen 0.0.0.0:443 ssl
+          - port_in_redirect off
+          - server_name {{ domain }}
+          - location ~* ^(/api|/auth|/proxy)(.*) { proxy_pass http://app; proxy_set_header Host $host;}
+          - location / { root {{ webroot }}; try_files $uri $uri/ /index.html; }
+
+        status:
+          - listen 127.0.0.1:8001
+          - location /nginx_status { stub_status on; access_log off; }
+
+      nginx_configs:
+        ssl:
+          - ssl_certificate_key {{ ssl_key_path }}
+          - ssl_certificate {{ ssl_cert_path }}
+        upstream:
+          - upstream app { server 127.0.0.1:3001; }
+
+- hosts: web
+  tasks:
+    - name: Make sure folder exists.
+      file:
+        path={{ webroot }}
+        state=directory
+        owner={{ web_user }}
+        group={{ web_group }}
+        mode=0755

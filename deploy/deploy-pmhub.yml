@@ -1,0 +1,61 @@
+---
+- hosts: all
+  tasks:
+    - name: ping
+      ping: {}
+
+- hosts: pmhub
+  vars_prompt:
+    - name: version_pmhub
+      prompt: 'pmhub repo version'
+      default: "master"
+      private: false
+  roles:
+    - role: wcl-strongloop
+      strongloop_install: false
+      strongloop_deploy: yes
+      use_package: yes
+      strongloop_instances:
+        - name: pmhub
+          update: true
+          repo: "{{ pmhub_repo_url }}"
+          version: "{{ pmhub_repo_version }}"
+          env: "{{ pmhub_repo_env }}"
+          instance_root: "{{ pmhub_instance_root }}"
+
+  tasks:
+    - name: Run DB initialization script
+      environment:
+        NODE_ENV: "{{ node_env }}"
+      command: node ./server/install.js
+      args:
+        chdir: /opt/pmhub/pmhub/{{ pmhub_instance_root }}
+
+- hosts: pmhub
+  tasks:
+    - name: Run npm install for client folder
+      npm:
+        path=/opt/pmhub/pmhub/client
+
+    - name: Build static site.
+      command: npm run build-prod
+      environment:
+        API_BASE_URL: "{{ pmhub_api_base_url }}"
+      args:
+        chdir: /opt/pmhub/pmhub/client
+
+    - name: Synchronize the generated static folder to /var/www/
+      synchronize:
+        src=/opt/pmhub/pmhub/client/dist/
+        dest={{ webroot }}
+        recursive=yes
+        delete=yes
+      delegate_to: "{{ inventory_hostname }}"
+
+    - name: Set owner of folder for /var/wwww/pmhub
+      file:
+        path={{ webroot }}
+        state=directory
+        owner={{ web_user }}
+        group={{ web_group }}
+        recurse=yes

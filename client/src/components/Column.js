@@ -10,7 +10,7 @@ import { updateIssue } from 'actions/issueActions'
 
 const targetSpec = {
   drop({ id }) {
-    return { id }
+    return { containerId: id }
   }
 }
 
@@ -21,7 +21,7 @@ function collect(connect, monitor) {
   }
 }
 
-@connect(mapStateToProps, mapDispatchToProps)
+@connect(null, mapDispatchToProps)
 @DropTarget('Issue', targetSpec, collect)
 export default class Column extends Component {
   render() {
@@ -40,6 +40,7 @@ export default class Column extends Component {
                 id={d._id}
                 name={d.title}
                 number={d.number}
+                ranking={d.ranking}
                 url={d.htmlUrl}
               />
             ))
@@ -52,8 +53,4 @@ export default class Column extends Component {
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({ updateIssue }, dispatch)
-}
-
-function mapStateToProps(state) {
-  return { tickets: state.issues.get('tickets') }
 }
