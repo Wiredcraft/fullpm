@@ -48,3 +48,14 @@ This step is part of the build process. If you only want to redeploy code, then 
 ```
 ansible-playbook -i inventory.xxx deploy-pmhub.yml
 ```
+
+## Server Specification
+
+- Dev Server
+  * hostname: dev-kenhq.wiredcraft.net
+  * user: root
+  * physical location: dev box in office
+- Staging Server
+  * hostname: staging-kenhq.wiredcraft.net
+  * user: root
+  * physical location: singapore
