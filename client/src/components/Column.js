@@ -6,6 +6,7 @@ import { DropTarget } from 'react-dnd'
 import Issue from 'components/Issue'
 import 'styles/column'
 import { updateIssue } from 'actions/issueActions'
+import { checkIsColumnNeedScroll } from '../helper/column'
 
 
 const targetSpec = {
@@ -24,8 +25,22 @@ function collect(connect, monitor) {
 @connect(null, mapDispatchToProps)
 @DropTarget('Issue', targetSpec, collect)
 export default class Column extends Component {
+  constructor() {
+    super()
+    this.state = { needScroll: false }
+  }
+
+  componentWillMount() {
+    const { id } = this.props
+    setInterval(() => {
+      this.setState({ needScroll: checkIsColumnNeedScroll(id) })
+    }, 50)
+  }
+
   render() {
     const { connectDropTarget, title, issues, id } = this.props
+    const { needScroll } = this.state
+
     return connectDropTarget(
       <section className='column' id={`column${id}`}>
         <header className='header'>{ title }</header>
