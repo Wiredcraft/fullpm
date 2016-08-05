@@ -121,7 +121,7 @@ export default class Board extends React.Component {
               Change board
             </button>
             <button
-              className='button'
+              className='button danger'
               onClick={() => this.logout()}
             >
               Log out

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 
-import 'styles/app'
 import 'normalize.css/normalize.css'
+import 'styles/app'
 import Main from './Main'
 import NotFound from './NotFound'
 
