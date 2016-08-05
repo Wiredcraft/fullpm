@@ -45,16 +45,16 @@ export default class Main extends Component {
     const { promptLogin } = this.state
 
     return isLogin ? (<Board params={params} />) : promptLogin && (
-      <div className='Main'>
-        <h1 style={{ textAlign: 'center' }}>
-          Please login first
-          <button
-            className='button'
-            onClick={() => this.login()}
-          >
-            Log in
-          </button>
-        </h1>
+      <div className='login'>
+        <h1>Just one more thing...</h1>
+        <p>To use <a href='http://fullpm.com' target='_blank'>FullPM</a>, you need first to login with your GitHub account to allow
+        us to read and display your issues on a board.</p>
+        <button
+          className='button primary'
+          onClick={() => this.login()}
+        >
+          Login with GitHub
+        </button>
       </div>
     )
   }
