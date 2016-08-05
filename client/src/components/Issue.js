@@ -54,6 +54,8 @@ const targetSpec = {
 export default class Issue extends Component {
   render() {
     const {
+      assignees,
+      comments,
       connectDragSource,
       connectDropTarget,
       id,
@@ -68,6 +70,13 @@ export default class Issue extends Component {
       <article className={`issue ${isDragging ? 'dragged' : ''}`} id={id}>
         <a className='title' href={url} target='_blank'>{ name }</a>
         <span className='meta'>#{ number }</span>
+        <div>
+          { assignees.map((d, i) => (
+              <img key={i} src={ d.avatar_url }/>
+            ))
+          }
+        </div>
+        <span>comments: {comments}</span>
       </article>
     ))
   }
