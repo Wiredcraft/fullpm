@@ -76,6 +76,12 @@ export default class Issue extends Component {
             ))
           }
         </div>
+        <div>
+          { (assignees || []).map((d, i) => (
+              <span key={i}>{ d.login }</span>
+            ))
+          }
+        </div>
         {
           comments && (
             <span>comments: {comments}</span>
