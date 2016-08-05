@@ -1,0 +1,12 @@
+---
+git_install_from_source: true
+
+# Vars used to build the nodejs code
+pmhub_repo_url: git@github.com:Wiredcraft/pmhub.git
+pmhub_repo_version: "{{ version_pmhub }}"
+pmhub_repo_env:
+  NODE_ENV: "{{ node_env }}"
+nodejs_version: 4.4.6
+pmhub_instance_root: api
+pmhub_api_base_url: https://{{ domain }}
+use_package: yes

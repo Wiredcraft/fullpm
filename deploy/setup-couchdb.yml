@@ -1,0 +1,39 @@
+---
+# http://docs.couchdb.org/en/1.6.1/install/unix.html#installing
+- hosts: couchdb
+  roles:
+    - role: wcl-couchdb
+
+  tasks:
+    - name: Add couchdb user
+      user:
+        name=couchdb
+        createhome=no
+        home=/usr/local/var/lib/couchdb
+
+    - name: Change ownership and permission of the couchdb folders.
+      file:
+        path={{ item }}
+        owner=couchdb
+        group=couchdb
+        mode=0770
+        state=directory
+      with_items:
+        - /usr/local/etc/couchdb
+        - /usr/local/var/lib/couchdb
+        - /usr/local/var/log/couchdb
+        - /usr/local/var/run/couchdb
+
+    - name: Move init script to init folder
+      copy:
+        src=/usr/local/etc/init.d/couchdb
+        dest=/etc/init.d/couchdb
+        owner=root
+        group=root
+        mode=0755
+        remote_src=yes
+
+    - name: Start Couchdb
+      service:
+        name=couchdb
+        state=started
