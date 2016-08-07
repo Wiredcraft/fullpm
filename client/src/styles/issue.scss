@@ -52,7 +52,10 @@
   }
   .title {
     color: inherit;
+    display: block;
     font-weight: bold;
+    line-height: 140%;
+    margin-bottom: 3px;
     text-decoration: none;
     &:hover {
       color: #4078c0;
