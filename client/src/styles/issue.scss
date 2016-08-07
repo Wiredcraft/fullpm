@@ -1,7 +1,7 @@
 @import './variables.scss';
 @import 'node_modules/bourbon/app/assets/stylesheets/_bourbon.scss';
 
-.issue {
+.issue, .issue-placeholder {
   background: #fff;
   border: 1px solid #d8d8d8;
   border-radius: 3px;
@@ -63,4 +63,8 @@
     display: block;
     font-size: 12px;
   }
+}
+
+.issue-placeholder {
+  background: #c4c9cc;
 }

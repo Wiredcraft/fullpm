@@ -5,12 +5,10 @@ import { connect } from 'react-redux'
 import { getEmptyImage } from 'react-dnd-html5-backend'
 
 import { updateIssue } from 'actions/issueActions'
-import DropManager from 'helper/dropManager'
+import dropManager from 'helper/dropManager'
 import { calcRanking } from 'helper/ranking'
 import 'styles/issue'
 
-//TODO move this to redux store
-const dropManager = new DropManager()
 const dragSource = {
   spec: {
     beginDrag(props) {
@@ -47,6 +45,8 @@ const targetSpec = {
   }
 }
 
+let intervalId
+
 @connect(mapStateToProps, mapDispatchToProps)
 @DropTarget('Issue', targetSpec, (connect, monitor) => ({
   connectDropTarget: connect.dropTarget(),
@@ -54,16 +54,46 @@ const targetSpec = {
 }))
 @DragSource('Issue', dragSource.spec, dragSource.collect)
 export default class Issue extends Component {
+  constructor() {
+    super()
+    // use this state for force update
+    this.state = { counter : 0 }
+  }
+
   componentWillMount() {
     this.props.connectDragPreview(getEmptyImage(), {
       captureDraggingState: true
     })
+    intervalId = setInterval(() => {
+      if (this.props.isDragging) {
+        const { counter } = this.state
+        this.setState({ counter: counter + 1 })
+      }
+    }, 200)
+  }
+
+  componentWillUnMount() {
+    clearInterval(intervalId)
+  }
+
+  componentWillUpdate(props) {
+    const { isDragging, isOver, col } = props
+    if (!this.props.isOver && isOver) {
+      dropManager.col = col
+    }
+    if (!this.refs.ticket) return
+    const { offsetHeight: height } = this.refs.ticket
+    if (!this.props.isDragging && isDragging && !isOver) {
+      dropManager.height = height
+      dropManager.col = col
+    }
   }
 
   render() {
     const {
       assignees,
       className,
+      col,
       comments,
       connectDragSource,
       connectDropTarget,
@@ -75,30 +105,41 @@ export default class Issue extends Component {
       number,
       url
     } = this.props
-
-    const marginTop = (isOver && !isDragging) ? 20 : 0
     return connectDragSource(connectDropTarget(
-      <article
-        className={`${className} issue ${isDragging ? 'dragged' : ''}`}
-        id={id}
-        style={{
-          display: hide ? 'none' : 'block',
-          marginTop
-        }}
-      >
-        <aside className='assignees'>
-          { (assignees || []).map((d, i) => (
-              <a href={ `https://github.com/${d.login}` } target='_blank' title={ d.login }>
-                <img key={i} src={ d.avatar_url }/>
-              </a>
-            ))
-          }
-        </aside>
-        <a className='title' href={url} target='_blank'>{ name }</a>
-        <span className='meta'>
-          #{ number } · {comments ? comments : 0} comment{ comments > 1 ? 's' : ''}
-        </span>
-      </article>
+      <div>
+        {
+          ((isOver || isDragging) && (dropManager.col === col)) && (
+            <div
+              className='issue-placeholder'
+              style={{ height: dropManager.height }}
+            />
+          )
+        }
+        {
+          !(isOver && isDragging) && !(isDragging) && (
+            <article
+              className={`${className} issue ${isDragging ? 'dragged' : ''}`}
+              id={id}
+              ref='ticket'
+              style={{ display: hide ? 'none' : 'block' }}
+            >
+              <aside className='assignees'>
+              {
+                (assignees || []).map((d, i) => (
+                  <a href={ `https://github.com/${d.login}` } target='_blank' title={ d.login }>
+                    <img key={i} src={ d.avatar_url }/>
+                  </a>
+                ))
+              }
+              </aside>
+              <a className='title' href={url} target='_blank'>{ name }</a>
+              <span className='meta'>
+                #{ number } · {comments ? comments : 0} comment{ comments > 1 ? 's' : ''}
+              </span>
+            </article>
+          )
+        }
+      </div>
     ))
   }
 }
