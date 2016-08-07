@@ -1,5 +1,5 @@
 /* global API_BASE_URL */
-import PouchDB, { metaDb, cacheDb } from 'helpers/pouchDb'
+import PouchDB from 'pouchdb'
 
 import request from 'superagent'
 
@@ -19,9 +19,13 @@ function generateTickets(githubTickets, metaTickets, name) {
     })
 }
 
+let metaDb
+let cacheDb
 export function fetchIssues(cacheDbUrl, metaDbUrl, name, next) {
   let metaDBSynced = false
   let cacheDBSynced = false
+  metaDb = new PouchDB(`meta${name}`)
+  cacheDb = new PouchDB(`cache${name}`)
   const changeTickets = (dispatch) => {
     if (!metaDBSynced || !cacheDBSynced) {
       return
@@ -39,11 +43,11 @@ export function fetchIssues(cacheDbUrl, metaDbUrl, name, next) {
   }
 
   return dispatch => {
-    PouchDB.sync('kenhq_cache', cacheDbUrl).then(() => {
+    PouchDB.sync(`cache${name}`, cacheDbUrl).then(() => {
       metaDBSynced = true
       changeTickets(dispatch)
     })
-    return PouchDB.sync('kenhq_meta', metaDbUrl).then(() => {
+    return PouchDB.sync(`meta${name}`, metaDbUrl).then(() => {
       cacheDBSynced = true
       changeTickets(dispatch)
       metaDb.changes({

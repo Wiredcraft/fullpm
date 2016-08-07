@@ -1,4 +1,4 @@
-export default class DropManager {
+class DropManager {
   constructor() {
     this.hoveringIssueID = undefined
   }
@@ -11,3 +11,6 @@ export default class DropManager {
     this.hoveringIssueID = undefined
   }
 }
+
+//TODO move this to redux store
+export default new DropManager()
