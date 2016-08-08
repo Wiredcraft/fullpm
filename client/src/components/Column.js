@@ -22,7 +22,7 @@ function collect(connect, monitor) {
   }
 }
 
-@connect(null, mapDispatchToProps)
+@connect(mapStateToProps, mapDispatchToProps)
 @DropTarget('Issue', targetSpec, collect)
 export default class Column extends Component {
   constructor() {
@@ -42,7 +42,7 @@ export default class Column extends Component {
   }
 
   render() {
-    const { connectDropTarget, title, issues, id, isOver } = this.props
+    const { connectDropTarget, title, issues, id, isOver, onSync } = this.props
     const { bodyMaxHeight } = this.state
 
     const count = issues.filter(d => !d.hide).length
@@ -79,6 +79,12 @@ export default class Column extends Component {
         </div>
       </section>
     )
+  }
+}
+
+function mapStateToProps(state) {
+  return {
+    onSync: state.issues.get('onSync')
   }
 }
 

@@ -5,6 +5,7 @@ import request from 'superagent'
 
 export const CHANGE_TICKETS = 'CHANGE_TICKETS'
 export const CHANGE_FILTER = 'CHANGE_FILTER'
+export const CHANGE_SYNC_MODE = 'CHANGE_SYNC_MODE'
 
 function generateTickets(githubTickets, metaTickets, name) {
   const metaTicketsMap = {}
@@ -38,6 +39,7 @@ export function fetchIssues(cacheDbUrl, metaDbUrl, name, next) {
         const tickets = generateTickets(githubTickets, metaTickets, name)
 
         dispatch({ type: CHANGE_TICKETS, payload: tickets })
+        dispatch({ type: CHANGE_SYNC_MODE,  payload: false })
         if (next) next()
       })
     })
@@ -64,7 +66,7 @@ export function fetchIssues(cacheDbUrl, metaDbUrl, name, next) {
 export function fetchRepo(userName, repoName, next) {
   return dispatch => {
     const url = `${API_BASE_URL}/api/repos/github/${userName}/${repoName}`
-
+    dispatch({ type: CHANGE_SYNC_MODE,  payload: true })
     request
       .get(url)
       .withCredentials()
@@ -84,11 +86,12 @@ export function fetchRepo(userName, repoName, next) {
 }
 
 export function updateIssue(issueID, columnID, ranking) {
-  return () => {
+  return dispatch => {
     const issueType = columnID
     return metaDb.get(issueID).then(function (doc) {
       doc.column = issueType
       if (ranking) doc.ranking = ranking
+      dispatch({ type: CHANGE_SYNC_MODE,  payload: true })
       return metaDb.put(doc)
     })
   }
