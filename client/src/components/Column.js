@@ -31,9 +31,10 @@ export default class Column extends Component {
   }
 
   componentWillMount() {
+    const { id } = this.props
     setInterval(() => {
       const { bodyMaxHeight } = this.state
-      const newHeight = calcColumnBodyHeight()
+      const newHeight = calcColumnBodyHeight(id)
       if (newHeight !== bodyMaxHeight) {
         this.setState({ bodyMaxHeight: newHeight })
       }
