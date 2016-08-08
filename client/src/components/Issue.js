@@ -77,9 +77,10 @@ export default class Issue extends Component {
   }
 
   componentWillUpdate(props) {
-    const { isDragging, isOver, col } = props
+    const { id, isDragging, isOver, col } = props
     if (!this.props.isOver && isOver) {
       dropManager.col = col
+      dropManager.updatehoveringIssue(id)
     }
     if (!this.refs.ticket) return
     const { offsetHeight: height } = this.refs.ticket
@@ -105,10 +106,13 @@ export default class Issue extends Component {
       number,
       url
     } = this.props
+
+    const haveNotHoverIssue = isDragging && dropManager.hoveringIssueID === undefined
+
     return connectDragSource(connectDropTarget(
       <div>
         {
-          ((isOver || isDragging) && (dropManager.col === col)) && (
+          ((isOver || haveNotHoverIssue) && (dropManager.col === col)) && (
             <div
               className='issue-placeholder'
               style={{ height: dropManager.height }}
