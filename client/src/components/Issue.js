@@ -85,6 +85,7 @@ export default class Issue extends Component {
     if (!this.refs.ticket) return
     const { offsetHeight: height } = this.refs.ticket
     if (!this.props.isDragging && isDragging && !isOver) {
+      dropManager.draggingItem = props
       dropManager.height = height
       dropManager.col = col
     }

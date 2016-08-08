@@ -7,7 +7,7 @@ import Issue from 'components/Issue'
 import 'styles/column'
 import { updateIssue } from 'actions/issueActions'
 import { calcColumnBodyHeight } from '../helper/column'
-
+import dropManager from 'helper/dropManager'
 
 const targetSpec = {
   drop({ id }) {
@@ -44,6 +44,7 @@ export default class Column extends Component {
   render() {
     const { connectDropTarget, title, issues, id, isOver, onSync } = this.props
     const { bodyMaxHeight } = this.state
+    const { draggingItem } = dropManager
 
     const count = issues.filter(d => !d.hide).length
     return connectDropTarget(
@@ -56,20 +57,25 @@ export default class Column extends Component {
           style={{ maxHeight: bodyMaxHeight }}
         >
           {
-            issues.map((d, i) => (
-              <Issue
-                assignees={d.assignees}
-                col={this.props.id}
-                comments={d.comments}
-                hide={d.hide}
-                id={d._id}
-                key={i}
-                name={d.title}
-                number={d.number}
-                ranking={d.ranking}
-                url={d.htmlUrl}
-              />
-            ))
+            issues.map((d, i) => {
+              if (draggingItem && onSync && (d._id === draggingItem.id)) {
+                return undefined
+              }
+              return (
+                <Issue
+                  assignees={d.assignees}
+                  col={this.props.id}
+                  comments={d.comments}
+                  hide={d.hide}
+                  id={d._id}
+                  key={i}
+                  name={d.title}
+                  number={d.number}
+                  ranking={d.ranking}
+                  url={d.htmlUrl}
+                />
+              )
+            })
           }
           {
             issues.length === 0 && isOver && (
