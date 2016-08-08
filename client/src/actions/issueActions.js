@@ -11,7 +11,7 @@ function generateTickets(githubTickets, metaTickets, name) {
   metaTickets.forEach(d => {
     metaTicketsMap[d.id] = d
   })
-  return githubTickets.filter(d => d.url.indexOf(name) !== -1)
+  return githubTickets.filter(d => d.url.toLowerCase().indexOf(name) !== -1)
     .map(d => {
       d.column = metaTicketsMap[d.id].column
       d.ranking = metaTicketsMap[d.id].ranking
@@ -24,6 +24,7 @@ let cacheDb
 export function fetchIssues(cacheDbUrl, metaDbUrl, name, next) {
   let metaDBSynced = false
   let cacheDBSynced = false
+  name = name.toLowerCase()
   metaDb = new PouchDB(`meta${name}`)
   cacheDb = new PouchDB(`cache${name}`)
   const changeTickets = (dispatch) => {

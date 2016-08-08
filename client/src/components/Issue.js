@@ -102,6 +102,7 @@ export default class Issue extends Component {
       id,
       isDragging,
       isOver,
+      isPlaceHolder,
       name,
       number,
       url
@@ -112,7 +113,7 @@ export default class Issue extends Component {
     return connectDragSource(connectDropTarget(
       <div>
         {
-          ((isOver || haveNotHoverIssue) && (dropManager.col === col)) && (
+          (((isOver || haveNotHoverIssue) && (dropManager.col === col)) || isPlaceHolder) && (
             <div
               className='placeholder'
               style={{ height: dropManager.height }}
@@ -120,7 +121,7 @@ export default class Issue extends Component {
           )
         }
         {
-          !(isOver && isDragging) && !(isDragging) && (
+          !(isOver && isDragging) && !(isDragging) && !isPlaceHolder && (
             <article
               className={`${className} issue ${isDragging ? 'dragged' : ''}`}
               id={id}

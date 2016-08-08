@@ -31,14 +31,17 @@ export default class Column extends Component {
   }
 
   componentWillMount() {
-    const { id } = this.props
     setInterval(() => {
-      this.setState({ bodyMaxHeight: calcColumnBodyHeight(id) })
+      const { bodyMaxHeight } = this.state
+      const newHeight = calcColumnBodyHeight()
+      if (newHeight !== bodyMaxHeight) {
+        this.setState({ bodyMaxHeight: newHeight })
+      }
     }, 50)
   }
 
   render() {
-    const { connectDropTarget, title, issues, id } = this.props
+    const { connectDropTarget, title, issues, id, isOver } = this.props
     const { bodyMaxHeight } = this.state
 
     const count = issues.filter(d => !d.hide).length
@@ -57,7 +60,6 @@ export default class Column extends Component {
                 assignees={d.assignees}
                 col={this.props.id}
                 comments={d.comments}
-                displayPlaceHolder={d.displayPlaceHolder}
                 hide={d.hide}
                 id={d._id}
                 key={i}
@@ -67,6 +69,11 @@ export default class Column extends Component {
                 url={d.htmlUrl}
               />
             ))
+          }
+          {
+            issues.length === 0 && isOver && (
+              <Issue isPlaceHolder={true} />
+            )
           }
         </div>
       </section>
