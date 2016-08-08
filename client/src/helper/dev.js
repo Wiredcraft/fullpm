@@ -1,1 +1,1 @@
-export const isDevMode = location.search.indexOf('dev=true') !== -1
+export const isDevMode = location.search.indexOf('toolbar=true') !== -1

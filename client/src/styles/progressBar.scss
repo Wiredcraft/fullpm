@@ -1,24 +1,8 @@
-.ProgressBar {
-  margin-bottom: 16px;
-  height: 16px;
-  width: 100%;
-  background-color: #cacaca;
-
-  .progrss {
-    animation-duration: 5s;
-    animation-iteration-count: infinite;
-    animation-name: progrss-ani;
-    background-color: #2199e8;
-    height: 16px;
-  }
-
-}
-@keyframes progrss-ani {
-  from {
-    width: 0;
-  }
-
-  to {
-    width: 100%;
-  }
+.loader {
+  background: rgba(255, 255, 255, 0.8) url(https://assets-cdn.github.com/images/spinners/octocat-spinner-64.gif) no-repeat center center;
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
 }

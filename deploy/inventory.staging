@@ -7,7 +7,7 @@ staging-kenhq-1
 [couchdb]
 staging-kenhq-1
 
-[pmhub]
+[fullpm]
 staging-kenhq-1
 
 [web]
@@ -17,6 +17,6 @@ staging-kenhq-1
 redis
 nodejs
 couchdb
-pmhub
+fullpm
 web
 

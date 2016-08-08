@@ -2,18 +2,17 @@ import React, { Component } from 'react'
 import { DragSource, DropTarget } from 'react-dnd'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { getEmptyImage } from 'react-dnd-html5-backend'
 
 import { updateIssue } from 'actions/issueActions'
-import DropManager from 'helper/dropManager'
+import dropManager from 'helper/dropManager'
 import { calcRanking } from 'helper/ranking'
 import 'styles/issue'
 
-//TODO move this to redux store
-const dropManager = new DropManager()
 const dragSource = {
   spec: {
-    beginDrag({ id }) {
-      return { id }
+    beginDrag(props) {
+      return props
     },
 
     endDrag(props, monitor) {
@@ -32,6 +31,7 @@ const dragSource = {
   },
   collect(connect, monitor) {
     return {
+      connectDragPreview: connect.dragPreview(),
       connectDragSource: connect.dragSource(),
       isDragging: monitor.isDragging()
     }
@@ -45,6 +45,8 @@ const targetSpec = {
   }
 }
 
+let intervalId
+
 @connect(mapStateToProps, mapDispatchToProps)
 @DropTarget('Issue', targetSpec, (connect, monitor) => ({
   connectDropTarget: connect.dropTarget(),
@@ -52,10 +54,51 @@ const targetSpec = {
 }))
 @DragSource('Issue', dragSource.spec, dragSource.collect)
 export default class Issue extends Component {
+  constructor() {
+    super()
+    // use this state for force update
+    this.state = { counter : 0 }
+  }
+
+  componentWillMount() {
+    this.props.connectDragPreview(getEmptyImage(), {
+      captureDraggingState: true
+    })
+    intervalId = setInterval(() => {
+      if (this.props.isDragging) {
+        const { counter } = this.state
+        this.setState({ counter: counter + 1 })
+      }
+    }, 200)
+  }
+
+  componentWillUnMount() {
+    clearInterval(intervalId)
+  }
+
+  componentWillUpdate(props) {
+    const { id, isDragging, isOver, col } = props
+    if (!this.props.isOver && isOver) {
+      dropManager.col = col
+      dropManager.updatehoveringIssue(id)
+    }
+    if (!this.refs.ticket) return
+    const { offsetHeight: height } = this.refs.ticket
+    if (!this.props.isDragging && isDragging && !isOver) {
+      dropManager.height = height
+      dropManager.col = col
+    }
+  }
+
   render() {
     const {
+      assignees,
+      className,
+      col,
+      comments,
       connectDragSource,
       connectDropTarget,
+      hide,
       id,
       isDragging,
       isOver,
@@ -64,14 +107,43 @@ export default class Issue extends Component {
       url
     } = this.props
 
-    const marginTop = isOver && !isDragging ? 30 : 0
+    const haveNotHoverIssue = isDragging && dropManager.hoveringIssueID === undefined
 
     return connectDragSource(connectDropTarget(
-      <article className='Issue' id={id} style={{ marginTop }} >
-        <a className='text' href={url} target='_blank'>
-          { `${number}: ${name}` }
-        </a>
-      </article>
+      <div>
+        {
+          ((isOver || haveNotHoverIssue) && (dropManager.col === col)) && (
+            <div
+              className='issue-placeholder'
+              style={{ height: dropManager.height }}
+            />
+          )
+        }
+        {
+          !(isOver && isDragging) && !(isDragging) && (
+            <article
+              className={`${className} issue ${isDragging ? 'dragged' : ''}`}
+              id={id}
+              ref='ticket'
+              style={{ display: hide ? 'none' : 'block' }}
+            >
+              <aside className='assignees'>
+              {
+                (assignees || []).map((d, i) => (
+                  <a href={ `https://github.com/${d.login}` } target='_blank' title={ d.login }>
+                    <img key={i} src={ d.avatar_url }/>
+                  </a>
+                ))
+              }
+              </aside>
+              <a className='title' href={url} target='_blank'>{ name }</a>
+              <span className='meta'>
+                #{ number } · {comments ? comments : 0} comment{ comments > 1 ? 's' : ''}
+              </span>
+            </article>
+          )
+        }
+      </div>
     ))
   }
 }

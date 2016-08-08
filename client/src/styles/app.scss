@@ -6,10 +6,113 @@
 }
 
 body {
+  color: #333;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+input,
+textarea {
   background: #fff;
-  margin: 0;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.075);
+  color: #333;
+  font-family: inherit;
+  line-height: 20px;
+  outline: none;
+  padding: 6px 8px;
+  vertical-align: middle;
+  &:focus {
+    border-color: #51a7e8;
+    box-shadow: 0 0 5px rgba(81,167,232,0.5);
+  }
 }
 
 .button {
-  border-radius: 6px;
+  background-color: #eee;
+  @include linear-gradient(#fcfcfc, #eee);
+  border: 1px solid #d5d5d5;
+  border-radius: 3px;
+  color: #333;
+  cursor: pointer;
+  font-weight: bold;
+  line-height: 20px;
+  outline: none;
+  padding: 6px 8px;
+  vertical-align: middle;
+  white-space: nowrap;
+  &:hover {
+    background-color: #ddd;
+    @include linear-gradient(#eee, #ddd);
+    border-color: #ccc;
+  }
+  &:active {
+    background: #dcdcdc;
+    border-color: #b5b5b5;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15) inset;
+    &:focus {
+      box-shadow: 0 0 5px rgba(81,167,232,0.5), 0 2px 4px rgba(0,0,0,0.15) inset;
+    }
+  }
+  &:focus {
+    border-color: #51a7e8;
+    box-shadow: 0 0 5px rgba(81,167,232,0.5);
+  }
+  &.primary {
+    background-color: #60b044;
+    @include linear-gradient(#8add6d, #60b044);
+    border-color: #5ca941;
+    color: #fff;
+    text-shadow: 0 -1px 0 rgba(0,0,0,0.15);
+    &:hover {
+      background-color: #569e3d;
+      @include linear-gradient(#79d858, #569e3d);
+      border-color: #4a993e;
+    }
+    &:active {
+      background: #569e3d;
+      border-color: #418737;
+      text-shadow: 0 1px 0 rgba(0,0,0,0.15);
+      &:focus {
+        box-shadow: 0 0 5px rgba(81,167,232,0.5), 0 2px 4px rgba(0,0,0,0.15) inset;
+      }
+    }
+  }
+  &.danger {
+    color: #900;
+    &:hover {
+      background-color: #b33630;
+      @include linear-gradient(#dc5f59, #b33630);
+      border-color: #cd504a;
+      color: #fff;
+    }
+    &:active {
+      background: #b33630;
+      border-color: #9f312c;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15) inset;
+      color: #fff;
+      &:focus {
+        box-shadow: 0 0 5px rgba(81,167,232,0.5), 0 2px 4px rgba(0,0,0,0.15) inset;
+      }
+    }
+  }
+}
+
+a {
+  color: #4078c0;
+}
+
+h1 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 20px;
+}
+
+h1,
+p {
+  margin: 0;
+  margin-bottom: 10px;
 }

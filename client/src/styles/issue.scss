@@ -1,18 +1,73 @@
-.Issue {
-  display: block;
+@import './variables.scss';
+@import 'node_modules/bourbon/app/assets/stylesheets/_bourbon.scss';
+
+.issue, .issue-placeholder {
   background: #fff;
+  border: 1px solid #d8d8d8;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
   cursor: move;
-  margin: 6px 0;
-  transition: margin-top 1s ease;
-
-  .text {
-    color: #9b9b9b;
-    display: inline-block;
-    margin: 0;
-    padding: 10px;
-
+  display: block;
+  margin-bottom: 5px;
+  padding: 6px 8px;
+  text-align: left;
+  &:hover {
+    border: 1px solid #ccc;
+  }
+  &.dragged {
+    opacity: 0.4;
+  }
+  &.grabbed {
+    transform: rotate(3deg);
+    width: 248px;
+  }
+  .assignees {
+    float: right;
+    height: 20px;
+    margin: 0 -1px 5px 5px;
+    overflow: visible;
+    position: relative;
+    width: 20px;
     &:hover {
-      color: #4078C0;
+      z-index: 999;
+      a {
+        margin-left: -40px;
+      }
+    }
+    a {
+      display: inline-block;
+      margin-left: -26px;
+      @include transition-property(margin, opacity);
+      @include transition-duration(0.2s);
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+    img {
+      border-right: 1px solid #fff;
+      border-radius: 2px;
+      height: 20px;
+      width: 20px;
     }
   }
+  .title {
+    color: inherit;
+    display: block;
+    font-weight: bold;
+    line-height: 140%;
+    margin-bottom: 3px;
+    text-decoration: none;
+    &:hover {
+      color: #4078c0;
+    }
+  }
+  .meta {
+    color: #767676;
+    display: block;
+    font-size: 12px;
+  }
+}
+
+.issue-placeholder {
+  background: #c4c9cc;
 }

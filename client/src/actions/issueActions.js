@@ -1,17 +1,17 @@
 /* global API_BASE_URL */
-import PouchDB, { metaDb, cacheDb } from 'helpers/pouchDb'
+import PouchDB from 'pouchdb'
 
-import { updateRepoSelected } from 'actions/repoActions'
 import request from 'superagent'
 
 export const CHANGE_TICKETS = 'CHANGE_TICKETS'
+export const CHANGE_FILTER = 'CHANGE_FILTER'
 
 function generateTickets(githubTickets, metaTickets, name) {
   const metaTicketsMap = {}
   metaTickets.forEach(d => {
     metaTicketsMap[d.id] = d
   })
-  return githubTickets.filter(d => d.url.indexOf(name) !== -1)
+  return githubTickets.filter(d => d.url.toLowerCase().indexOf(name) !== -1)
     .map(d => {
       d.column = metaTicketsMap[d.id].column
       d.ranking = metaTicketsMap[d.id].ranking
@@ -19,9 +19,14 @@ function generateTickets(githubTickets, metaTickets, name) {
     })
 }
 
+let metaDb
+let cacheDb
 export function fetchIssues(cacheDbUrl, metaDbUrl, name, next) {
   let metaDBSynced = false
   let cacheDBSynced = false
+  name = name.toLowerCase()
+  metaDb = new PouchDB(`meta${name}`)
+  cacheDb = new PouchDB(`cache${name}`)
   const changeTickets = (dispatch) => {
     if (!metaDBSynced || !cacheDBSynced) {
       return
@@ -39,11 +44,11 @@ export function fetchIssues(cacheDbUrl, metaDbUrl, name, next) {
   }
 
   return dispatch => {
-    PouchDB.sync('kenhq_cache', cacheDbUrl).then(() => {
+    PouchDB.sync(`cache${name}`, cacheDbUrl).then(() => {
       metaDBSynced = true
       changeTickets(dispatch)
     })
-    return PouchDB.sync('kenhq_meta', metaDbUrl).then(() => {
+    return PouchDB.sync(`meta${name}`, metaDbUrl).then(() => {
       cacheDBSynced = true
       changeTickets(dispatch)
       metaDb.changes({
@@ -92,5 +97,11 @@ export function updateIssue(issueID, columnID, ranking) {
 export function clearIssues() {
   return dispatch => {
     return dispatch({ type: CHANGE_TICKETS, payload: [] })
+  }
+}
+
+export function changeFilter(filter) {
+  return dispatch => {
+    return dispatch({ type: CHANGE_FILTER, payload: filter })
   }
 }

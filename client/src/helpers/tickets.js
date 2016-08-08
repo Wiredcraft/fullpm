@@ -19,28 +19,42 @@ function sortTickets(tickets) {
   }
 }
 
-export function parserTickets(tickets) {
-  sortTickets(tickets)
-  // Hide pull requests
-  tickets = tickets.filter(d => d.htmlUrl.indexOf('/pull/') === -1)
+export function parserTickets(tickets, filter, isRawTickets) {
+  let ticketList
+  if (isRawTickets) {
+    sortTickets(tickets)
+    // Hide pull requests
+    tickets = tickets.filter(d => d.htmlUrl.indexOf('/pull/') === -1)
 
-  return [
-    {
-      id: ISSUE_TYPE_BACKLOG,
-      name: 'Backlog',
-      issues: tickets.filter(d => d.column === ISSUE_TYPE_BACKLOG)
-    }, {
-      id: ISSUE_TYPE_NEXT,
-      name: 'Next',
-      issues: tickets.filter(d => d.column === ISSUE_TYPE_NEXT)
-    }, {
-      id: ISSUE_TYPE_DOING,
-      name: 'Doing',
-      issues: tickets.filter(d => d.column === ISSUE_TYPE_DOING)
-    }, {
-      id: ISSUE_TYPE_DONE,
-      name: 'Done',
-      issues: tickets.filter(d => d.column === ISSUE_TYPE_DONE)
-    }
-  ]
+    ticketList = [
+      {
+        id: ISSUE_TYPE_BACKLOG,
+        name: 'Backlog',
+        issues: tickets.filter(d => d.column === ISSUE_TYPE_BACKLOG)
+      }, {
+        id: ISSUE_TYPE_NEXT,
+        name: 'Next',
+        issues: tickets.filter(d => d.column === ISSUE_TYPE_NEXT)
+      }, {
+        id: ISSUE_TYPE_DOING,
+        name: 'Doing',
+        issues: tickets.filter(d => d.column === ISSUE_TYPE_DOING)
+      }, {
+        id: ISSUE_TYPE_DONE,
+        name: 'Done',
+        issues: tickets.filter(d => d.column === ISSUE_TYPE_DONE)
+      }
+    ]
+  }
+
+  return (ticketList || tickets).map(d => {
+    d.issues = d.issues.map(issue => {
+      if (filter === '') issue.hide = false
+      else issue.hide = !(issue.title.toLowerCase()
+        .indexOf(filter.toLowerCase()) !== -1)
+
+      return issue
+    })
+    return d
+  })
 }

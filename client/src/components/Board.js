@@ -1,3 +1,4 @@
+/* global API_BASE_URL */
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -5,11 +6,16 @@ import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
 import Column from 'components/Column'
-import { fetchIssues, clearIssues, fetchRepo } from 'actions/issueActions'
+import {
+  changeFilter,
+  clearIssues,
+  fetchIssues,
+  fetchRepo
+} from 'actions/issueActions'
 import 'styles/board'
 import ProgressBar from 'components/ProgressBar'
-import { parserTickets } from 'helpers/tickets'
 import { isDevMode } from '../helper/dev'
+import CustomDragLayer from './CustomDragLayer'
 
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -65,6 +71,25 @@ export default class Board extends React.Component {
       this.setState({ onLoading: false })
       if (repoBtn) repoBtn.disabled = false
     })
+    this.setState({ orgName: userName, repoName })
+  }
+
+  newIssue() {
+    const { orgName, repoName } = this.state
+    window.open(
+      `https://github.com/${orgName}/${repoName}/issues/new`,
+      '_blank'
+    )
+  }
+
+  logout() {
+    const url = `${API_BASE_URL}/auth/logout`
+    window.location = url
+    setTimeout(() => window.location.reload(), 500)
+  }
+
+  changeFilter(e) {
+    this.props.changeFilter(e.target.value)
   }
 
   render() {
@@ -72,50 +97,67 @@ export default class Board extends React.Component {
     const { orgName, repoName, onLoading, notFound } = this.state
 
     return (
-      <div className='Board row'>
-        <div className='small-8 small-centered column input-area'>
-          { isDevMode && (
-            <div>
-              <input
-                className='small-6 column'
-                defaultValue={ orgName || 'Wiredcraft' }
-                placeholder='Name of user or group'
-                ref='user'
-                type='text'
-              />
-              <input
-                className='small-6 column'
-                defaultValue={ repoName || 'pipelines' }
-                placeholder='Name of repositories'
-                ref='repo'
-                type='text'
-              />
-              <button
-                className='button'
-                onClick={() => this.changeBoard()}
-                ref='repoBtn'
-              >
-                Change board
-              </button>
-            </div>
-          )}
-          { notFound && <p>Repo not found</p> }
-          <ProgressBar hide={!onLoading} />
-        </div>
-        <div className='boards small-centered column'>
-          <div ref='list'>
+      <div className={`board ${isDevMode ? 'dev': ''}`}>
+        { isDevMode && (
+          <header className='toolbar'>
+            <span className='logo'>FullPM</span>
+            <input
+              defaultValue={ orgName || 'Wiredcraft' }
+              placeholder='Name of user or group'
+              ref='user'
+              type='text'
+            />
+            <input
+              defaultValue={ repoName || 'pipelines' }
+              placeholder='Name of repositories'
+              ref='repo'
+              type='text'
+            />
+            <button
+              className='button'
+              onClick={() => this.changeBoard()}
+              ref='repoBtn'
+            >
+              Change board
+            </button>
+            <button
+              className='button danger'
+              onClick={() => this.logout()}
+            >
+              Log out
+            </button>
+          </header>
+        )}
+        { notFound && <p>Repo not found</p> }
+        <ProgressBar hide={!onLoading} />
+        <header className='controls'>
           {
-            sortedArr.map((d, i) => (
-              <Column
-                key={i}
-                id={d.id}
-                issues={d.issues}
-                title={d.name}
-              />
-            ))
+            orgName && (<button
+              className='button primary'
+              onClick={() => this.newIssue()}
+            >
+              New issue
+            </button>)
           }
-          </div>
+          <input
+            placeholder='Filter issues by title'
+            onChange={e => this.changeFilter(e)}
+            type='search'
+          />
+        </header>
+        <div className='columns'>
+        {
+          sortedArr.map((d, i) => (
+            <Column
+              key={i}
+              id={d.id}
+              issues={d.issues}
+              title={d.name}
+            />
+          ))
+        }
         </div>
+        <CustomDragLayer />
       </div>
     )
   }
@@ -123,6 +165,7 @@ export default class Board extends React.Component {
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
+    changeFilter,
     clearIssues,
     fetchIssues,
     fetchRepo

@@ -1,0 +1,12 @@
+---
+git_install_from_source: true
+
+# Vars used to build the nodejs code
+fullpm_repo_url: git@github.com:Wiredcraft/fullpm.git
+fullpm_repo_version: "{{ version_fullpm }}"
+fullpm_repo_env:
+  NODE_ENV: "{{ node_env }}"
+nodejs_version: 4.4.6
+fullpm_instance_root: api
+fullpm_api_base_url: https://{{ domain }}
+use_package: yes
