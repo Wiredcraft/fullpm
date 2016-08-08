@@ -1,7 +1,7 @@
 @import './variables.scss';
 @import 'node_modules/bourbon/app/assets/stylesheets/_bourbon.scss';
 
-.issue, .issue-placeholder {
+.issue {
   background: #fff;
   border: 1px solid #d8d8d8;
   border-radius: 3px;
@@ -13,9 +13,6 @@
   text-align: left;
   &:hover {
     border: 1px solid #ccc;
-  }
-  &.dragged {
-    opacity: 0.4;
   }
   &.grabbed {
     transform: rotate(3deg);
@@ -68,6 +65,10 @@
   }
 }
 
-.issue-placeholder {
-  background: #c4c9cc;
+.placeholder {
+  background: #dedede;
+  border: 1px solid #dedede;
+  border-radius: 3px;
+  display: block;
+  margin-bottom: 5px;
 }

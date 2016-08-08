@@ -114,7 +114,7 @@ export default class Issue extends Component {
         {
           ((isOver || haveNotHoverIssue) && (dropManager.col === col)) && (
             <div
-              className='issue-placeholder'
+              className='placeholder'
               style={{ height: dropManager.height }}
             />
           )
