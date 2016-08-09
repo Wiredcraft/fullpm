@@ -1,17 +1,17 @@
 [redis]
-dev-kenhq-1
+dev-fullpm-1
 
 [nodejs]
-dev-kenhq-1
+dev-fullpm-1
 
 [couchdb]
-dev-kenhq-1
+dev-fullpm-1
 
 [fullpm]
-dev-kenhq-1
+dev-fullpm-1
 
 [web]
-dev-kenhq-1
+dev-fullpm-1
 
 [dev:children]
 redis

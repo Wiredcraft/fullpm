@@ -1,17 +1,17 @@
 [redis]
-staging-kenhq-1
+staging-fullpm-1
 
 [nodejs]
-staging-kenhq-1
+staging-fullpm-1
 
 [couchdb]
-staging-kenhq-1
+staging-fullpm-1
 
 [fullpm]
-staging-kenhq-1
+staging-fullpm-1
 
 [web]
-staging-kenhq-1
+staging-fullpm-1
 
 [staging:children]
 redis

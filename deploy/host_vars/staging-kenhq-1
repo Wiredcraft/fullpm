@@ -1,3 +1,0 @@
----
-ansible_ssh_host: staging-kenhq.wiredcraft.net
-ansible_ssh_user: root
