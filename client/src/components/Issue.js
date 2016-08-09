@@ -32,8 +32,8 @@ const dragSource = {
           ranking: newRanking
         }
         dropManager.newCol = containerId
-        dropManager.clearhoveringIssue()
       }
+      dropManager.clearhoveringIssue()
     }
   },
   collect(connect, monitor) {
