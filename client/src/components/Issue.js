@@ -5,8 +5,9 @@ import { connect } from 'react-redux'
 import { getEmptyImage } from 'react-dnd-html5-backend'
 
 import { updateIssue } from 'actions/issueActions'
-import dropManager from 'helper/dropManager'
-import { calcRanking } from 'helper/ranking'
+import dropManager from 'helpers/dropManager'
+import { calcRanking } from 'helpers/ranking'
+import { openPage } from '../helpers/webPage'
 import 'styles/issue'
 
 const dragSource = {
@@ -146,7 +147,12 @@ export default class Issue extends Component {
                 ))
               }
               </aside>
-              <a className='title' href={url} target='_blank'>{ name }</a>
+              <span
+                className='title'
+                onClick={() => openPage(url)}
+              >
+                { name }
+              </span>
               <span className='meta'>
                 {`#${number} · ${comments ? comments : 0} comment${comments > 1 ? 's' : ''}`}
               </span>

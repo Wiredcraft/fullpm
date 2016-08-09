@@ -14,8 +14,9 @@ import {
 } from 'actions/issueActions'
 import 'styles/board'
 import ProgressBar from 'components/ProgressBar'
-import { isDevMode } from '../helper/dev'
+import { isDevMode } from '../helpers/dev'
 import CustomDragLayer from './CustomDragLayer'
+import { openPage } from '../helpers/webPage'
 
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -76,10 +77,7 @@ export default class Board extends React.Component {
 
   newIssue() {
     const { orgName, repoName } = this.state
-    window.open(
-      `https://github.com/${orgName}/${repoName}/issues/new`,
-      '_blank'
-    )
+    openPage(`https://github.com/${orgName}/${repoName}/issues/new`)
   }
 
   logout() {

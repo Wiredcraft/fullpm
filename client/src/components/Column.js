@@ -6,8 +6,8 @@ import { DropTarget } from 'react-dnd'
 import Issue from 'components/Issue'
 import 'styles/column'
 import { updateIssue } from 'actions/issueActions'
-import { calcColumnBodyHeight } from '../helper/column'
-import dropManager from 'helper/dropManager'
+import { calcColumnBodyHeight } from '../helpers/column'
+import dropManager from 'helpers/dropManager'
 
 const targetSpec = {
   drop({ id }) {

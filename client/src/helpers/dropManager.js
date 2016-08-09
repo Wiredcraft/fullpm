@@ -12,5 +12,4 @@ class DropManager {
   }
 }
 
-//TODO move this to redux store
 export default new DropManager()
