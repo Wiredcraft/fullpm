@@ -95,7 +95,10 @@ export default class Board extends React.Component {
     const { orgName, repoName, onLoading, notFound } = this.state
 
     return (
-      <div className={`board ${isDevMode ? 'dev': ''}`}>
+      <div
+        className={`board ${isDevMode ? 'dev': ''}`}
+        style={{ pointerEvents: onSync ? 'none' : 'all' }}
+      >
         { isDevMode && (
           <header className='toolbar'>
             <span className='logo'>FullPM</span>
