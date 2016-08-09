@@ -28,7 +28,7 @@
           - listen 8000
           - server_name _
 
-        kenhq:
+        fullpm:
           - listen 0.0.0.0:443 ssl
           - port_in_redirect off
           - server_name {{ domain }}

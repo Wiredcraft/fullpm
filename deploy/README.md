@@ -52,10 +52,10 @@ ansible-playbook -i inventory.xxx deploy-fullpm.yml
 ## Server Specification
 
 - Dev Server
-  * hostname: dev-kenhq.wiredcraft.net
+  * hostname: dev-fullpm.wiredcraft.net
   * user: root
   * physical location: dev box in office
 - Staging Server
-  * hostname: staging-kenhq.wiredcraft.net
+  * hostname: staging-fullpm.wiredcraft.net
   * user: root
   * physical location: singapore
