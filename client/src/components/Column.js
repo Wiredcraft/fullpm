@@ -64,25 +64,25 @@ export default class Column extends Component {
       }
       else {
         let spliced = false
-        const dropedToSameColumn = dropManager.newCol === draggingItem.col
         for (let i = 0; i < issues.length; i++) {
-          if (dropedToSameColumn) break
           if (issues[i].ranking < draggingItem.ranking) {
             spliced = true
             issues = issues.slice(0, i).concat(draggingItem).concat(issues.slice(i))
             break
           }
         }
-        if (!spliced && !dropedToSameColumn) {
-          issues = issues.concat(draggingItem)
-        }
+        if (!spliced) issues = issues.concat(draggingItem)
       }
     }
 
     const dropedToNewColumn = isSync && (draggingItem.col === id)
       && (draggingItem.newCol !== draggingItem.col)
+    const dropedToSameColumn = isSync && draggingItem
+      && (dropManager.newCol === draggingItem.col)
     const count =
-      issues.filter(d => !d.hide).length - (dropedToNewColumn ? 1 : 0)
+      issues.filter(d => !d.hide).length -
+      ((dropedToNewColumn || dropedToSameColumn) ? 1 : 0)
+
     return connectDropTarget(
       <section className='column' id={`column${id}`}>
         <header className='header'>{ title } <span className='count'>{ count }</span></header>
