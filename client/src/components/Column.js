@@ -56,26 +56,33 @@ export default class Column extends Component {
     const { bodyMaxHeight } = this.state
     const { draggingItem } = dropManager
 
-    const newItemSync = draggingItem && onSync && (id === dropManager.newCol)
+    const isSync = draggingItem && onSync
+    const newItemSync = isSync && (id === dropManager.newCol)
     if (newItemSync) {
       if (issues.length === 0) {
         issues = issues.concat(draggingItem)
       }
       else {
         let spliced = false
+        const dropedToSameColumn = dropManager.newCol === draggingItem.col
         for (let i = 0; i < issues.length; i++) {
+          if (dropedToSameColumn) break
           if (issues[i].ranking < draggingItem.ranking) {
             spliced = true
-            debugger
             issues = issues.slice(0, i).concat(draggingItem).concat(issues.slice(i))
             break
           }
         }
-        if (!spliced) issues = issues.concat(draggingItem)
+        if (!spliced && !dropedToSameColumn) {
+          issues = issues.concat(draggingItem)
+        }
       }
     }
 
-    const count = issues.filter(d => !d.hide).length + (newItemSync ? 1 : 0)
+    const dropedToNewColumn = isSync && (draggingItem.col === id)
+      && (draggingItem.newCol !== draggingItem.col)
+    const count =
+      issues.filter(d => !d.hide).length - (dropedToNewColumn ? 1 : 0)
     return connectDropTarget(
       <section className='column' id={`column${id}`}>
         <header className='header'>{ title } <span className='count'>{ count }</span></header>
@@ -93,7 +100,7 @@ export default class Column extends Component {
               return (
                 <Issue
                   assignees={d.assignees}
-                  col={this.props.id}
+                  col={id}
                   comments={d.comments}
                   hide={d.hide}
                   id={d.id}
