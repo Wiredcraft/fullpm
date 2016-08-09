@@ -93,7 +93,7 @@ export default class Board extends React.Component {
   }
 
   render() {
-    const { sortedArr } = this.props
+    const { onSync, sortedArr } = this.props
     const { orgName, repoName, onLoading, notFound } = this.state
 
     return (
@@ -144,6 +144,7 @@ export default class Board extends React.Component {
             onChange={e => this.changeFilter(e)}
             type='search'
           />
+          { onSync && <span>Sync...</span>}
         </header>
         <div className='columns'>
         {
@@ -174,6 +175,7 @@ function mapDispatchToProps (dispatch) {
 
 function mapStateToProps(state) {
   return {
+    onSync: state.issues.get('onSync'),
     sortedArr: state.issues.get('tickets')
   }
 }

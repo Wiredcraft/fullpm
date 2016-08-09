@@ -43,7 +43,7 @@ export default class Column extends Component {
       if (onSync) {
         this.setState({ forceUpdater: forceUpdater + 1 })
       }
-    }, 10)
+    }, 50)
   }
 
   componentWillUnMount() {
@@ -59,20 +59,16 @@ export default class Column extends Component {
     const isSync = draggingItem && onSync
     const newItemSync = isSync && (id === dropManager.newCol)
     if (newItemSync) {
-      if (issues.length === 0) {
-        issues = issues.concat(draggingItem)
-      }
-      else {
-        let spliced = false
-        for (let i = 0; i < issues.length; i++) {
-          if (issues[i].ranking < draggingItem.ranking) {
-            spliced = true
-            issues = issues.slice(0, i).concat(draggingItem).concat(issues.slice(i))
-            break
-          }
+      let spliced = false
+      for (let i = 0; i < issues.length; i++) {
+        if (issues[i].ranking < draggingItem.ranking) {
+          spliced = true
+          issues = issues.slice(0, i).concat(draggingItem)
+            .concat(issues.slice(i))
+          break
         }
-        if (!spliced) issues = issues.concat(draggingItem)
       }
+      if (!spliced) issues = issues.concat(draggingItem)
     }
 
     const dropedToNewColumn = isSync && (draggingItem.col === id)
