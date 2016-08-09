@@ -88,9 +88,6 @@ export default class Issue extends Component {
       dropManager.col = col
       dropManager.updatehoveringIssue(id)
     }
-    if (this.props.isOver && !isOver) {
-      dropManager.clearhoveringIssue(id)
-    }
     if (!this.refs.ticket) return
     const { offsetHeight: height } = this.refs.ticket
     if (!this.props.isDragging && isDragging && !isOver) {
