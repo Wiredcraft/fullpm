@@ -22,31 +22,67 @@ function collect(connect, monitor) {
   }
 }
 
+let intervalId
+
 @connect(mapStateToProps, mapDispatchToProps)
 @DropTarget('Issue', targetSpec, collect)
 export default class Column extends Component {
   constructor() {
     super()
-    this.state = { bodyMaxHeight: 0 }
+    this.state = { bodyMaxHeight: 0, counter: 0 }
   }
 
   componentWillMount() {
-    const { id } = this.props
-    setInterval(() => {
-      const { bodyMaxHeight } = this.state
+    intervalId = setInterval(() => {
+      const { id, onSync } = this.props
+      const { bodyMaxHeight, counter } = this.state
       const newHeight = calcColumnBodyHeight(id)
       if (newHeight !== bodyMaxHeight) {
         this.setState({ bodyMaxHeight: newHeight })
       }
+      if (onSync) {
+        this.setState({ counter: counter + 1 })
+      }
     }, 50)
   }
 
+  componentWillUnMount() {
+    clearInterval(intervalId)
+  }
+
   render() {
-    const { connectDropTarget, title, issues, id, isOver, onSync } = this.props
+    const { connectDropTarget, title, id, isOver, onSync } = this.props
+    let { issues } = this.props
     const { bodyMaxHeight } = this.state
     const { draggingItem } = dropManager
 
-    const count = issues.filter(d => !d.hide).length
+    const isSync = draggingItem && onSync
+    const newItemSync = isSync && (id === dropManager.newCol)
+    if (newItemSync) {
+      if (issues.length === 0) {
+        issues = issues.concat(draggingItem)
+      }
+      else {
+        let spliced = false
+        for (let i = 0; i < issues.length; i++) {
+          if (issues[i].ranking < draggingItem.ranking) {
+            spliced = true
+            issues = issues.slice(0, i).concat(draggingItem).concat(issues.slice(i))
+            break
+          }
+        }
+        if (!spliced) issues = issues.concat(draggingItem)
+      }
+    }
+
+    const dropedToNewColumn = isSync && (draggingItem.col === id)
+      && (draggingItem.newCol !== draggingItem.col)
+    const dropedToSameColumn = isSync && draggingItem
+      && (dropManager.newCol === draggingItem.col)
+    const count =
+      issues.filter(d => !d.hide).length -
+      ((dropedToNewColumn || dropedToSameColumn) ? 1 : 0)
+
     return connectDropTarget(
       <section className='column' id={`column${id}`}>
         <header className='header'>{ title } <span className='count'>{ count }</span></header>
@@ -64,15 +100,15 @@ export default class Column extends Component {
               return (
                 <Issue
                   assignees={d.assignees}
-                  col={this.props.id}
+                  col={id}
                   comments={d.comments}
                   hide={d.hide}
-                  id={d._id}
+                  id={d.id}
                   key={i}
-                  name={d.title}
+                  name={d.title || d.name}
                   number={d.number}
                   ranking={d.ranking}
-                  url={d.htmlUrl}
+                  url={d.htmlUrl || d.url}
                 />
               )
             })

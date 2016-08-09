@@ -25,6 +25,10 @@ const dragSource = {
         const newRanking =
           calcRanking(hoveringIssueID, containerId, ranking, issueList)
         updateIssue(item.id, containerId, newRanking)
+        // deep copy
+        dropManager.draggingItem = JSON.parse(JSON.stringify(props))
+        dropManager.draggingItem.ranking = newRanking
+        dropManager.newCol = containerId
         dropManager.clearhoveringIssue()
       }
     }
@@ -85,7 +89,6 @@ export default class Issue extends Component {
     if (!this.refs.ticket) return
     const { offsetHeight: height } = this.refs.ticket
     if (!this.props.isDragging && isDragging && !isOver) {
-      dropManager.draggingItem = props
       dropManager.height = height
       dropManager.col = col
     }
