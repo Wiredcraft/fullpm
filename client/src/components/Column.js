@@ -34,13 +34,13 @@ export default class Column extends Component {
 
   componentWillMount() {
     intervalId = setInterval(() => {
-      const { id, onSync } = this.props
+      const { id, isOver, onSync } = this.props
       const { bodyMaxHeight, forceUpdater } = this.state
       const newHeight = calcColumnBodyHeight(id)
       if (newHeight !== bodyMaxHeight) {
         this.setState({ bodyMaxHeight: newHeight })
       }
-      if (onSync) {
+      if (isOver || onSync) {
         this.setState({ forceUpdater: forceUpdater + 1 })
       }
     }, 50)
@@ -56,6 +56,7 @@ export default class Column extends Component {
     const { bodyMaxHeight } = this.state
     const { draggingItem } = dropManager
 
+    console.log();
     const isSync = draggingItem && onSync
     const newItemSync = isSync && (id === dropManager.newCol)
     if (newItemSync) {
@@ -78,6 +79,7 @@ export default class Column extends Component {
     const count =
       issues.filter(d => !d.hide).length -
       ((dropedToNewColumn || dropedToSameColumn) ? 1 : 0)
+    const appendToTail = isOver && (dropManager.hoveringIssueID === undefined)
 
     return connectDropTarget(
       <section className='column' id={`column${id}`}>
@@ -104,7 +106,11 @@ export default class Column extends Component {
               )
             })
           }
-          { issues.length === 0 && isOver && (<Issue isPlaceHolder={true} />) }
+          {
+            (issues.length === 0 || appendToTail) && isOver && (
+              <Issue isPlaceHolder={true} />
+            )
+          }
         </div>
       </section>
     )
