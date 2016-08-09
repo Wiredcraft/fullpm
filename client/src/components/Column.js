@@ -29,21 +29,21 @@ let intervalId
 export default class Column extends Component {
   constructor() {
     super()
-    this.state = { bodyMaxHeight: 0, counter: 0 }
+    this.state = { bodyMaxHeight: 0, forceUpdater: 0 }
   }
 
   componentWillMount() {
     intervalId = setInterval(() => {
       const { id, onSync } = this.props
-      const { bodyMaxHeight, counter } = this.state
+      const { bodyMaxHeight, forceUpdater } = this.state
       const newHeight = calcColumnBodyHeight(id)
       if (newHeight !== bodyMaxHeight) {
         this.setState({ bodyMaxHeight: newHeight })
       }
       if (onSync) {
-        this.setState({ counter: counter + 1 })
+        this.setState({ forceUpdater: forceUpdater + 1 })
       }
-    }, 50)
+    }, 10)
   }
 
   componentWillUnMount() {
@@ -86,12 +86,7 @@ export default class Column extends Component {
     return connectDropTarget(
       <section className='column' id={`column${id}`}>
         <header className='header'>{ title } <span className='count'>{ count }</span></header>
-        <div
-          className='body'
-          id={id}
-          ref='list'
-          style={{ maxHeight: bodyMaxHeight }}
-        >
+        <div className='body' style={{ maxHeight: bodyMaxHeight }} >
           {
             issues.map((d, i) => {
               if (draggingItem && onSync && (d._id === draggingItem.id)) {
@@ -113,11 +108,7 @@ export default class Column extends Component {
               )
             })
           }
-          {
-            issues.length === 0 && isOver && (
-              <Issue isPlaceHolder={true} />
-            )
-          }
+          { issues.length === 0 && isOver && (<Issue isPlaceHolder={true} />) }
         </div>
       </section>
     )

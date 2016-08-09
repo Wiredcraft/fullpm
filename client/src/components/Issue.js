@@ -26,8 +26,10 @@ const dragSource = {
           calcRanking(hoveringIssueID, containerId, ranking, issueList)
         updateIssue(item.id, containerId, newRanking)
         // deep copy
-        dropManager.draggingItem = JSON.parse(JSON.stringify(props))
-        dropManager.draggingItem.ranking = newRanking
+        dropManager.draggingItem = {
+          ...JSON.parse(JSON.stringify(props)),
+          ranking: newRanking
+        }
         dropManager.newCol = containerId
         dropManager.clearhoveringIssue()
       }
@@ -60,8 +62,7 @@ let intervalId
 export default class Issue extends Component {
   constructor() {
     super()
-    // use this state for force update
-    this.state = { counter : 0 }
+    this.state = { forceUpdater : 0 }
   }
 
   componentWillMount() {
@@ -70,8 +71,8 @@ export default class Issue extends Component {
     })
     intervalId = setInterval(() => {
       if (this.props.isDragging) {
-        const { counter } = this.state
-        this.setState({ counter: counter + 1 })
+        const { forceUpdater } = this.state
+        this.setState({ forceUpdater: forceUpdater + 1 })
       }
     }, 200)
   }
@@ -135,7 +136,11 @@ export default class Issue extends Component {
               <aside className='assignees'>
               {
                 (assignees || []).map((d, i) => (
-                  <a href={ `https://github.com/${d.login}` } target='_blank' title={ d.login }>
+                  <a
+                    href={`https://github.com/${d.login}`}
+                    target='_blank'
+                    title={d.login}
+                  >
                     <img key={i} src={ d.avatar_url }/>
                   </a>
                 ))
@@ -143,7 +148,7 @@ export default class Issue extends Component {
               </aside>
               <a className='title' href={url} target='_blank'>{ name }</a>
               <span className='meta'>
-                #{ number } · {comments ? comments : 0} comment{ comments > 1 ? 's' : ''}
+                {`#${number} · ${comments ? comments : 0} comment${comments > 1 ? 's' : ''}`}
               </span>
             </article>
           )
