@@ -56,7 +56,6 @@ export default class Column extends Component {
     const { bodyMaxHeight } = this.state
     const { draggingItem } = dropManager
 
-    console.log();
     const isSync = draggingItem && onSync
     const newItemSync = isSync && (id === dropManager.newCol)
     if (newItemSync) {
