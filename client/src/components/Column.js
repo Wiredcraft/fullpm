@@ -55,21 +55,21 @@ export default class Column extends Component {
     const { connectDropTarget, title, id, isOver, onSync } = this.props
     let { issues } = this.props
     const { bodyMaxHeight } = this.state
-    const { draggingItem } = dropManager
+    const { draggingItem, isHoveringIssue } = dropManager
 
-    const isSync = draggingItem && onSync
-    const hasNewItemInSync = isSync && (id === dropManager.newCol)
+    const needClone = draggingItem && onSync
+    const hasNewItemInSync = needClone && (id === dropManager.newCol)
     issues = spliceIssueInSync(hasNewItemInSync, issues, draggingItem)
 
     let count = issues.filter(d => !d.hide).length
-    if (isSync) {
+    if (needClone) {
       const { col, newCol } = draggingItem
-      const dropedToNewColumn = isSync && (col === id) && (newCol !== col)
-      const dropedToSameColumn = isSync && (newCol === col === id)
+      const dropedToNewColumn = (col === id) && (newCol !== col)
+      const dropedToSameColumn = newCol === col === id
       if (dropedToNewColumn || dropedToSameColumn) count -= 1
     }
 
-    const appendToTail = isOver && (dropManager.isHoveringIssue === false)
+    const appendToTail = isOver && (isHoveringIssue === false)
 
     return (
       <section className='column' id={`column${id}`}>
