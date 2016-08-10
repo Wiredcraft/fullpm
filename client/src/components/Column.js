@@ -8,6 +8,7 @@ import 'styles/column'
 import { updateIssue } from 'actions/issueActions'
 import { calcColumnBodyHeight } from '../helpers/column'
 import dropManager from 'helpers/dropManager'
+import { spliceIssueInSync } from 'helpers/tickets'
 
 const targetSpec = {
   drop({ id }) {
@@ -34,13 +35,13 @@ export default class Column extends Component {
 
   componentWillMount() {
     intervalId = setInterval(() => {
-      const { id, onSync } = this.props
+      const { id, isOver, onSync } = this.props
       const { bodyMaxHeight, forceUpdater } = this.state
       const newHeight = calcColumnBodyHeight(id)
       if (newHeight !== bodyMaxHeight) {
         this.setState({ bodyMaxHeight: newHeight })
       }
-      if (onSync) {
+      if (isOver || onSync) {
         this.setState({ forceUpdater: forceUpdater + 1 })
       }
     }, 50)
@@ -54,58 +55,59 @@ export default class Column extends Component {
     const { connectDropTarget, title, id, isOver, onSync } = this.props
     let { issues } = this.props
     const { bodyMaxHeight } = this.state
-    const { draggingItem } = dropManager
+    const { draggingItem, isHoveringIssue } = dropManager
 
-    const isSync = draggingItem && onSync
-    const newItemSync = isSync && (id === dropManager.newCol)
-    if (newItemSync) {
-      let spliced = false
-      for (let i = 0; i < issues.length; i++) {
-        if (issues[i].ranking < draggingItem.ranking) {
-          spliced = true
-          issues = issues.slice(0, i).concat(draggingItem)
-            .concat(issues.slice(i))
-          break
-        }
-      }
-      if (!spliced) issues = issues.concat(draggingItem)
+    const needClone = draggingItem && onSync
+    const hasNewItemInSync = needClone && (id === dropManager.newCol)
+    issues = spliceIssueInSync(hasNewItemInSync, issues, draggingItem)
+
+    let count = issues.filter(d => !d.hide).length
+    if (needClone) {
+      const { col, newCol } = draggingItem
+      const dropedToNewColumn = (col === id) && (newCol !== col)
+      const dropedToSameColumn = newCol === col === id
+      if (dropedToNewColumn || dropedToSameColumn) count -= 1
     }
 
-    const dropedToNewColumn = isSync && (draggingItem.col === id)
-      && (draggingItem.newCol !== draggingItem.col)
-    const dropedToSameColumn = isSync && draggingItem
-      && (dropManager.newCol === draggingItem.col)
-    const count =
-      issues.filter(d => !d.hide).length -
-      ((dropedToNewColumn || dropedToSameColumn) ? 1 : 0)
+    const appendToTail = isOver && (isHoveringIssue === false)
 
-    return connectDropTarget(
+    return (
       <section className='column' id={`column${id}`}>
-        <header className='header'>{ title } <span className='count'>{ count }</span></header>
-        <div className='body' style={{ maxHeight: bodyMaxHeight }} >
-          {
-            issues.map((d, i) => {
-              if (draggingItem && onSync && (d._id === draggingItem.id)) {
-                return undefined
+        <header className='header'>
+          { title } <span className='count'>{ count }</span>
+        </header>
+        {
+          connectDropTarget(
+            <div className='body' style={{ maxHeight: bodyMaxHeight }} >
+              {
+                issues.map((d, i) => {
+                  if (draggingItem && onSync && (d._id === draggingItem.id)) {
+                    return undefined
+                  }
+                  return (
+                    <Issue
+                      assignees={d.assignees}
+                      col={id}
+                      comments={d.comments}
+                      hide={d.hide}
+                      id={d.id}
+                      key={i}
+                      name={d.title || d.name}
+                      number={d.number}
+                      ranking={d.ranking}
+                      url={d.htmlUrl || d.url}
+                    />
+                  )
+                })
               }
-              return (
-                <Issue
-                  assignees={d.assignees}
-                  col={id}
-                  comments={d.comments}
-                  hide={d.hide}
-                  id={d.id}
-                  key={i}
-                  name={d.title || d.name}
-                  number={d.number}
-                  ranking={d.ranking}
-                  url={d.htmlUrl || d.url}
-                />
-              )
-            })
-          }
-          { issues.length === 0 && isOver && (<Issue isPlaceHolder={true} />) }
-        </div>
+              {
+                ((issues.length === 0 && isOver) || appendToTail) && (
+                  <Issue isPlaceHolder={true} />
+                )
+              }
+            </div>
+          )
+        }
       </section>
     )
   }

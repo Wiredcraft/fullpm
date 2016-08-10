@@ -58,3 +58,17 @@ export function parserTickets(tickets, filter, isRawTickets) {
     return d
   })
 }
+
+export function spliceIssueInSync(hasNew, issues, newItem) {
+  if (!hasNew) return issues
+  let spliced = false
+  for (let i = 0; i < issues.length; i++) {
+    if (issues[i].ranking < newItem.ranking) {
+      spliced = true
+      issues = issues.slice(0, i).concat(newItem).concat(issues.slice(i))
+      break
+    }
+  }
+  if (!spliced) issues = issues.concat(newItem)
+  return issues
+}

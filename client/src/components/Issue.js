@@ -22,9 +22,9 @@ const dragSource = {
       const { updateIssue, issueList, ranking } = props
       if (dropResult) {
         const { containerId } = dropResult
-        const { hoveringIssueID } = dropManager
+        const { lastHoverdIssueId } = dropManager
         const newRanking =
-          calcRanking(hoveringIssueID, containerId, ranking, issueList)
+          calcRanking(lastHoverdIssueId, containerId, ranking, issueList)
         updateIssue(item.id, containerId, newRanking)
         // deep copy
         dropManager.draggingItem = {
@@ -33,7 +33,8 @@ const dragSource = {
         }
         dropManager.newCol = containerId
       }
-      dropManager.clearhoveringIssue()
+      dropManager.clearLastHoverdIssueId()
+      dropManager.isHoveringIssue = false
     }
   },
   collect(connect, monitor) {
@@ -47,7 +48,7 @@ const dragSource = {
 
 const targetSpec = {
   drop({ id }) {
-    dropManager.updatehoveringIssue(id)
+    dropManager.lastHoverdIssueId = id
     return undefined
   }
 }
@@ -75,7 +76,7 @@ export default class Issue extends Component {
         const { forceUpdater } = this.state
         this.setState({ forceUpdater: forceUpdater + 1 })
       }
-    }, 200)
+    }, 50)
   }
 
   componentWillUnMount() {
@@ -83,10 +84,15 @@ export default class Issue extends Component {
   }
 
   componentWillUpdate(props) {
-    const { id, isDragging, isOver, col } = props
+    const { id, isDragging, isOver, isPlaceHolder ,col } = props
+    if (isPlaceHolder) return
     if (!this.props.isOver && isOver) {
       dropManager.col = col
-      dropManager.updatehoveringIssue(id)
+      dropManager.lastHoverdIssueId = id
+      dropManager.isHoveringIssue = true
+    }
+    if (this.props.isOver && !isOver) {
+      dropManager.isHoveringIssue = false
     }
     if (!this.refs.ticket) return
     const { offsetHeight: height } = this.refs.ticket
@@ -114,10 +120,10 @@ export default class Issue extends Component {
       url
     } = this.props
 
-    const haveNotHoverIssue = isDragging && dropManager.hoveringIssueID === undefined
+    const haveNotHoverIssue = isDragging && dropManager.lastHoverdIssueId === undefined
 
     return connectDragSource(connectDropTarget(
-      <div>
+      <div className='issue-container'>
         {
           (((isOver || haveNotHoverIssue) && (dropManager.col === col)) || isPlaceHolder) && (
             <div
@@ -139,10 +145,11 @@ export default class Issue extends Component {
                 (assignees || []).map((d, i) => (
                   <a
                     href={`https://github.com/${d.login}`}
+                    key={i}
                     target='_blank'
                     title={d.login}
                   >
-                    <img key={i} src={ d.avatar_url }/>
+                    <img src={d.avatar_url} />
                   </a>
                 ))
               }

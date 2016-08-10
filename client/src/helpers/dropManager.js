@@ -1,14 +1,11 @@
 class DropManager {
   constructor() {
-    this.hoveringIssueID = undefined
+    this.lastHoverdIssueId = undefined
+    this.isHoveringIssue = false
   }
 
-  updatehoveringIssue(id) {
-    this.hoveringIssueID = id
-  }
-
-  clearhoveringIssue() {
-    this.hoveringIssueID = undefined
+  clearLastHoverdIssueId() {
+    this.lastHoverdIssueId = undefined
   }
 }
 
