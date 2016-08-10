@@ -29,7 +29,7 @@ export default class Board extends React.Component {
   constructor() {
     super()
     this.state = {
-      orgName: undefined,
+      userName: undefined,
       repoName: undefined,
       onLoading: false,
       notFound: false
@@ -41,9 +41,9 @@ export default class Board extends React.Component {
   }
 
   componentDidMount() {
-    const { orgName, repoName } = this.state
-    if (orgName && repoName) {
-      this.changeBoard(orgName, repoName)
+    const { userName, repoName } = this.state
+    if (userName && repoName) {
+      this.changeBoard(userName, repoName)
     }
   }
 
@@ -54,11 +54,8 @@ export default class Board extends React.Component {
 
     const userName = userNameFromUrl || (user ? user.value : undefined)
     const repoName = repoNameFromUrl || (repo ? repo.value : undefined)
-    if (!repoName) {
-      alert('Please provide name of the repository')
-    } else if (!userName) {
-      alert('Please provide name of the user or group')
-    }
+    if (!repoName) alert('Please provide name of the repository')
+    else if (!userName) alert('Please provide name of the user or group')
 
     clearIssues()
     this.setState({ onLoading: true })
@@ -72,12 +69,12 @@ export default class Board extends React.Component {
       this.setState({ onLoading: false })
       if (repoBtn) repoBtn.disabled = false
     })
-    this.setState({ orgName: userName, repoName })
+    this.setState({ userName, repoName })
   }
 
   newIssue() {
-    const { orgName, repoName } = this.state
-    openPage(`https://github.com/${orgName}/${repoName}/issues/new`)
+    const { userName, repoName } = this.state
+    openPage(`https://github.com/${userName}/${repoName}/issues/new`)
   }
 
   logout() {
@@ -86,13 +83,9 @@ export default class Board extends React.Component {
     setTimeout(() => window.location.reload(), 500)
   }
 
-  changeFilter(e) {
-    this.props.changeFilter(e.target.value)
-  }
-
   render() {
-    const { onSync, sortedArr } = this.props
-    const { orgName, repoName, onLoading, notFound } = this.state
+    const { changeFilter, onSync, sortedArr } = this.props
+    const { userName, repoName, onLoading, notFound } = this.state
 
     return (
       <div
@@ -103,13 +96,13 @@ export default class Board extends React.Component {
           <header className='toolbar'>
             <span className='logo'>FullPM</span>
             <input
-              defaultValue={ orgName || 'Wiredcraft' }
+              defaultValue={userName || 'Wiredcraft'}
               placeholder='Name of user or group'
               ref='user'
               type='text'
             />
             <input
-              defaultValue={ repoName || 'pipelines' }
+              defaultValue={repoName || 'pipelines'}
               placeholder='Name of repositories'
               ref='repo'
               type='text'
@@ -133,16 +126,18 @@ export default class Board extends React.Component {
         <ProgressBar hide={!onLoading} />
         <header className='controls'>
           {
-            orgName && (<button
-              className='button primary'
-              onClick={() => this.newIssue()}
-            >
-              New issue
-            </button>)
+            userName && (
+              <button
+                className='button primary'
+                onClick={() => this.newIssue()}
+              >
+                New issue
+              </button>
+            )
           }
           <input
             placeholder='Filter issues by title'
-            onChange={e => this.changeFilter(e)}
+            onChange={e => changeFilter(e.target.value)}
             type='search'
           />
           { onSync && <span className='status'>Saving changes...</span>}

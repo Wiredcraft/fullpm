@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 
 import 'styles/progressBar'
 
+
 export default class ProgressBar extends Component {
   render() {
     const { hide } = this.props
