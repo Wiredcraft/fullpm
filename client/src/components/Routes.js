@@ -12,7 +12,7 @@ export default class App extends Component {
         <Route path="/">
           <IndexRoute component={ Main }/>
           <Route
-            path="boards/:orgName/:repoName"
+            path="boards/:userName/:repoName"
             component={ Main }
           />
         </Route>

@@ -5,7 +5,6 @@ import {
   ISSUE_TYPE_DONE
 } from 'helpers/constant'
 
-// basic bubble sort
 function sortTickets(tickets) {
   const { length } = tickets
   for (let i = 0; i < length - 1; i++) {

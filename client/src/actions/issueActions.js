@@ -73,6 +73,7 @@ export function fetchRepo(userName, repoName, next) {
       .end((err, res) => {
         if (err) {
           console.error(err)
+          dispatch({ type: CHANGE_SYNC_MODE,  payload: false })
           next(true)
         } else {
           const response = JSON.parse(res.text).data
