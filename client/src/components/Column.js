@@ -8,6 +8,7 @@ import 'styles/column'
 import { updateIssue } from 'actions/issueActions'
 import { calcColumnBodyHeight } from '../helpers/column'
 import dropManager from 'helpers/dropManager'
+import { spliceIssueInSync } from 'helpers/tickets'
 
 const targetSpec = {
   drop({ id }) {
@@ -57,19 +58,8 @@ export default class Column extends Component {
     const { draggingItem } = dropManager
 
     const isSync = draggingItem && onSync
-    const newItemSync = isSync && (id === dropManager.newCol)
-    if (newItemSync) {
-      let spliced = false
-      for (let i = 0; i < issues.length; i++) {
-        if (issues[i].ranking < draggingItem.ranking) {
-          spliced = true
-          issues = issues.slice(0, i).concat(draggingItem)
-            .concat(issues.slice(i))
-          break
-        }
-      }
-      if (!spliced) issues = issues.concat(draggingItem)
-    }
+    const hasNewItemInSync = isSync && (id === dropManager.newCol)
+    issues = spliceIssueInSync(hasNewItemInSync, issues, draggingItem)
 
     let count = issues.filter(d => !d.hide).length
     if (isSync) {
