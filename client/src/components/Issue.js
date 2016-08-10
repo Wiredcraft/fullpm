@@ -149,7 +149,7 @@ export default class Issue extends Component {
                     target='_blank'
                     title={d.login}
                   >
-                    <img src={ d.avatar_url }/>
+                    <img src={d.avatar_url} />
                   </a>
                 ))
               }

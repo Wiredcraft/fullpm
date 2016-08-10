@@ -106,7 +106,7 @@ export default class Column extends Component {
                       number={d.number}
                       ranking={d.ranking}
                       url={d.htmlUrl || d.url}
-                      />
+                    />
                   )
                 })
               }
