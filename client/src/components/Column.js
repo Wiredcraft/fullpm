@@ -71,10 +71,10 @@ export default class Column extends Component {
       if (!spliced) issues = issues.concat(draggingItem)
     }
 
-    const dropedToNewColumn = isSync && (draggingItem.col === id)
-      && (draggingItem.newCol !== draggingItem.col)
+    const dropedToNewColumn = isSync && draggingItem &&
+      (draggingItem.col === id) && (draggingItem.newCol !== draggingItem.col)
     const dropedToSameColumn = isSync && draggingItem
-      && (dropManager.newCol === draggingItem.col)
+      && (dropManager.newCol === draggingItem.col === id)
     const count =
       issues.filter(d => !d.hide).length -
       ((dropedToNewColumn || dropedToSameColumn) ? 1 : 0)
