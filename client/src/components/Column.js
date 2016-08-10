@@ -34,13 +34,13 @@ export default class Column extends Component {
 
   componentWillMount() {
     intervalId = setInterval(() => {
-      const { id, onSync } = this.props
+      const { id, isOver, onSync } = this.props
       const { bodyMaxHeight, forceUpdater } = this.state
       const newHeight = calcColumnBodyHeight(id)
       if (newHeight !== bodyMaxHeight) {
         this.setState({ bodyMaxHeight: newHeight })
       }
-      if (onSync) {
+      if (isOver || onSync) {
         this.setState({ forceUpdater: forceUpdater + 1 })
       }
     }, 50)
@@ -79,33 +79,45 @@ export default class Column extends Component {
       issues.filter(d => !d.hide).length -
       ((dropedToNewColumn || dropedToSameColumn) ? 1 : 0)
 
-    return connectDropTarget(
+    const appendToTail = isOver && (dropManager.isHoveringIssue === false)
+
+    return (
       <section className='column' id={`column${id}`}>
-        <header className='header'>{ title } <span className='count'>{ count }</span></header>
-        <div className='body' style={{ maxHeight: bodyMaxHeight }} >
-          {
-            issues.map((d, i) => {
-              if (draggingItem && onSync && (d._id === draggingItem.id)) {
-                return undefined
+        <header className='header'>
+          { title } <span className='count'>{ count }</span>
+        </header>
+        {
+          connectDropTarget(
+            <div className='body' style={{ maxHeight: bodyMaxHeight }} >
+              {
+                issues.map((d, i) => {
+                  if (draggingItem && onSync && (d._id === draggingItem.id)) {
+                    return undefined
+                  }
+                  return (
+                    <Issue
+                      assignees={d.assignees}
+                      col={id}
+                      comments={d.comments}
+                      hide={d.hide}
+                      id={d.id}
+                      key={i}
+                      name={d.title || d.name}
+                      number={d.number}
+                      ranking={d.ranking}
+                      url={d.htmlUrl || d.url}
+                      />
+                  )
+                })
               }
-              return (
-                <Issue
-                  assignees={d.assignees}
-                  col={id}
-                  comments={d.comments}
-                  hide={d.hide}
-                  id={d.id}
-                  key={i}
-                  name={d.title || d.name}
-                  number={d.number}
-                  ranking={d.ranking}
-                  url={d.htmlUrl || d.url}
-                />
-              )
-            })
-          }
-          { issues.length === 0 && isOver && (<Issue isPlaceHolder={true} />) }
-        </div>
+              {
+                ((issues.length === 0 && isOver) || appendToTail) && (
+                  <Issue isPlaceHolder={true} />
+                )
+              }
+            </div>
+          )
+        }
       </section>
     )
   }

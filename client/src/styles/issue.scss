@@ -1,75 +1,78 @@
 @import './variables.scss';
 @import 'node_modules/bourbon/app/assets/stylesheets/_bourbon.scss';
 
-.issue {
-  background: #fff;
-  border: 1px solid #d8d8d8;
-  border-radius: 3px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
-  cursor: move;
-  display: block;
-  margin-bottom: 5px;
-  padding: 6px 8px;
-  text-align: left;
-  &:hover {
-    border: 1px solid #ccc;
-  }
-  &.grabbed {
-    transform: rotate(3deg);
-    width: 248px;
-  }
-  .assignees {
-    float: right;
-    height: 20px;
-    margin: 0 -1px 5px 5px;
-    overflow: visible;
-    position: relative;
-    width: 20px;
+.issue-container {
+  margin: 0 5px;
+  .issue {
+    background: #fff;
+    border: 1px solid #d8d8d8;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    cursor: move;
+    display: block;
+    margin-bottom: 5px;
+    padding: 6px 8px;
+    text-align: left;
     &:hover {
-      z-index: 999;
-      a {
-        margin-left: -40px;
-      }
+      border: 1px solid #ccc;
     }
-    a {
-      display: inline-block;
-      margin-left: -26px;
-      @include transition-property(margin, opacity);
-      @include transition-duration(0.2s);
-      &:first-child {
-        margin-left: 0;
-      }
+    &.grabbed {
+      transform: rotate(3deg);
+      width: 248px;
     }
-    img {
-      border-right: 1px solid #fff;
-      border-radius: 2px;
+    .assignees {
+      float: right;
       height: 20px;
+      margin: 0 -1px 5px 5px;
+      overflow: visible;
+      position: relative;
       width: 20px;
+      &:hover {
+        z-index: 999;
+        a {
+          margin-left: -40px;
+        }
+      }
+      a {
+        display: inline-block;
+        margin-left: -26px;
+        @include transition-property(margin, opacity);
+        @include transition-duration(0.2s);
+        &:first-child {
+          margin-left: 0;
+        }
+      }
+      img {
+        border-right: 1px solid #fff;
+        border-radius: 2px;
+        height: 20px;
+        width: 20px;
+      }
+    }
+    .title {
+      color: inherit;
+      cursor: pointer;
+      display: block;
+      font-weight: bold;
+      line-height: 140%;
+      margin-bottom: 3px;
+      text-decoration: none;
+      &:hover {
+        color: #4078c0;
+      }
+    }
+    .meta {
+      color: #767676;
+      display: block;
+      font-size: 12px;
     }
   }
-  .title {
-    color: inherit;
-    cursor: pointer;
-    display: block;
-    font-weight: bold;
-    line-height: 140%;
-    margin-bottom: 3px;
-    text-decoration: none;
-    &:hover {
-      color: #4078c0;
-    }
-  }
-  .meta {
-    color: #767676;
-    display: block;
-    font-size: 12px;
-  }
-}
 
-.placeholder {
-  background: #dedede;
-  border: 1px solid #dedede;
-  border-radius: 3px;
-  display: block;
-  margin-bottom: 5px;
+  .placeholder {
+    background: #dedede;
+    border: 1px solid #dedede;
+    border-radius: 3px;
+    display: block;
+    margin-bottom: 5px;
+  }
 }
