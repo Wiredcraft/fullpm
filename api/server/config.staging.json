@@ -6,8 +6,8 @@
     "baseURL": "https://staging-fullpm.wiredcraft.net",
     "github": {
       "scope": "user:email,read:org,repo,notifications",
-      "clientID": "93bd57c1787e57db3114",
-      "clientSecret": "c7bcb74b07e3ac252c1227cf4fb3c4d789f65135"
+      "clientID": "4c7d0c1366138d27f2a8",
+      "clientSecret": "c8b9b2a899678e0aa94173b73423315b7488b532"
     }
   }
 }
