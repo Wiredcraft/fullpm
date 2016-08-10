@@ -10,6 +10,7 @@ import { calcRanking } from 'helpers/ranking'
 import { openPage } from '../helpers/webPage'
 import 'styles/issue'
 
+
 const dragSource = {
   spec: {
     beginDrag(props) {
@@ -124,48 +125,46 @@ export default class Issue extends Component {
 
     return connectDragSource(connectDropTarget(
       <div className='issue-container'>
-        {
-          (((isOver || haveNotHoverIssue) && (dropManager.col === col)) || isPlaceHolder) && (
-            <div
-              className='placeholder'
-              style={{ height: dropManager.height }}
-            />
-          )
-        }
-        {
-          !(isOver && isDragging) && !(isDragging) && !isPlaceHolder && (
-            <article
-              className={`${className} issue ${isDragging ? 'dragged' : ''}`}
-              id={id}
-              ref='ticket'
-              style={{ display: hide ? 'none' : 'block' }}
-            >
-              <aside className='assignees'>
-              {
-                (assignees || []).map((d, i) => (
-                  <a
-                    href={`https://github.com/${d.login}`}
-                    key={i}
-                    target='_blank'
-                    title={d.login}
-                  >
-                    <img src={d.avatar_url} />
-                  </a>
-                ))
-              }
-              </aside>
-              <span
-                className='title'
-                onClick={() => openPage(url)}
-              >
-                { name }
-              </span>
-              <span className='meta'>
-                {`#${number} · ${comments ? comments : 0} comment${comments > 1 ? 's' : ''}`}
-              </span>
-            </article>
-          )
-        }
+      {
+        (isPlaceHolder || ((isOver || haveNotHoverIssue) &&
+          (dropManager.col === col))) && (
+          <div
+            className='placeholder'
+            style={{ height: dropManager.height }}
+          />
+        )
+      }
+      {
+        !(isOver && isDragging) && !(isDragging) && !isPlaceHolder && (
+          <article
+            className={`${className} issue ${isDragging ? 'dragged' : ''}`}
+            id={id}
+            ref='ticket'
+            style={{ display: hide ? 'none' : 'block' }}
+          >
+            <aside className='assignees'>
+            {
+              (assignees || []).map((d, i) => (
+                <a
+                  href={`https://github.com/${d.login}`}
+                  key={i}
+                  target='_blank'
+                  title={d.login}
+                >
+                  <img src={d.avatar_url} />
+                </a>
+              ))
+            }
+            </aside>
+            <span className='title' onClick={() => openPage(url)}>
+              { name }
+            </span>
+            <span className='meta'>
+              {`#${number} · ${comments ? comments : 0} comment${comments > 1 ? 's' : ''}`}
+            </span>
+          </article>
+        )
+      }
       </div>
     ))
   }

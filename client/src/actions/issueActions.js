@@ -1,7 +1,7 @@
 /* global API_BASE_URL */
 import PouchDB from 'pouchdb'
-
 import request from 'superagent'
+
 
 export const CHANGE_TICKETS = 'CHANGE_TICKETS'
 export const CHANGE_FILTER = 'CHANGE_FILTER'
@@ -91,20 +91,16 @@ export function updateIssue(issueID, columnID, ranking) {
     return metaDb.get(issueID).then(function (doc) {
       doc.column = issueType
       if (ranking) doc.ranking = ranking
-      dispatch({ type: CHANGE_SYNC_MODE,  payload: true })
+      dispatch({ type: CHANGE_SYNC_MODE, payload: true })
       return metaDb.put(doc)
     })
   }
 }
 
 export function clearIssues() {
-  return dispatch => {
-    return dispatch({ type: CHANGE_TICKETS, payload: [] })
-  }
+  return { type: CHANGE_TICKETS, payload: [] }
 }
 
 export function changeFilter(filter) {
-  return dispatch => {
-    return dispatch({ type: CHANGE_FILTER, payload: filter })
-  }
+  return { type: CHANGE_FILTER, payload: filter }
 }
