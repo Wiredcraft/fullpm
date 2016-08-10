@@ -145,7 +145,7 @@ export default class Board extends React.Component {
             onChange={e => this.changeFilter(e)}
             type='search'
           />
-          { onSync && <span>Sync...</span>}
+          { onSync && <span className='status'>Saving changes...</span>}
         </header>
         <div className='columns'>
         {

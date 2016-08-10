@@ -1,10 +1,11 @@
 .board {
+  padding: 0 15px;
   position: relative;
   text-align: left;
   .toolbar {
     background-color: #f5f5f5;
     border-bottom: 1px solid #e5e5e5;
-    margin-bottom: 15px;
+    margin: 0 -15px 15px;
     padding: 10px;
     text-align: right;
     vertical-align: top;
@@ -29,6 +30,16 @@
     }
     .primary {
       margin-right: 5px;
+    }
+    .status {
+      background-color: #ffefc6;
+      border: 1px solid #ffefc6;
+      border-radius: 3px;
+      color: #4c4a42;
+      float: right;
+      font-size: 12px;
+      line-height: 20px;
+      padding: 3px 10px;
     }
   }
   .columns {
