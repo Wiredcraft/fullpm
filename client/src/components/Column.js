@@ -77,7 +77,7 @@ export default class Column extends Component {
         </header>
         {
           connectDropTarget(
-            <div className='body' style={{ maxHeight: bodyMaxHeight }} >
+            <div className='body' style={{ height: bodyMaxHeight }} >
             {
               issues.map((d, i) => {
                 if (draggingItem && onSync && (d._id === draggingItem.id)) {
