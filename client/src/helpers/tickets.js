@@ -18,6 +18,19 @@ function sortTickets(tickets) {
   }
 }
 
+export function docsToTickets(cacheDocs, metaDocs, name) {
+  const metaTicketsMap = {}
+  metaDocs.forEach(d => {
+    metaTicketsMap[d.id] = d
+  })
+  return cacheDocs.filter(d => d.url.toLowerCase().indexOf(name) !== -1)
+    .map(d => {
+      d.column = metaTicketsMap[d.id].column
+      d.ranking = metaTicketsMap[d.id].ranking
+      return d
+    })
+}
+
 export function parserTickets(tickets, filter, isRawTickets) {
   let ticketList
   if (isRawTickets) {
