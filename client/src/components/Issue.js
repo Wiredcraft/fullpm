@@ -21,7 +21,7 @@ const dragSource = {
       const item = monitor.getItem()
       const dropResult = monitor.getDropResult()
       const { updateIssue, issueList, ranking } = props
-      if (dropResult) {
+      if (dropResult && Object.keys(dropResult).length !== 0) {
         const { containerId } = dropResult
         const { lastHoverdIssueId } = dropManager
         const newRanking =
@@ -48,9 +48,9 @@ const dragSource = {
 }
 
 const targetSpec = {
-  drop({ id }) {
+  drop({ id, col }) {
     dropManager.lastHoverdIssueId = id
-    return undefined
+    return { containerId: col }
   }
 }
 
@@ -93,7 +93,6 @@ export default class Issue extends Component {
       dropManager.isHoveringIssue = true
     }
     if (this.props.isOver && !isOver) {
-      dropManager.lastHoverdIssueId = undefined
       dropManager.isHoveringIssue = false
     }
     if (!this.refs.ticket) return
