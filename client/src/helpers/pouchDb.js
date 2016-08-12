@@ -31,7 +31,7 @@ class DbManager {
         const cacheDocs = res.rows.map(d => d.doc)
         this.metaDb.allDocs({include_docs: true}).then(metaRes => {
           const metaDocs = metaRes.rows.map(d => d.doc)
-
+  
           // Retrieve the data for tickets
           const tickets = docsToTickets(cacheDocs, metaDocs, name)
 
@@ -49,7 +49,7 @@ class DbManager {
       handleDbUpdated()
 
       // If meta db changed, display the changes
-      this.metaDb.changes({ since: 'now', live: true})
+      this.metaDb.changes({ since: 'now', live: true })
         .on('change', () => handleDbUpdated())
     })
   }

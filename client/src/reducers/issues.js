@@ -19,6 +19,7 @@ export default function issues (state = initialState, action) {
   case CHANGE_TICKETS:
     state = state.set('tickets',
       parserTickets(action.payload, state.get('filter'), true))
+    state = state.set('onSync', false)
     return state
   case CHANGE_FILTER:
     const tickets = state.get('tickets')

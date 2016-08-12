@@ -12,7 +12,6 @@ export function fetchIssues(cacheDbUrl, metaDbUrl, name, next) {
   return dispatch => {
     dbManager.initDb(cacheDbUrl, metaDbUrl, name, tickets => {
       dispatch({ type: CHANGE_TICKETS, payload: tickets })
-      dispatch({ type: CHANGE_SYNC_MODE,  payload: false })
       if (next) next()
     })
   }

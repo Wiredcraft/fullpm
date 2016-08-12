@@ -37,6 +37,7 @@ export default class Column extends Component {
       const { id, isOver, onSync } = this.props
       const { bodyMaxHeight, forceUpdater } = this.state
 
+      // Restrict column contained in page without vertical scroll
       const newHeight = calcColumnBodyHeight(id)
       if (newHeight !== bodyMaxHeight) {
         this.setState({ bodyMaxHeight: newHeight })

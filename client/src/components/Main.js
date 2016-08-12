@@ -14,24 +14,24 @@ export default class Main extends Component {
   constructor() {
     super()
     this.state = { promptLogin: false }
-    // Prevent the flash of content
-    setTimeout(() => this.setState({ promptLogin: true }), 1500)
   }
 
   componentWillMount() {
+    // Prevent the flash of content
+    setTimeout(() => this.setState({ promptLogin: true }), 700)
+
     const { updateUserLoginState } = this.props
     const url = `${API_BASE_URL}/auth/user`
     request
       .get(url)
       .withCredentials()
       .end((err, res) => {
+        // User haven't authenticated
         if (res.status === 401) return
-        if (err) {
-          console.error(err)
-        } else {
-          const result = JSON.parse(res.text)
-          updateUserLoginState({ isLogin: true, userName: result.login })
-        }
+        if (err) return console.error(err)
+
+        const result = JSON.parse(res.text)
+        updateUserLoginState({ isLogin: true, userName: result.login })
       })
   }
 
@@ -52,7 +52,7 @@ export default class Main extends Component {
         issues on a board.</p>
         <button
           className='button primary'
-          onClick={() => this.login()}
+          onClick={this.login}
         >
           Login with GitHub
         </button>
