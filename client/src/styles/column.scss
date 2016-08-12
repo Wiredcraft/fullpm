@@ -23,9 +23,15 @@
       margin-left: 3px;
     }
   }
-  .body {
-    min-height: 60px;
+  .container {
     overflow-y: scroll;
-    padding: 5px 0 0 0;
+    .body {
+      min-height: 60px;
+      overflow-y: scroll;
+      padding: 5px 0 0 0;
+    }
+    .placeholder-area {
+      min-height: 5px;
+    }
   }
 }

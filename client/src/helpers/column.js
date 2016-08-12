@@ -1,4 +1,4 @@
-export function calcColumnBodyHeight(id) {
+export function calcColumnBodyMaxHeight(id) {
   const dom = document.querySelector(`#column${id}`)
   if (!dom) return false
 
@@ -9,4 +9,11 @@ export function calcColumnBodyHeight(id) {
 
   // 4 come from border of column.
   return windowHeight - domOffsetTop - headerHeight - 4
+}
+
+export function calcColumnBodyHeight(id) {
+  const dom = document.querySelector(`#column${id} .body`)
+  if (!dom) return false
+
+  return dom.offsetHeight
 }
