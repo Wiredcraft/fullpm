@@ -93,6 +93,7 @@ export default class Issue extends Component {
       dropManager.isHoveringIssue = true
     }
     if (this.props.isOver && !isOver) {
+      dropManager.lastHoverdIssueId = undefined
       dropManager.isHoveringIssue = false
     }
     if (!this.refs.ticket) return
