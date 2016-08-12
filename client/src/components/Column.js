@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 import { DropTarget } from 'react-dnd'
 
 import Issue from 'components/Issue'
 import 'styles/column'
-import { updateIssue } from 'actions/issueActions'
 import { calcColumnBodyHeight } from '../helpers/column'
 import dropManager from 'helpers/dropManager'
 import { spliceIssueInSync } from 'helpers/tickets'
@@ -26,7 +24,7 @@ function collect(connect, monitor) {
 
 let intervalId
 
-@connect(mapStateToProps, mapDispatchToProps)
+@connect(mapStateToProps)
 @DropTarget('Issue', targetSpec, collect)
 export default class Column extends Component {
   constructor() {
@@ -118,8 +116,4 @@ function mapStateToProps(state) {
   return {
     onSync: state.issues.get('onSync')
   }
-}
-
-function mapDispatchToProps (dispatch) {
-  return bindActionCreators({ updateIssue }, dispatch)
 }

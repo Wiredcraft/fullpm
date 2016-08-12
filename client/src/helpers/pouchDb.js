@@ -12,6 +12,7 @@ class DbManager {
   }
 
   initDb(cacheDbUrl, metaDbUrl, name, next) {
+    // To support case insensitive
     name = name.toLowerCase()
 
     this.metaDbName = `meta${name}`
@@ -19,6 +20,7 @@ class DbManager {
     this.metaDb = new PouchDB(this.metaDbName)
     this.cacheDb = new PouchDB(this.cacheDbName)
 
+    // For only parse docs after cache and meta both finished sync
     let metaDBSynced = false
     let cacheDBSynced = false
 
@@ -29,9 +31,11 @@ class DbManager {
         const cacheDocs = res.rows.map(d => d.doc)
         this.metaDb.allDocs({include_docs: true}).then(metaRes => {
           const metaDocs = metaRes.rows.map(d => d.doc)
-          const docs = docsToTickets(cacheDocs, metaDocs, name)
 
-          if (next) next(docs)
+          // Retrieve the data for tickets
+          const tickets = docsToTickets(cacheDocs, metaDocs, name)
+
+          if (next) next(tickets)
         })
       })
     }
@@ -43,20 +47,16 @@ class DbManager {
     return PouchDB.sync(this.metaDbName, metaDbUrl).then(() => {
       cacheDBSynced = true
       handleDbUpdated()
-      this.metaDb.changes({
-        since: 'now',
-        live: true
-      }).on('change', function () {
-        handleDbUpdated()
-      })
+
+      // If meta db changed, display the changes
+      this.metaDb.changes({ since: 'now', live: true})
+        .on('change', () => handleDbUpdated())
     })
   }
 
   updateMetaDb(issueID, issueType, ranking, next) {
     this.metaDb.get(issueID).then(doc => {
-      doc.column = issueType
-      if (ranking) doc.ranking = ranking
-      this.metaDb.put(doc)
+      this.metaDb.put({ ...doc, column: issueType, ranking })
       if (next) next()
     })
   }

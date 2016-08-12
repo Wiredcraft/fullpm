@@ -1,8 +1,8 @@
 /* global API_BASE_URL */
-
 import request from 'superagent'
 
 import { dbManager } from '../helpers/pouchDb'
+
 
 export const CHANGE_TICKETS = 'CHANGE_TICKETS'
 export const CHANGE_FILTER = 'CHANGE_FILTER'
@@ -32,10 +32,12 @@ export function fetchRepo(userName, repoName, next) {
           next(true)
         } else {
           const response = JSON.parse(res.text).data
-          const cacheDbUrl = `${API_BASE_URL}${response.cacheDB}`
-          const metaDbUrl = `${API_BASE_URL}${response.metaDB}`
-          dispatch(fetchIssues(cacheDbUrl, metaDbUrl, `${userName}/${repoName}`,
-            next))
+          dispatch(fetchIssues(
+            `${API_BASE_URL}${response.cacheDB}`,
+            `${API_BASE_URL}${response.metaDB}`,
+            `${userName}/${repoName}`,
+            next)
+          )
         }
       })
   }

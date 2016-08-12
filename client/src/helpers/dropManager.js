@@ -1,3 +1,4 @@
+// TODO: Add more helperful methods in the DropManager
 class DropManager {
   constructor() {
     this.lastHoverdIssueId = undefined
