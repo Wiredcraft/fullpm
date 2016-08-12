@@ -27,6 +27,7 @@ export function docsToTickets(cacheDocs, metaDocs, name) {
     .map(d => {
       d.column = metaTicketsMap[d.id].column
       d.ranking = metaTicketsMap[d.id].ranking
+      d.isPullRequest = d.htmlUrl.indexOf('/pull/') !== -1
       return d
     })
 }
@@ -35,8 +36,8 @@ export function parserTickets(tickets, filter, isRawTickets) {
   let ticketList
   if (isRawTickets) {
     sortTickets(tickets)
-    // Hide pull requests
-    tickets = tickets.filter(d => d.htmlUrl.indexOf('/pull/') === -1)
+
+    // tickets = tickets.filter(d => d.htmlUrl.indexOf('/pull/') === -1)
 
     ticketList = [
       {

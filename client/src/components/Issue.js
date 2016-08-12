@@ -116,6 +116,7 @@ export default class Issue extends Component {
       isDragging,
       isOver,
       isPlaceHolder,
+      isPullRequest,
       name,
       number,
       url
@@ -137,7 +138,9 @@ export default class Issue extends Component {
       {
         !(isOver && isDragging) && !(isDragging) && !isPlaceHolder && (
           <article
-            className={`${className} issue ${isDragging ? 'dragged' : ''}`}
+            className={
+              `${className} issue ${isDragging ? 'dragged' : ''} ${isPullRequest ? 'pull-request' : ''}`
+            }
             id={id}
             ref='ticket'
             style={{ display: hide ? 'none' : 'block' }}
