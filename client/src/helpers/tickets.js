@@ -3,16 +3,16 @@ import {
   ISSUE_TYPE_NEXT,
   ISSUE_TYPE_DOING,
   ISSUE_TYPE_DONE
-} from 'helpers/constant'
+} from './constant'
+import { checkIsfiltered } from './filter'
+
 
 function sortTickets(tickets) {
   const { length } = tickets
   for (let i = 0; i < length - 1; i++) {
     for (let j = 0; j < length - 1 - i; j++) {
       if (tickets[j].ranking < tickets[j + 1].ranking) {
-        const tmp = tickets[j]
-        tickets[j] = tickets[j + 1]
-        tickets[j + 1] = tmp
+        [tickets[j], tickets[j + 1]] = [tickets[j + 1], tickets[j]]
       }
     }
   }
@@ -62,16 +62,13 @@ export function parserTickets(tickets, filter, isRawTickets) {
 
   return (ticketList || tickets).map(d => {
     d.issues = d.issues.map(issue => {
-      if (filter === '') issue.hide = false
-      else issue.hide = !(issue.title.toLowerCase()
-        .indexOf(filter.toLowerCase()) !== -1)
-
-      return issue
+      return {...issue, hide: checkIsfiltered(filter, issue)}
     })
     return d
   })
 }
 
+// For adding issue clone
 export function spliceIssueInSync(hasNew, issues, newItem) {
   if (!hasNew) return issues
   let spliced = false
