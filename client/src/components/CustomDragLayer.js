@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { DragLayer } from 'react-dnd';
 
 import Issue from 'components/Issue'
+import dropManager from 'helpers/dropManager'
 
 
 const layerStyles = {
@@ -42,7 +43,7 @@ export default class CustomDragLayer extends Component {
   render() {
     const { item: d, isDragging } = this.props;
 
-    if (!isDragging) {
+    if (!isDragging || dropManager.isDraggingColumn) {
       return null;
     }
     return (

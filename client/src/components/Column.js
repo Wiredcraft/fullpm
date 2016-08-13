@@ -29,10 +29,11 @@ const dragTarget = {
 const dragSource = {
   spec: {
     beginDrag(props) {
+      dropManager.isDraggingColumn = true
       return props
     },
     endDrag(props, monitor) {
-
+      dropManager.isDraggingColumn = false
     }
   },
   collect(connect, monitor) {
