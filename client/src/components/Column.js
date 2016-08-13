@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { DropTarget } from 'react-dnd'
+import { DragSource, DropTarget } from 'react-dnd'
 
 import Issue from 'components/Issue'
 import 'styles/column'
@@ -12,23 +12,42 @@ import dropManager from 'helpers/dropManager'
 import { spliceIssueInSync } from 'helpers/tickets'
 
 
-const targetSpec = {
-  drop({ id }) {
-    return { containerId: id }
+const dragTarget = {
+  spec: {
+    drop({ id }) {
+      return { containerId: id }
+    }
+  },
+  collect: function (connect, monitor) {
+    return {
+      connectDropTarget: connect.dropTarget(),
+      isOver: monitor.isOver()
+    }
   }
 }
 
-function collect(connect, monitor) {
-  return {
-    connectDropTarget: connect.dropTarget(),
-    isOver: monitor.isOver()
+const dragSource = {
+  spec: {
+    beginDrag(props) {
+      return props
+    },
+    endDrag(props, monitor) {
+
+    }
+  },
+  collect(connect, monitor) {
+    return {
+      connectDragSource: connect.dragSource(),
+      isDragging: monitor.isDragging()
+    }
   }
 }
 
 let intervalId
 
 @connect(mapStateToProps)
-@DropTarget('Issue', targetSpec, collect)
+@DropTarget('Issue', dragTarget.spec, dragTarget.collect)
+@DragSource('Column', dragSource.spec, dragSource.collect)
 export default class Column extends Component {
   constructor() {
     super()
@@ -59,7 +78,14 @@ export default class Column extends Component {
   }
 
   render() {
-    const { connectDropTarget, title, id, isOver, onSync } = this.props
+    const {
+      connectDragSource,
+      connectDropTarget,
+      id,
+      isOver,
+      onSync,
+      title
+    } = this.props
     let { issues } = this.props
     const { bodyHeight, bodyMaxHeight } = this.state
     const { draggingItem, isHoveringIssue } = dropManager
@@ -80,7 +106,7 @@ export default class Column extends Component {
 
     const appendToTail = isOver && (isHoveringIssue === false)
 
-    return (
+    return connectDragSource(
       <section className='column' id={`column${id}`}>
         <header className='header'>
           { title } <span className='count'>{ count }</span>
