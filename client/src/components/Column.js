@@ -4,7 +4,10 @@ import { DropTarget } from 'react-dnd'
 
 import Issue from 'components/Issue'
 import 'styles/column'
-import { calcColumnBodyHeight } from '../helpers/column'
+import {
+  calcColumnBodyHeight,
+  calcColumnBodyMaxHeight
+} from '../helpers/column'
 import dropManager from 'helpers/dropManager'
 import { spliceIssueInSync } from 'helpers/tickets'
 
@@ -29,18 +32,22 @@ let intervalId
 export default class Column extends Component {
   constructor() {
     super()
-    this.state = { bodyMaxHeight: 0, forceUpdater: 0 }
+    this.state = { bodyHeight: 0, bodyMaxHeight: 0, forceUpdater: 0 }
   }
 
   componentWillMount() {
     intervalId = setInterval(() => {
       const { id, isOver, onSync } = this.props
-      const { bodyMaxHeight, forceUpdater } = this.state
+      const { bodyHeight, bodyMaxHeight, forceUpdater } = this.state
 
       // Restrict column contained in page without vertical scroll
-      const newHeight = calcColumnBodyHeight(id)
-      if (newHeight !== bodyMaxHeight) {
-        this.setState({ bodyMaxHeight: newHeight })
+      const maxHeight = calcColumnBodyMaxHeight(id)
+      if (maxHeight !== bodyMaxHeight) {
+        this.setState({ bodyMaxHeight: maxHeight })
+      }
+      const height = calcColumnBodyHeight(id)
+      if (height !== bodyHeight) {
+        this.setState({ bodyHeight: height })
       }
 
       if (isOver || onSync) this.setState({ forceUpdater: forceUpdater + 1 })
@@ -54,8 +61,10 @@ export default class Column extends Component {
   render() {
     const { connectDropTarget, title, id, isOver, onSync } = this.props
     let { issues } = this.props
-    const { bodyMaxHeight } = this.state
+    const { bodyHeight, bodyMaxHeight } = this.state
     const { draggingItem, isHoveringIssue } = dropManager
+    const placeHolderAreaHeight =
+      (bodyMaxHeight - bodyHeight) < 0 ? 0 : bodyMaxHeight - bodyHeight
 
     const needClone = draggingItem && onSync
     const hasNewItemInSync = needClone && (id === dropManager.newCol)
@@ -76,39 +85,49 @@ export default class Column extends Component {
         <header className='header'>
           { title } <span className='count'>{ count }</span>
         </header>
-        {
-          connectDropTarget(
-            <div className='body' style={{ height: bodyMaxHeight }} >
-            {
-              issues.map((d, i) => {
-                if (draggingItem && onSync && (d._id === draggingItem.id)) {
-                  return undefined
-                }
-                return (
-                  <Issue
-                    assignees={d.assignees}
-                    col={id}
-                    comments={d.comments}
-                    hide={d.hide}
-                    id={d.id}
-                    isPullRequest={d.isPullRequest}
-                    key={i}
-                    name={d.title || d.name}
-                    number={d.number}
-                    ranking={d.ranking}
-                    url={d.htmlUrl || d.url}
-                  />
-                )
-              })
-            }
-            {
-              ((issues.length === 0 && isOver) || appendToTail) && (
-                <Issue isPlaceHolder={true} />
+        <div
+          className='container'
+          style={{ maxHeight: bodyMaxHeight, minHeight: bodyMaxHeight }}
+        >
+          <div className='body' >
+          {
+            issues.map((d, i) => {
+              if (draggingItem && onSync && (d._id === draggingItem.id)) {
+                return undefined
+              }
+              return (
+                <Issue
+                  assignees={d.assignees}
+                  col={id}
+                  comments={d.comments}
+                  hide={d.hide}
+                  id={d.id}
+                  isPullRequest={d.isPullRequest}
+                  key={i}
+                  name={d.title || d.name}
+                  number={d.number}
+                  ranking={d.ranking}
+                  url={d.htmlUrl || d.url}
+                />
               )
-            }
-            </div>
-          )
-        }
+            })
+          }
+          </div>
+          {
+            connectDropTarget(
+              <div
+                className='placeholder-area'
+                style={{ height: placeHolderAreaHeight }}
+              >
+              {
+                ((issues.length === 0 && isOver) || appendToTail) && (
+                  <Issue isPlaceHolder={true} />
+                )
+              }
+              </div>
+            )
+          }
+        </div>
       </section>
     )
   }
