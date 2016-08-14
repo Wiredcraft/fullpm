@@ -83,6 +83,7 @@ export default class Column extends Component {
       connectDragSource,
       connectDropTarget,
       id,
+      isDragging,
       isOver,
       onSync,
       title
@@ -109,6 +110,10 @@ export default class Column extends Component {
 
     return connectDragSource(
       <section className='column' id={`column${id}`}>
+        <div
+          className='placeholder'
+          style={{ display: isDragging ? 'block' : '' }}
+        />
         <header className='header'>
           { title } <span className='count'>{ count }</span>
         </header>

@@ -12,6 +12,14 @@
   &:last-child {
     margin-right: 0;
   }
+  .placeholder {
+    background: #dedede;
+    display: none;
+    height: 100%;
+    position: fixed;
+    width: 260px;
+    z-index: 2;
+  }
   .header {
     border-bottom: 1px solid #d8d8d8;
     font-weight: bold;
