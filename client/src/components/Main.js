@@ -45,17 +45,22 @@ export default class Main extends Component {
     const { promptLogin } = this.state
 
     return isLogin ? (<Board params={params} />) : promptLogin && (
-      <div className='login'>
-        <h1>Just one more thing...</h1>
-        <p>To use <a href='http://fullpm.com' target='_blank'>FullPM</a>, you
-        first need to login with your GitHub account to allow us to display your
-        issues on a board.</p>
-        <button
-          className='button primary'
-          onClick={this.login}
-        >
-          Login with GitHub
-        </button>
+      <div className='anonymous'>
+        <div className='wrapper'>
+          <h1>Sign in to FullPM</h1>
+          <div className='login'>
+            <p>To use <a href='https://wiredcraft.com/products/fullpm' target='_blank'>FullPM</a>, you
+            first need to login with your GitHub account to allow us to display your
+            issues on a board.</p>
+            <button
+              className='button primary'
+              onClick={this.login}
+            >
+              Login with GitHub
+            </button>
+          </div>
+          <p className='more'><a href='https://wiredcraft.com/products/fullpm' target='_blank'>Learn more about FullPM</a> or <a href='https://github.com/Wiredcraft/fullpm' target='_blank'>fork it on GitHub</a>.</p>
+        </div>
       </div>
     )
   }
