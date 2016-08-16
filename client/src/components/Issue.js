@@ -6,7 +6,7 @@ import { getEmptyImage } from 'react-dnd-html5-backend'
 
 import { updateIssue } from 'actions/issueActions'
 import dropManager from 'helpers/dropManager'
-import { calcRanking } from 'helpers/ranking'
+import { calcIssueRanking } from 'helpers/ranking'
 import { openPage } from '../helpers/webPage'
 import 'styles/issue'
 
@@ -25,7 +25,7 @@ const dragSource = {
         const { containerId } = dropResult
         const { lastHoverdIssueId } = dropManager
         const newRanking =
-          calcRanking(lastHoverdIssueId, containerId, ranking, issueList)
+          calcIssueRanking(lastHoverdIssueId, containerId, ranking, issueList)
         updateIssue(item.id, containerId, newRanking)
         // deep copy
         dropManager.draggingItem = {
@@ -65,7 +65,7 @@ let intervalId
 export default class Issue extends Component {
   constructor() {
     super()
-    this.state = { forceUpdater : 0 }
+    this.state = { forceUpdater: 0 }
   }
 
   componentWillMount() {

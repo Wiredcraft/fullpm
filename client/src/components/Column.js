@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { DragSource, DropTarget } from 'react-dnd'
 
+import { updateColumnRanking } from 'actions/issueActions'
 import Issue from 'components/Issue'
 import 'styles/column'
 import { calcColumnBodyMaxHeight } from '../helpers/column'
 import dropManager from 'helpers/dropManager'
 import { spliceIssueInSync } from 'helpers/tickets'
 import IssuesDropTarget from './IssuesDropTarget'
+import { calcColumnRanking } from 'helpers/ranking'
 
 
 const dragTarget = {
@@ -27,11 +30,14 @@ const dragTarget = {
 const dragSource = {
   spec: {
     beginDrag(props) {
+      dropManager.draggingColumnId = props.id
       dropManager.isDraggingColumn = true
       return props
     },
-    endDrag(props, monitor) {
+    endDrag() {
+      dropManager.draggingColumnId = undefined
       dropManager.isDraggingColumn = false
+      dropManager.draggingFinished = 5
     }
   },
   collect(connect, monitor) {
@@ -44,9 +50,9 @@ const dragSource = {
 
 let intervalId
 
-@connect(mapStateToProps)
-@DropTarget('Issue', dragTarget.spec, dragTarget.collect)
+@connect(mapStateToProps, mapDispatchToProps)
 @DragSource('Column', dragSource.spec, dragSource.collect)
+@DropTarget('Column', dragTarget.spec, dragTarget.collect)
 export default class Column extends Component {
   constructor() {
     super()
@@ -55,7 +61,7 @@ export default class Column extends Component {
 
   componentWillMount() {
     intervalId = setInterval(() => {
-      const { id, isOver, onSync } = this.props
+      const { id, isDragging, isOver, onSync } = this.props
       const { bodyMaxHeight, forceUpdater } = this.state
 
       // Restrict column contained in page without vertical scroll
@@ -64,8 +70,24 @@ export default class Column extends Component {
         this.setState({ bodyMaxHeight: maxHeight })
       }
 
-      if (isOver || onSync) this.setState({ forceUpdater: forceUpdater + 1 })
+      if (isDragging || isOver || onSync)
+        this.setState({ forceUpdater: forceUpdater + 1 })
+      if (dropManager.draggingFinished) {
+        this.setState({ forceUpdater: forceUpdater + 1 })
+        dropManager.draggingFinished--
+      }
     }, 50)
+  }
+
+  componentWillUpdate(props) {
+    const { id, isOver, tickets, updateColumnRanking } = props
+    if (dropManager.draggingColumnId === id) return
+    if (dropManager.lastHoverdColumnId === id) return
+    if (!this.props.isOver && isOver) {
+      dropManager.lastHoverdColumnId = id
+      const newRanking = calcColumnRanking(tickets, id)
+      updateColumnRanking(dropManager.draggingColumnId, newRanking)
+    }
   }
 
   componentWillUnMount() {
@@ -75,18 +97,20 @@ export default class Column extends Component {
   render() {
     const {
       connectDragSource,
+      connectDropTarget,
       id,
-      isDragging,
       onSync,
       title
     } = this.props
     let { issues } = this.props
+
     const { bodyMaxHeight } = this.state
     const { draggingItem } = dropManager
 
     const needClone = draggingItem && onSync
     const hasNewItemInSync = needClone && (id === dropManager.newCol)
     issues = spliceIssueInSync(hasNewItemInSync, issues, draggingItem)
+    const isDragging = dropManager.draggingColumnId === id
 
     let count = issues.filter(d => !d.hide).length
     if (needClone) {
@@ -96,7 +120,7 @@ export default class Column extends Component {
       if (dropedToNewColumn || dropedToSameColumn) count -= 1
     }
 
-    return connectDragSource(
+    return connectDropTarget(connectDragSource(
       <section className='column' id={`column${id}`}>
         <div
           className='col-placeholder'
@@ -109,7 +133,7 @@ export default class Column extends Component {
           className='container'
           style={{ maxHeight: bodyMaxHeight, minHeight: bodyMaxHeight }}
         >
-          <div className='body' >
+          <div className='body'>
           {
             issues.map((d, i) => {
               if (draggingItem && onSync && (d._id === draggingItem.id)) {
@@ -136,7 +160,7 @@ export default class Column extends Component {
           <IssuesDropTarget id={id} issues={issues} />
         </div>
       </section>
-    )
+    ))
   }
 }
 
@@ -144,4 +168,8 @@ function mapStateToProps(state) {
   return {
     onSync: state.issues.get('onSync')
   }
+}
+
+function mapDispatchToProps (dispatch) {
+  return bindActionCreators({ updateColumnRanking }, dispatch)
 }

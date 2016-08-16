@@ -7,6 +7,7 @@ import { dbManager } from '../helpers/pouchDb'
 export const CHANGE_TICKETS = 'CHANGE_TICKETS'
 export const CHANGE_FILTER = 'CHANGE_FILTER'
 export const CHANGE_SYNC_MODE = 'CHANGE_SYNC_MODE'
+export const CHANGE_COLUMN_RANKING = 'CHANGE_COLUMN_RANKING'
 
 export function fetchIssues(cacheDbUrl, metaDbUrl, name, next) {
   return dispatch => {
@@ -42,11 +43,17 @@ export function fetchRepo(userName, repoName, next) {
   }
 }
 
-export function updateIssue(issueID, columnID, ranking) {
+export function updateIssue(issueId, columnId, ranking) {
   return dispatch => {
-    dbManager.updateMetaDb(issueID, columnID, ranking, () => {
+    dbManager.updateMetaDb(issueId, columnId, ranking, () => {
       dispatch({ type: CHANGE_SYNC_MODE, payload: true })
     })
+  }
+}
+
+export function updateColumnRanking(columnId, ranking) {
+  return dispatch => {
+    dispatch({ type: CHANGE_COLUMN_RANKING, payload: { columnId, ranking } })
   }
 }
 
