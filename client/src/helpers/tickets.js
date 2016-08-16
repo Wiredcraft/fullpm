@@ -7,17 +7,6 @@ import {
 import { checkIsfiltered } from './filter'
 
 
-function sortTickets(tickets) {
-  const { length } = tickets
-  for (let i = 0; i < length - 1; i++) {
-    for (let j = 0; j < length - 1 - i; j++) {
-      if (tickets[j].ranking < tickets[j + 1].ranking) {
-        [tickets[j], tickets[j + 1]] = [tickets[j + 1], tickets[j]]
-      }
-    }
-  }
-}
-
 export function docsToTickets(cacheDocs, metaDocs, name) {
   const metaTicketsMap = {}
   metaDocs.forEach(d => {
@@ -35,27 +24,27 @@ export function docsToTickets(cacheDocs, metaDocs, name) {
 export function parserTickets(tickets, filter, isRawTickets) {
   let ticketList
   if (isRawTickets) {
-    sortTickets(tickets)
-
-    // tickets = tickets.filter(d => d.htmlUrl.indexOf('/pull/') === -1)
-
     ticketList = [
       {
         id: ISSUE_TYPE_BACKLOG,
         name: 'Backlog',
-        issues: tickets.filter(d => d.column === ISSUE_TYPE_BACKLOG)
+        issues: tickets.filter(d => d.column === ISSUE_TYPE_BACKLOG),
+        ranking: 4
       }, {
         id: ISSUE_TYPE_NEXT,
         name: 'Next',
-        issues: tickets.filter(d => d.column === ISSUE_TYPE_NEXT)
+        issues: tickets.filter(d => d.column === ISSUE_TYPE_NEXT),
+        ranking: 3
       }, {
         id: ISSUE_TYPE_DOING,
         name: 'Doing',
-        issues: tickets.filter(d => d.column === ISSUE_TYPE_DOING)
+        issues: tickets.filter(d => d.column === ISSUE_TYPE_DOING),
+        ranking: 2
       }, {
         id: ISSUE_TYPE_DONE,
         name: 'Done',
-        issues: tickets.filter(d => d.column === ISSUE_TYPE_DONE)
+        issues: tickets.filter(d => d.column === ISSUE_TYPE_DONE),
+        ranking: 1
       }
     ]
   }

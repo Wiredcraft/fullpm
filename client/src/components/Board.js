@@ -17,10 +17,13 @@ import ProgressBar from 'components/ProgressBar'
 import { isDevMode } from '../helpers/dev'
 import CustomDragLayer from './CustomDragLayer'
 import { openPage } from '../helpers/webPage'
+import { generateSortedIndexList } from '../helpers/ranking'
 
 
-@connect(mapStateToProps, mapDispatchToProps)
+let intervalId
+
 @DragDropContext(HTML5Backend)
+@connect(mapStateToProps, mapDispatchToProps)
 export default class Board extends React.Component {
   static contextTypes = {
     router: React.PropTypes.object.isRequired
@@ -29,6 +32,7 @@ export default class Board extends React.Component {
   constructor() {
     super()
     this.state = {
+      forceUpdater: 0,
       userName: undefined,
       repoName: undefined,
       onLoading: false,
@@ -38,6 +42,11 @@ export default class Board extends React.Component {
 
   componentWillMount() {
     this.setState({ ...this.props.params })
+
+    intervalId = setInterval(() => {
+      const { forceUpdater } = this.state
+      this.setState({ forceUpdater: forceUpdater + 1 })
+    }, 50)
   }
 
   componentDidMount() {
@@ -45,6 +54,10 @@ export default class Board extends React.Component {
     if (userName && repoName) {
       this.changeBoard(userName, repoName)
     }
+  }
+
+  componentWillUnMount() {
+    clearInterval(intervalId)
   }
 
   changeBoard(userNameFromUrl, repoNameFromUrl) {
@@ -84,8 +97,10 @@ export default class Board extends React.Component {
   }
 
   render() {
-    const { changeFilter, onSync, sortedArr } = this.props
+    const { changeFilter, onSync, tickets } = this.props
     const { userName, repoName, onLoading, notFound } = this.state
+
+    const sortedIndexList = generateSortedIndexList(tickets)
 
     return (
       <div
@@ -144,14 +159,16 @@ export default class Board extends React.Component {
         </header>
         <div className='columns'>
         {
-          sortedArr.map((d, i) => (
-            <Column
-              key={i}
-              id={d.id}
-              issues={d.issues}
-              title={d.name}
-            />
-          ))
+          sortedIndexList
+            .map((d, i) => (
+              <Column
+                key={i}
+                id={tickets[d].id}
+                issues={tickets[d].issues}
+                tickets={tickets}
+                title={tickets[d].name}
+              />
+            ))
         }
         </div>
         <CustomDragLayer />
@@ -170,8 +187,7 @@ function mapDispatchToProps (dispatch) {
 }
 
 function mapStateToProps(state) {
-  return {
-    onSync: state.issues.get('onSync'),
-    sortedArr: state.issues.get('tickets')
-  }
+  const tickets = state.issues.get('tickets')
+
+  return { onSync: state.issues.get('onSync'), tickets }
 }
