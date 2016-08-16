@@ -37,13 +37,13 @@ const dragSource = {
     endDrag() {
       dropManager.draggingColumnId = undefined
       dropManager.isDraggingColumn = false
+      // The magic number here shall be larger than count of columns
       dropManager.draggingFinished = 5
     }
   },
-  collect(connect, monitor) {
+  collect(connect) {
     return {
-      connectDragSource: connect.dragSource(),
-      isDragging: monitor.isDragging()
+      connectDragSource: connect.dragSource()
     }
   }
 }

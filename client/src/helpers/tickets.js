@@ -5,7 +5,6 @@ import {
   ISSUE_TYPE_DONE
 } from './constant'
 import { checkIsfiltered } from './filter'
-import { sort } from './sort'
 
 
 export function docsToTickets(cacheDocs, metaDocs, name) {
@@ -25,8 +24,6 @@ export function docsToTickets(cacheDocs, metaDocs, name) {
 export function parserTickets(tickets, filter, isRawTickets) {
   let ticketList
   if (isRawTickets) {
-    sort(tickets, 'ranking')
-
     ticketList = [
       {
         id: ISSUE_TYPE_BACKLOG,
@@ -52,7 +49,6 @@ export function parserTickets(tickets, filter, isRawTickets) {
     ]
   }
 
-  sort((ticketList || tickets), 'ranking')
   return (ticketList || tickets).map(d => {
     d.issues = d.issues.map(issue => {
       return {...issue, hide: checkIsfiltered(filter, issue)}
