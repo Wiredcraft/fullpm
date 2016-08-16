@@ -1,3 +1,5 @@
+$column-width: 244px;
+
 .column {
   background: #f6f6f6;
   border: 1px solid #d8d8d8;
@@ -8,7 +10,7 @@
   margin-left: 10px;
   vertical-align: top;
   white-space: initial;
-  width: 244px;
+  width: $column-width;
   &:last-child {
     margin-right: 10px;
   }
@@ -17,7 +19,7 @@
     display: none;
     height: 100%;
     position: fixed;
-    width: 260px;
+    width: $column-width;
     z-index: 2;
   }
   .header {
