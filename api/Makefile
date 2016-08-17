@@ -1,4 +1,4 @@
-ENV = NODE_ENV=test DEBUG=carcass:*,kenhq:*
+ENV = NODE_ENV=test DEBUG=carcass:*,fullpm:*
 MOCHA = ./node_modules/.bin/_mocha
 MOCHA_OPTS = -b --timeout 5000 --reporter spec
 TESTS = test/*.test.js
@@ -20,11 +20,11 @@ test-coveralls: test-cov
 .PHONY: lint test test-cov test-coveralls
 
 start-dev:
-	@NODE_ENV=development DEBUG=carcass:*,kenhq:* node .
+	@NODE_ENV=development DEBUG=carcass:*,fullpm:* node .
 install-dev:
-	@NODE_ENV=development DEBUG=carcass:*,kenhq:* node ./server/install.js
+	@NODE_ENV=development DEBUG=carcass:*,fullpm:* node ./server/install.js
 .PHONY: start-dev install-dev
 
 start-staging:
-	@NODE_ENV=staging DEBUG=carcass:*,kenhq:* node .
+	@NODE_ENV=staging DEBUG=carcass:*,fullpm:* node .
 .PHONY: start-staging

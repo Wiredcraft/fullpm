@@ -1,6 +1,6 @@
 'use strict';
 
-// var debug = require('debug')('kenhq:session');
+// var debug = require('debug')('fullpm:session');
 
 var passport = require('passport');
 var session = require('express-session');
@@ -25,7 +25,7 @@ module.exports = function(app, callback) {
       }),
       resave: false,
       saveUninitialized: false,
-      name: config.name || 'kenhq.sid',
+      name: config.name || 'fullpm.sid',
       secret: config.secret || 'keyboard cat'
     }));
 

@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('kenhq:model:repo');
+const debug = require('debug')('fullpm:model:repo');
 
 const util = require('util');
 const Joi = require('joi');

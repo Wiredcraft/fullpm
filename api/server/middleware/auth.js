@@ -1,6 +1,6 @@
 'use strict';
 
-// const debug = require('debug')('kenhq:middleware:auth');
+// const debug = require('debug')('fullpm:middleware:auth');
 
 // const util = require('util');
 // const Promise = require('bluebird');

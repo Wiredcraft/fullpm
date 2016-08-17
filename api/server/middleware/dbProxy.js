@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('kenhq:middleware:dbProxy');
+const debug = require('debug')('fullpm:middleware:dbProxy');
 
 // const util = require('util');
 // const Promise = require('bluebird');

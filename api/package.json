@@ -1,5 +1,5 @@
 {
-  "name": "kenhq-api",
+  "name": "fullpm-api",
   "version": "0.0.0",
   "main": "server/server.js",
   "scripts": {
