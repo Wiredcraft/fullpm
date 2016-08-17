@@ -14,32 +14,40 @@ const utils = lib.utils;
 
 // The repo object from Github.
 const schemaRepo = Joi.object({
+  id: Joi.number(),
   owner: Joi.object({
     login: Joi.string().trim().lowercase()
   }),
+  name: Joi.string().trim().lowercase(),
   full_name: Joi.string().trim().lowercase()
 }).strict(false);
 
 const namePattern = '%s/github/%s';
 
+const cacheTTL = 10000;
+
 const defaultColumn = 0;
-const defaultRanking = 0;
+// const defaultRanking = 0;
 
 module.exports = function(GithubRepo) {
 
-  GithubRepo.getFullName = utils.valueObtainer('getFullName', schemaRepo, 'full_name');
+  GithubRepo.getId = utils.valueObtainer('getId', schemaRepo, 'id');
 
-  GithubRepo.getOwnerName = utils.valueObtainer('getOwnerName', schemaRepo, 'owner.login');
+  GithubRepo.getOwner = utils.valueObtainer('getOwner', schemaRepo, 'owner.login');
+
+  GithubRepo.getName = utils.valueObtainer('getName', schemaRepo, 'name');
 
   GithubRepo.setAttributes = function(data) {
-    return Promise.join(GithubRepo.getFullName(data), GithubRepo.getOwnerName(data), (fullName, owner) => {
-      return Object.assign(data, {
-        // ID is based on the names.
-        id: fullName,
-        owner: owner,
-        cachedAt: moment().format()
+    return Promise.join(GithubRepo.getId(data), GithubRepo.getOwner(data), GithubRepo.getName(data),
+      (id, owner, name) => {
+        return Object.assign(data, {
+          // Owner and name are lowercased.
+          id: id,
+          owner: owner,
+          name: name,
+          cachedAt: moment().format()
+        });
       });
-    });
   };
 
   /**
@@ -163,22 +171,22 @@ module.exports = function(GithubRepo) {
           let promise;
           if (repo == null) {
             // Create.
-            debug('creating:', data.id);
+            debug('creating:', data.full_name);
             promise = GithubRepo.create(data).then((repo) => {
               return Promise.join(repo.ensureMeta(), repo.ensureCache(), () => repo);
             });
             // Sync on the side.
             promise.then(syncIssues);
-          } else if (repo.cachedAt == null || moment().diff(moment(repo.cachedAt)) > 10000) {
+          } else if (repo.cachedAt == null || moment().diff(moment(repo.cachedAt)) > cacheTTL) {
             // Replace.
-            debug('updating:', data.id);
+            debug('updating:', data.full_name);
             promise = GithubRepo.replaceById(data.id, data).then((repo) => {
               return Promise.join(repo.ensureMeta(), repo.ensureCache(), () => repo);
             });
             // Sync on the side.
             promise.then(syncIssues);
           } else {
-            debug('skipping:', data.id);
+            debug('skipping:', data.full_name);
             promise = Promise.join(repo.ensureMeta(), repo.ensureCache(), () => repo);
           }
           return promise;
