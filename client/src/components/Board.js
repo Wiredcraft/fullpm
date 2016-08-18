@@ -18,6 +18,7 @@ import { isDevMode } from '../helpers/dev'
 import CustomDragLayer from './CustomDragLayer'
 import { openPage } from '../helpers/webPage'
 import { generateSortedIndexList } from '../helpers/ranking'
+import SearchBar from './SearchBar'
 
 
 let intervalId
@@ -150,12 +151,8 @@ export default class Board extends React.Component {
               </button>
             )
           }
-          <input
-            placeholder='Filter issues by title'
-            onChange={e => changeFilter(e.target.value)}
-            type='search'
-          />
-          { onSync && <span className='status'>Saving changes...</span>}
+          <SearchBar onChange={value => changeFilter(value)}/>
+          { onSync && <span className='status'>Saving changes...</span> }
         </header>
         <div className='columns'>
         {
