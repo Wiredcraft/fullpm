@@ -5,11 +5,6 @@
       ping: {}
 
 - hosts: fullpm
-  vars_prompt:
-    - name: version_fullpm
-      prompt: 'fullpm repo version'
-      default: "master"
-      private: false
   roles:
     - role: wcl-strongloop
       strongloop_install: false
