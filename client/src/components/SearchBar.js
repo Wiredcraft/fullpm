@@ -3,10 +3,19 @@ import React, { Component } from 'react'
 import '../styles/searchBar'
 
 
+const TIPS_LIST = [
+  [
+    { label: 'is', isPrefix: true },
+    { label: 'assignee', isPrefix: true }
+  ]
+]
+
+// Using contains API from dom to check whether we should hide the dropdown
 export default class SearchBar extends Component {
   constructor() {
     super()
     this.toggleDropdown = ::this.toggleDropdown
+    this.state = { dropdownStage: 0 }
   }
 
   componentDidMount() {
@@ -15,6 +24,16 @@ export default class SearchBar extends Component {
 
   componentWillUnmount() {
     document.removeEventListener('click', this.toggleDropdown)
+  }
+
+  addHint(label, isPrefix) {
+    const dom = this.refs.searchBar
+    dom.value = dom.value.trim()
+    const hint = `${label}${isPrefix ? ':' : ''}`
+    // TODO trigger onChange of the input when needed
+    if(dom.value.indexOf(hint) === -1) {
+      dom.value = `${hint} ${dom.value}`
+    }
   }
 
   toggleDropdown(e) {
@@ -32,6 +51,8 @@ export default class SearchBar extends Component {
 
   render() {
     const { onChange } = this.props
+    const { dropdownStage } = this.state
+    const hintTips = TIPS_LIST[dropdownStage]
 
     return (
       <span
@@ -40,12 +61,22 @@ export default class SearchBar extends Component {
       >
         <input
           placeholder='Filter issues by title'
+          ref='searchBar'
           onChange={e => onChange ? onChange(e.target.value) : ''}
           onClick={() => this.displayDropdown()}
           type='search'
         />
         <div className='dropdown' ref='dropdown'>
-          dropdown area
+          {
+            hintTips.map(d => (
+              <span
+                className='hint'
+                onClick={() => this.addHint(d.label, d.isPrefix)}
+              >
+                { d.label }
+              </span>
+            ))
+          }
         </div>
       </span>
     )
