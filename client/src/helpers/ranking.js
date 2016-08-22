@@ -22,32 +22,46 @@ export function calcColumnRanking(tickets, hoveringCoumnId) {
   tickets.forEach((d, i) => {
     columnRankingMap[i] = d.ranking
   })
-  let hoveringCoumnRanking = columnRankingMap[hoveringCoumnId]
-  let smallerRanking = hoveringCoumnRanking
+  let hoveringColumnRanking = columnRankingMap[hoveringCoumnId]
+
+  // If hovering column is the last column, do nothing
+  let smallestRanking = Number.MAX_VALUE
+  for (let i = 0; i < tickets.length; i++) {
+    if (tickets[i].ranking < smallestRanking) {
+      smallestRanking = tickets[i].ranking
+    }
+  }
+  if(hoveringColumnRanking === smallestRanking) return null
+
+  let smallerRanking = hoveringColumnRanking
   for (let i = 0; i < tickets.length; i++) {
     if (tickets[i].ranking < smallerRanking) {
       smallerRanking = tickets[i].ranking
       break
     }
   }
-  if (smallerRanking === hoveringCoumnRanking) return hoveringCoumnRanking - 1
-  return (hoveringCoumnRanking + smallerRanking) / 2
+  if (smallerRanking === hoveringColumnRanking) return hoveringColumnRanking - 1
+  return (hoveringColumnRanking + smallerRanking) / 2
 }
 
+// Input: list of ticket array
+// Output: An array of sorted array which indicate sorting result
 export function generateSortedIndexList(tickets) {
   let sortedIndexList = []
-  var largest = Number.MIN_VALUE
-  var largestIndex = 0
+
   for (let i = 0; i < tickets.length; i++) {
+    let largestIndex = 0
+    let largest = Number.MIN_VALUE
     for (let j = 0; j < tickets.length; j++) {
-      if (sortedIndexList.some(d => d === j)) continue
-      if (tickets[j].ranking > largest) {
-        largest = tickets[j].ranking
-        largestIndex = j
+      if (sortedIndexList.every(d => d !== j)) {
+        if (tickets[j].ranking > largest) {
+          largest = tickets[j].ranking
+          largestIndex = j
+        }
       }
     }
     sortedIndexList.push(largestIndex)
-    largest = Number.MIN_VALUE
   }
+
   return sortedIndexList
 }

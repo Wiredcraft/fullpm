@@ -86,6 +86,7 @@ export default class Column extends Component {
     if (!this.props.isOver && isOver) {
       dropManager.lastHoverdColumnId = id
       const newRanking = calcColumnRanking(tickets, id)
+      if(newRanking === null) return
       updateColumnRanking(dropManager.draggingColumnId, newRanking)
     }
   }
