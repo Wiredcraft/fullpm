@@ -27,12 +27,15 @@ export default class SearchBar extends Component {
   }
 
   addHint(label, isPrefix) {
+    const { onChange } = this.props
+
     const dom = this.refs.searchBar
     dom.value = dom.value.trim()
     const hint = `${label}${isPrefix ? ':' : ''}`
-    // TODO trigger onChange of the input when needed
+
     if(dom.value.indexOf(hint) === -1) {
       dom.value = `${hint} ${dom.value}`
+      onChange(dom.value)
     }
   }
 

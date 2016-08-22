@@ -1,3 +1,5 @@
+// Check whether a single issue should be filtered
+// TODO: for performance seek, loop the issues list, inseted of this way.
 export function checkIsfiltered(filter, issue) {
   if (filter === '') return false
   filter = filter.trim().toLowerCase()
@@ -7,10 +9,16 @@ export function checkIsfiltered(filter, issue) {
   if (filter.indexOf('is:issue') !== -1) {
     rules.push(() => !issue.isPullRequest)
   }
-  const assigneePattern = /(assignee:\w*)/g
+  const assigneePattern = /(assignee:(\w*)?)/g
   if (assigneePattern.test(filter)) {
     const role = filter.match(assigneePattern)[0].replace('assignee:', '')
-    rules.push(() => issue.assignees.some(d => d.login.toLowerCase() === role))
+    rules.push(() => {
+      if(role === '') return true
+      if(!issue.assignees) return false
+      return issue.assignees.some(d => {
+        return d.login.toLowerCase() === role
+      })
+    })
   }
 
   let isfiltered = false
