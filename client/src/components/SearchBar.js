@@ -71,15 +71,23 @@ export default class SearchBar extends Component {
         />
         <div className='dropdown' ref='dropdown'>
           {
-            hintTips.map(d => (
+            hintTips.map((d, i) => (
               <span
                 className='hint'
+                key={i}
                 onClick={() => this.addHint(d.label, d.isPrefix)}
               >
                 { d.label }
               </span>
             ))
           }
+          <a
+            className='link'
+            target='_blank'
+            href='https://help.github.com/articles/searching-issues/'
+          >
+            View the search syntax at Github
+          </a>
         </div>
       </span>
     )

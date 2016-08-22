@@ -1,5 +1,6 @@
 .searchBar {
   display: inline-block;
+  text-align: center;
   input {
     font-size: 12px;
     padding: 3px 10px;
@@ -16,7 +17,14 @@
 
   .hint {
     border: 1px solid #fff;
+    color: #fff;
     display: inline-block;
     margin: 5px;
+    padding: 0 5px;
+  }
+
+  .link {
+    color: #fff;
+    display: block;
   }
 }
