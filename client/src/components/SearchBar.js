@@ -10,20 +10,22 @@ const TIPS_LIST = [
   ]
 ]
 
-// Using contains API from dom to check whether we should hide the dropdown
 export default class SearchBar extends Component {
   constructor() {
     super()
-    this.toggleDropdown = ::this.toggleDropdown
+    this.domClickHandler = ::this.domClickHandler
+
+    // There should be some further instuction in stage 1,
+    // Such as "pr", "issue" for "is:", user names for "assignee:".
     this.state = { dropdownStage: 0 }
   }
 
   componentDidMount() {
-    document.addEventListener('click', this.toggleDropdown)
+    document.addEventListener('click', this.domClickHandler)
   }
 
   componentWillUnmount() {
-    document.removeEventListener('click', this.toggleDropdown)
+    document.removeEventListener('click', this.domClickHandler)
   }
 
   addHint(label, isPrefix) {
@@ -33,13 +35,14 @@ export default class SearchBar extends Component {
     dom.value = dom.value.trim()
     const hint = `${label}${isPrefix ? ':' : ''}`
 
-    if(dom.value.indexOf(hint) === -1) {
-      dom.value = `${hint} ${dom.value}`
-      onChange(dom.value)
-    }
+    // The hint already exist in search area.
+    if(dom.value.indexOf(hint) !== -1) return
+
+    dom.value = `${hint} ${dom.value}`
+    onChange(dom.value)
   }
 
-  toggleDropdown(e) {
+  domClickHandler(e) {
     const container = this.refs.container
     const dropdown = this.refs.dropdown
     if(!container.contains(e.target)) {
