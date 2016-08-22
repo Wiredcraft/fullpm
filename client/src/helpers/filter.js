@@ -15,9 +15,7 @@ export function checkIsfiltered(filter, issue) {
     rules.push(() => {
       if(role === '') return true
       if(!issue.assignees) return false
-      return issue.assignees.some(d => {
-        return d.login.toLowerCase() === role
-      })
+      return issue.assignees.some(d => d.login.toLowerCase() === role)
     })
   }
 
