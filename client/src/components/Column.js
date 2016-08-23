@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { DragSource, DropTarget } from 'react-dnd'
+import { getEmptyImage } from 'react-dnd-html5-backend'
 
 import { updateColumnRanking } from 'actions/issueActions'
 import Issue from 'components/Issue'
@@ -43,7 +44,8 @@ const dragSource = {
   },
   collect(connect) {
     return {
-      connectDragSource: connect.dragSource()
+      connectDragSource: connect.dragSource(),
+      connectDragPreview: connect.dragPreview()
     }
   }
 }
@@ -60,6 +62,10 @@ export default class Column extends Component {
   }
 
   componentWillMount() {
+    this.props.connectDragPreview(getEmptyImage(), {
+      captureDraggingState: true
+    })
+
     intervalId = setInterval(() => {
       const { id, isDragging, isOver, onSync } = this.props
       const { bodyMaxHeight, forceUpdater } = this.state
@@ -97,9 +103,11 @@ export default class Column extends Component {
 
   render() {
     const {
+      className,
       connectDragSource,
       connectDropTarget,
       id,
+      isCustom,
       onSync,
       title
     } = this.props
@@ -111,7 +119,7 @@ export default class Column extends Component {
     const needClone = draggingItem && onSync
     const hasNewItemInSync = needClone && (id === dropManager.newCol)
     issues = spliceIssueInSync(hasNewItemInSync, issues, draggingItem)
-    const isDragging = dropManager.draggingColumnId === id
+    const isDragging = dropManager.draggingColumnId === id && !isCustom
 
     let count = issues.filter(d => !d.hide).length
     if (needClone) {
@@ -122,7 +130,7 @@ export default class Column extends Component {
     }
 
     return connectDropTarget(connectDragSource(
-      <section className='column' id={`column${id}`}>
+      <section className={`column ${className}`} id={`column${id}`}>
         <div
           className='col-placeholder'
           style={{ display: isDragging ? 'block' : '' }}
