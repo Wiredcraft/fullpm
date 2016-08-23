@@ -6,7 +6,7 @@ import '../styles/columnConfigPopup'
 export default class ColumnConfigPopup extends Component {
   constructor() {
     super()
-    this.state = { hidePopup: true }
+    this.state = { hideModal: true, isRenameMode: true }
     this.domClickHandler = ::this.domClickHandler
   }
 
@@ -18,16 +18,20 @@ export default class ColumnConfigPopup extends Component {
     document.removeEventListener('click', this.domClickHandler)
   }
 
-  startRename() {
-    setTimeout(() => this.setState({ hidePopup: false }), 5) 
+  showModal(isRenameMode) {
+    setTimeout(() => this.setState({ hideModal: false, isRenameMode }), 5)
+  }
+
+  closeModal() {
+    this.setState({ hideModal: true })
   }
 
   domClickHandler(e) {
     const { container, modal } = this.refs
     const { closePopup, columnId, switcherClassName } = this.props
-    const { hidePopup } = this.state
+    const { hideModal } = this.state
 
-    if(hidePopup) {
+    if(hideModal) {
       if(e.target.classList.contains(switcherClassName)) {
         if(document.querySelector(`#column${columnId}`).contains(e.target)) return
       }
@@ -36,14 +40,14 @@ export default class ColumnConfigPopup extends Component {
       }
     } else {
       if(!modal.contains(e.target)) {
-        this.setState({ hidePopup: true })
+        this.setState({ hideModal: true })
       }
     }
   }
 
   render() {
     const { closePopup, hide } = this.props
-    const { hidePopup } = this.state
+    const { hideModal, isRenameMode } = this.state
 
     return (
       <div
@@ -59,16 +63,28 @@ export default class ColumnConfigPopup extends Component {
         </div>
         <div
           className='modal-container'
-          style={{ display: hidePopup ? 'none' : 'block' }}
+          style={{ display: hideModal ? 'none' : 'block' }}
         >
           <div className='modal' ref='modal'>
-            Hello world
+            <div
+              className='popup-switcher'
+              onClick={() => this.closeModal()}
+            >
+              X
+            </div>
+            {
+              isRenameMode ? (
+                <h4>Name:</h4>
+              ) : (
+                <h4>DELETE:</h4>
+              )
+            }
           </div>
         </div>
-        <div className='line'>
-          <p onClick={() => this.startRename()}>Rename</p>
+        <div className='line' onClick={() => this.showModal(true)}>
+          <p>Rename</p>
         </div>
-        <div className='line'>
+        <div className='line' onClick={() => this.showModal(false)}>
           <p>Delete</p>
         </div>
       </div>

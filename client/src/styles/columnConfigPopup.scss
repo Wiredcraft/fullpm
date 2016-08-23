@@ -3,7 +3,8 @@
   margin: 0 7px;
   position: absolute;
   width: 230px;
-  .dropdown-switcher {
+  z-index: 2;
+  .dropdown-switcher, .popup-switcher {
     cursor: pointer;
     display: block;
     padding-right: 10px;
