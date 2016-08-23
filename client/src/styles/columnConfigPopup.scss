@@ -3,12 +3,29 @@
   margin: 0 7px;
   position: absolute;
   width: 230px;
-
+  .dropdown-switcher {
+    cursor: pointer;
+    display: block;
+    padding-right: 10px;
+    text-align: right;
+  }
   .line {
     border: 1px solid;
     cursor: pointer;
     input {
       width: 100%;
+    }
+  }
+  .modal-container {
+    background: rgba(0,0,0,.75);
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+
+    .modal {
+      background: #fff;
     }
   }
 }
