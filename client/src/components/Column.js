@@ -96,9 +96,9 @@ export default class Column extends Component {
     clearInterval(intervalId)
   }
 
-  togglePopip() {
+  modifyPopupDisplay(display) {
     const { hidePopup } = this.state
-    this.setState({ hidePopup: !hidePopup })
+    this.setState({ hidePopup: display === undefined ? !hidePopup : display })
   }
 
   render() {
@@ -126,6 +126,7 @@ export default class Column extends Component {
       const dropedToSameColumn = newCol === col === id
       if (dropedToNewColumn || dropedToSameColumn) count -= 1
     }
+    const switcherClassName = 'popup-controller'
 
     return connectDropTarget(connectDragSource(
       <section className='column' id={`column${id}`}>
@@ -135,11 +136,19 @@ export default class Column extends Component {
         />
         <header className='header'>
           { title } <span className='count'>{ count }</span>
-          <i className='popup-controller' onClick={() => this.togglePopip()}>
+          <i
+            className={switcherClassName}
+            onClick={() => this.modifyPopupDisplay()}
+          >
             +
           </i>
         </header>
-        <ColumnConfigPopup hide={hidePopup}/>
+        <ColumnConfigPopup
+          columnId={id}
+          hide={hidePopup}
+          switcherClassName={switcherClassName}
+          closePopup={() => this.modifyPopupDisplay(true)}
+        />
         <div
           className='container'
           style={{ maxHeight: bodyMaxHeight, minHeight: bodyMaxHeight }}
