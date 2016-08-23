@@ -6,8 +6,8 @@
     "baseURL": "http://127.0.0.1:3000",
     "github": {
       "scope": "user:email,read:org,repo,notifications",
-      "clientID": "4c7d0c1366138d27f2a8",
-      "clientSecret": "c8b9b2a899678e0aa94173b73423315b7488b532"
+      "clientID": "424ad9befc1edb1f611a",
+      "clientSecret": "7ee8f53b71eb2efb538b7dc16fca58381bb924aa"
     }
   }
 }
