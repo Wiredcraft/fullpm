@@ -9,6 +9,7 @@ import '../styles/main'
 import { updateUserLoginState } from 'actions/userActions'
 
 
+// TODO: Add the button for adding new column
 @connect(mapStateToProps, mapDispatchToProps)
 export default class Main extends Component {
   constructor() {

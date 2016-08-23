@@ -1,8 +1,12 @@
 import React, { Component } from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
+import { updateColumnName } from 'actions/issueActions'
 import '../styles/columnConfigPopup'
 
 
+@connect(null, mapDispatchToProps)
 export default class ColumnConfigPopup extends Component {
   constructor() {
     super()
@@ -16,14 +20,6 @@ export default class ColumnConfigPopup extends Component {
 
   componentWillUnmount() {
     document.removeEventListener('click', this.domClickHandler)
-  }
-
-  showModal(isRenameMode) {
-    setTimeout(() => this.setState({ hideModal: false, isRenameMode }), 5)
-  }
-
-  closeModal() {
-    this.setState({ hideModal: true })
   }
 
   domClickHandler(e) {
@@ -43,6 +39,25 @@ export default class ColumnConfigPopup extends Component {
         this.setState({ hideModal: true })
       }
     }
+  }
+
+  showModal(isRenameMode) {
+    setTimeout(() => this.setState({ hideModal: false, isRenameMode }), 5)
+  }
+
+  closeModal() {
+    this.setState({ hideModal: true })
+  }
+
+  onRename() {
+    const { closePopup, columnId, updateColumnName } = this.props
+
+    const { newName } = this.refs
+    const str = newName.value.trim()
+    if(str === '') return
+    this.closeModal()
+    closePopup()
+    updateColumnName(columnId, str)
   }
 
   render() {
@@ -74,9 +89,13 @@ export default class ColumnConfigPopup extends Component {
             </div>
             {
               isRenameMode ? (
-                <h4>Name:</h4>
+                <div>
+                  <h4>Name</h4>
+                  <input type='text' ref='newName' />
+                  <button onClick={() => this.onRename()}>Confirm</button>
+                </div>
               ) : (
-                <h4>DELETE:</h4>
+                <h4>Delete</h4>
               )
             }
           </div>
@@ -90,4 +109,8 @@ export default class ColumnConfigPopup extends Component {
       </div>
     )
   }
+}
+
+function mapDispatchToProps (dispatch) {
+  return bindActionCreators({ updateColumnName }, dispatch)
 }

@@ -1,6 +1,7 @@
 import { Map } from 'immutable'
 
 import {
+  CHANGE_COLUMN_NAME,
   CHANGE_COLUMN_RANKING,
   CHANGE_FILTER,
   CHANGE_TICKETS,
@@ -34,6 +35,12 @@ export default function issues (state = initialState, action) {
     tickets = state.get('tickets')
     const { columnId, ranking } = action.payload
     tickets[columnId].ranking = ranking
+    state = state.set('tickets', tickets)
+    return state
+  case CHANGE_COLUMN_NAME:
+    tickets = state.get('tickets')
+    const { name } = action.payload
+    tickets[action.payload.columnId].name = name
     state = state.set('tickets', tickets)
     return state
   default:
