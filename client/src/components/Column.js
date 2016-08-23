@@ -11,6 +11,7 @@ import dropManager from 'helpers/dropManager'
 import { spliceIssueInSync } from 'helpers/tickets'
 import IssuesDropTarget from './IssuesDropTarget'
 import { calcColumnRanking } from 'helpers/ranking'
+import ColumnConfigPopup from './ColumnConfigPopup'
 
 
 const dragTarget = {
@@ -56,7 +57,7 @@ let intervalId
 export default class Column extends Component {
   constructor() {
     super()
-    this.state = { bodyMaxHeight: 0, forceUpdater: 0 }
+    this.state = { bodyMaxHeight: 0, forceUpdater: 0, hidePopup: true }
   }
 
   componentWillMount() {
@@ -95,6 +96,11 @@ export default class Column extends Component {
     clearInterval(intervalId)
   }
 
+  togglePopip() {
+    const { hidePopup } = this.state
+    this.setState({ hidePopup: !hidePopup })
+  }
+
   render() {
     const {
       connectDragSource,
@@ -105,7 +111,7 @@ export default class Column extends Component {
     } = this.props
     let { issues } = this.props
 
-    const { bodyMaxHeight } = this.state
+    const { bodyMaxHeight, hidePopup } = this.state
     const { draggingItem } = dropManager
 
     const needClone = draggingItem && onSync
@@ -129,7 +135,11 @@ export default class Column extends Component {
         />
         <header className='header'>
           { title } <span className='count'>{ count }</span>
+          <i className='popup-controller' onClick={() => this.togglePopip()}>
+            +
+          </i>
         </header>
+        <ColumnConfigPopup hide={hidePopup}/>
         <div
           className='container'
           style={{ maxHeight: bodyMaxHeight, minHeight: bodyMaxHeight }}

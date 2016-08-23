@@ -32,6 +32,10 @@ $column-width: 244px;
       font-weight: normal;
       margin-left: 3px;
     }
+    .popup-controller {
+      cursor: pointer;
+      float: right;
+    }
   }
   .container {
     overflow-y: scroll;

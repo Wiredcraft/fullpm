@@ -1,0 +1,14 @@
+.column-popup {
+  background: #fff;
+  margin: 0 7px;
+  position: absolute;
+  width: 230px;
+
+  .line {
+    border: 1px solid;
+    cursor: pointer;
+    input {
+      width: 100%;
+    }
+  }
+}
