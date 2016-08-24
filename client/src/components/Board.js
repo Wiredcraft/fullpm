@@ -20,6 +20,7 @@ import { openPage } from '../helpers/webPage'
 import { generateSortedIndexList } from '../helpers/ranking'
 import SearchBar from './SearchBar'
 import Logo from 'components/icons/Logo'
+import Gear from 'components/icons/Gear'
 
 
 let intervalId
@@ -157,7 +158,7 @@ export default class Board extends React.Component {
             <button
               className='button small'
             >
-              Settings
+              <Gear />
             </button>
             <div className='dropdown-options'>
               <div className='dropdown-menu'>
