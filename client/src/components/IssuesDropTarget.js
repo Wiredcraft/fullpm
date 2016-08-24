@@ -37,8 +37,9 @@ export default class IssuesDropTarget extends Component {
 
   componentWillMount() {
     intervalId = setInterval(() => {
-      const { id, isOver, onSync } = this.props
+      const { id, isOver, onSync, tickets } = this.props
       const { bodyHeight, bodyMaxHeight, forceUpdater } = this.state
+      if(tickets && tickets[id].hide) return
 
       // Restrict column contained in page without vertical scroll
       const maxHeight = calcColumnBodyMaxHeight(id)
@@ -85,6 +86,7 @@ export default class IssuesDropTarget extends Component {
 
 function mapStateToProps(state) {
   return {
-    onSync: state.issues.get('onSync')
+    onSync: state.issues.get('onSync'),
+    tickets: state.issues.get('tickets')
   }
 }

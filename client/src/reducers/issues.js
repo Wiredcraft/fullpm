@@ -5,7 +5,8 @@ import {
   CHANGE_COLUMN_RANKING,
   CHANGE_FILTER,
   CHANGE_TICKETS,
-  CHANGE_SYNC_MODE
+  CHANGE_SYNC_MODE,
+  DELETE_COLUMN
 } from 'actions/issueActions'
 import { parserTickets } from 'helpers/tickets'
 
@@ -41,6 +42,12 @@ export default function issues (state = initialState, action) {
     tickets = state.get('tickets')
     const { name } = action.payload
     tickets[action.payload.columnId].name = name
+    state = state.set('tickets', tickets)
+    return state
+  case DELETE_COLUMN:
+    tickets = state.get('tickets')
+    const id = action.payload
+    tickets[id].hide = true
     state = state.set('tickets', tickets)
     return state
   default:

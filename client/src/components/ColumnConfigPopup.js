@@ -2,16 +2,20 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { updateColumnName } from 'actions/issueActions'
+import { deleteColumn, updateColumnName } from 'actions/issueActions'
 import Close from 'components/icons/Close'
 import '../styles/columnConfigPopup'
 
 
-@connect(null, mapDispatchToProps)
+@connect(mapStateToProps, mapDispatchToProps)
 export default class ColumnConfigPopup extends Component {
   constructor() {
     super()
-    this.state = { hideSettingPopup: true, isRenameMode: true }
+    this.state = {
+      deletingConfirmed: false,
+      hideSettingPopup: true,
+      isRenameMode: true
+    }
     this.domClickHandler = ::this.domClickHandler
   }
 
@@ -62,9 +66,29 @@ export default class ColumnConfigPopup extends Component {
     updateColumnName(columnId, str)
   }
 
+  checkDeleting() {
+    const { columnName } = this.refs
+    const { columnId, tickets } = this.props
+    const { deletingConfirmed } = this.state
+
+    const columnRealName = tickets[columnId].name
+    if(columnRealName.toLowerCase() === columnName.value.toLowerCase()) {
+      this.setState({ deletingConfirmed: true })
+    } else {
+      if(deletingConfirmed) this.setState({ deletingConfirmed: false })
+    }
+  }
+
+  onDelete() {
+    const { columnId, deleteColumn } = this.props
+
+    this.closeSettingPopup()
+    deleteColumn(columnId)
+  }
+
   render() {
     const { closePopup, hide } = this.props
-    const { hideSettingPopup, isRenameMode } = this.state
+    const { deletingConfirmed, hideSettingPopup, isRenameMode } = this.state
 
     return (
       <div
@@ -72,6 +96,12 @@ export default class ColumnConfigPopup extends Component {
         ref='container'
         style={{ display: hide ? 'none' : '' }}
       >
+        { hideSettingPopup && (
+          <div className='dropdown-menu'>
+            <a onClick={() => this.showModal(true)}>Rename</a>
+            <a className='danger' onClick={() => this.showModal(false)}>Delete</a>
+          </div>
+        )}
         { !hideSettingPopup && (
           <header
             className='dropdown-header'
@@ -79,7 +109,7 @@ export default class ColumnConfigPopup extends Component {
             ref='header'
           >
             <button className='button-icon'>
-              <Gear />
+              <Close />
             </button>
             { isRenameMode ? 'Renaming' : 'Deleting' }
           </header>
@@ -88,29 +118,47 @@ export default class ColumnConfigPopup extends Component {
           !hideSettingPopup && (isRenameMode ? (
             <div className='dropdown-body' ref='modal'>
               <label>Name</label>
-              <input type='text' ref='newName' />
-              <button className='button primary' onClick={() => this.onRename()}>Save</button>
+              <input type='text' ref='newName'/>
+              <button
+                className='button primary'
+                onClick={() => this.onRename()}
+              >
+                Save
+              </button>
             </div>
           ) : (
             <div className='dropdown-body' ref='modal'>
               <p>This action can not be undone! To confirm, please fill in the name
               of the column you are trying to delete.</p>
-              <input className='danger' type='text' placeholder='Column name' />
-              <button className='button danger'>Delete</button>
+              <input
+                className='danger'
+                onChange={() => this.checkDeleting()}
+                placeholder='Column name'
+                ref='columnName'
+                type='text'
+              />
+              <button
+                className='button danger'
+                style={{ cursor: deletingConfirmed ? '' : 'not-allowed' }}
+                disabled={!deletingConfirmed}
+                onClick={() => this.onDelete()}
+              >
+                Delete
+              </button>
             </div>
           ))
         }
-        { hideSettingPopup && (
-          <div className='dropdown-menu'>
-            <a onClick={() => this.showModal(true)}>Rename</a>
-          <a className='danger' onClick={() => this.showModal(false)}>ZHIDelete</a>
-          </div>
-        )}
       </div>
     )
   }
 }
 
+function mapStateToProps(state) {
+  const tickets = state.issues.get('tickets')
+
+  return { tickets }
+}
+
 function mapDispatchToProps (dispatch) {
-  return bindActionCreators({ updateColumnName }, dispatch)
+  return bindActionCreators({ updateColumnName, deleteColumn }, dispatch)
 }

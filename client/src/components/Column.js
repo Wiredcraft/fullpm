@@ -71,8 +71,9 @@ export default class Column extends Component {
     })
 
     intervalId = setInterval(() => {
-      const { id, isDragging, isOver, onSync } = this.props
+      const { id, isDragging, isOver, onSync, tickets } = this.props
       const { bodyMaxHeight, forceUpdater } = this.state
+      if(tickets && tickets[id].hide) return
 
       // Restrict column contained in page without vertical scroll
       const maxHeight = calcColumnBodyMaxHeight(id)

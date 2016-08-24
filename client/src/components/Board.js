@@ -170,8 +170,9 @@ export default class Board extends React.Component {
         </header>
         <div className='columns'>
         {
-          sortedIndexList
-            .map((d, i) => (
+          sortedIndexList.map((d, i) => {
+            if(tickets[d].hide) return undefined
+            return (
               <Column
                 key={i}
                 id={tickets[d].id}
@@ -179,7 +180,8 @@ export default class Board extends React.Component {
                 tickets={tickets}
                 title={tickets[d].name}
               />
-            ))
+            )
+          })
         }
         </div>
         <CustomDragLayer />
