@@ -23,11 +23,6 @@
   }
   .controls {
     margin: 0 10px 10px;
-    input,
-    .button {
-      font-size: 12px;
-      padding: 3px 10px;
-    }
     .button {
       margin-left: 5px;
     }
@@ -38,6 +33,7 @@
       text-decoration: none;
       svg {
         fill: #d8d8d8;
+        margin-left: 3px;
       }
       &:hover {
         color: #333;

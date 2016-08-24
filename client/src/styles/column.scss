@@ -33,6 +33,11 @@ $column-width: 244px;
       font-weight: normal;
       margin-left: 3px;
     }
+    .button-icon {
+      float: right;
+      margin-top: -2px;
+      padding-right: 0;
+    }
   }
   .container {
     overflow-y: scroll;
