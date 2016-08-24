@@ -24,23 +24,33 @@ $column-width: 244px;
   }
   .header {
     border-bottom: 1px solid #d8d8d8;
-    cursor: move;
     font-weight: bold;
     padding: 6px 8px;
+    position: relative;
     .count {
       color: #767676;
       font-size: 12px;
       font-weight: normal;
       margin-left: 3px;
     }
-    .popup-controller {
-      cursor: pointer;
-      float: right;
+    .dropdown-options {
+      right: 8px;
     }
     .button-icon {
       float: right;
       margin-top: -2px;
       padding-right: 0;
+      svg {
+        fill: #CCC;
+      }
+      &:hover {
+        svg {
+          fill: #333;
+        }
+      }
+      &.drag {
+        cursor: move;
+      }
     }
   }
   .container {

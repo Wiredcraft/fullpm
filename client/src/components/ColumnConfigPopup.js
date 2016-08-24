@@ -66,46 +66,55 @@ export default class ColumnConfigPopup extends Component {
 
     return (
       <div
-        className='column-popup'
+        className='dropdown-options'
         ref='container'
         style={{ display: hide ? 'none' : '' }}
       >
-        <div
-          className='dropdown-switcher'
-          onClick={closePopup}
-        >
-          X
-        </div>
-        <div
-          className='modal-container'
-          style={{ display: hideModal ? 'none' : 'block' }}
-        >
-          <div className='modal' ref='modal'>
-            <div
-              className='popup-switcher'
-              onClick={() => this.closeModal()}
+        { !hideModal && (
+          <header
+            className='dropdown-header'
+            onClick={closePopup}
+          >
+            <button
+              className='button-icon'
             >
-              X
+              <svg
+                aria-label='Close'
+                className='icon'
+                height='16'
+                role='img'
+                version='1.1'
+                viewBox='0 0 12 16'
+                width='12'
+              >
+                <path d='M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48z'></path>
+              </svg>
+            </button>
+            Renaming or deleting
+          </header>
+        )}
+        {
+          !hideModal && (isRenameMode ? (
+            <div className='dropdown-form'>
+              <label>Name</label>
+              <input type='text' ref='newName' />
+              <button className='button primary' onClick={() => this.onRename()}>Save</button>
             </div>
-            {
-              isRenameMode ? (
-                <div>
-                  <h4>Name</h4>
-                  <input type='text' ref='newName' />
-                  <button onClick={() => this.onRename()}>Confirm</button>
-                </div>
-              ) : (
-                <h4>Delete</h4>
-              )
-            }
+          ) : (
+            <div className='dropdown-form'>
+              <p>This action can not be undone! To confirm, please fill in the name
+              of the column you are trying to delete.</p>
+              <input className='danger' type='text' placeholder='Column name' />
+              <button className='button danger'>Delete</button>
+            </div>
+          ))
+        }
+        { hideModal && (
+          <div className='dropdown-menu'>
+            <a onClick={() => this.showModal(true)}>Rename</a>
+            <a className='danger' onClick={() => this.showModal(false)}>Delete</a>
           </div>
-        </div>
-        <div className='line' onClick={() => this.showModal(true)}>
-          <p>Rename</p>
-        </div>
-        <div className='line' onClick={() => this.showModal(false)}>
-          <p>Delete</p>
-        </div>
+        )}
       </div>
     )
   }
