@@ -141,7 +141,7 @@ export default class Board extends React.Component {
         { notFound && <p>Repo not found</p> }
         <ProgressBar hide={!onLoading} />
         <header className='controls'>
-          <SearchBar onChange={value => changeFilter(value)} className='small'/>
+          <SearchBar onChange={value => changeFilter(value)}/>
           {
             userName && (
               <button
