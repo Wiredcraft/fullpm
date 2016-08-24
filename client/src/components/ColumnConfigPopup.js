@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import { updateColumnName } from 'actions/issueActions'
+import Close from 'components/icons/Close'
 import '../styles/columnConfigPopup'
 
 
@@ -10,7 +11,7 @@ import '../styles/columnConfigPopup'
 export default class ColumnConfigPopup extends Component {
   constructor() {
     super()
-    this.state = { hideModal: true, isRenameMode: true }
+    this.state = { hideSettingPopup: true, isRenameMode: true }
     this.domClickHandler = ::this.domClickHandler
   }
 
@@ -25,45 +26,45 @@ export default class ColumnConfigPopup extends Component {
   domClickHandler(e) {
     const { container, header, modal } = this.refs
     const { closePopup, columnId, switcherClassName } = this.props
-    const { hideModal } = this.state
+    const { hideSettingPopup } = this.state
 
-    if(hideModal) {
+    if(hideSettingPopup) {
       if(e.target.classList.contains(switcherClassName)) {
-        if(document.querySelector(`#column${columnId}`).contains(e.target)) return
+        if(document.querySelector(`#column${columnId}`).contains(e.target))
+          return
       }
-      if(!container.contains(e.target)) {
-        closePopup()
-      }
+      if(!container.contains(e.target)) closePopup()
     } else {
       if(!modal.contains(e.target) && !header.contains(e.target)) {
-        this.setState({ hideModal: true })
-        closePopup()
+        this.closeSettingPopup()
       }
     }
   }
 
   showModal(isRenameMode) {
-    setTimeout(() => this.setState({ hideModal: false, isRenameMode }), 5)
+    setTimeout(() => this.setState({ hideSettingPopup: false, isRenameMode }), 5)
   }
 
-  closeModal() {
-    this.setState({ hideModal: true })
+  closeSettingPopup() {
+    const { closePopup } = this.props
+
+    this.setState({ hideSettingPopup: true })
+    closePopup()
   }
 
   onRename() {
-    const { closePopup, columnId, updateColumnName } = this.props
+    const { columnId, updateColumnName } = this.props
 
     const { newName } = this.refs
     const str = newName.value.trim()
     if(str === '') return
-    this.closeModal()
-    closePopup()
+    this.closeSettingPopup()
     updateColumnName(columnId, str)
   }
 
   render() {
     const { closePopup, hide } = this.props
-    const { hideModal, isRenameMode } = this.state
+    const { hideSettingPopup, isRenameMode } = this.state
 
     return (
       <div
@@ -71,32 +72,20 @@ export default class ColumnConfigPopup extends Component {
         ref='container'
         style={{ display: hide ? 'none' : '' }}
       >
-        { !hideModal && (
+        { !hideSettingPopup && (
           <header
             className='dropdown-header'
             onClick={closePopup}
             ref='header'
           >
-            <button
-              className='button-icon'
-            >
-              <svg
-                aria-label='Close'
-                className='icon'
-                height='16'
-                role='img'
-                version='1.1'
-                viewBox='0 0 12 16'
-                width='12'
-              >
-                <path d='M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48z'></path>
-              </svg>
+            <button className='button-icon'>
+              <Gear />
             </button>
             { isRenameMode ? 'Renaming' : 'Deleting' }
           </header>
         )}
         {
-          !hideModal && (isRenameMode ? (
+          !hideSettingPopup && (isRenameMode ? (
             <div className='dropdown-body' ref='modal'>
               <label>Name</label>
               <input type='text' ref='newName' />
@@ -111,10 +100,10 @@ export default class ColumnConfigPopup extends Component {
             </div>
           ))
         }
-        { hideModal && (
+        { hideSettingPopup && (
           <div className='dropdown-menu'>
             <a onClick={() => this.showModal(true)}>Rename</a>
-            <a className='danger' onClick={() => this.showModal(false)}>Delete</a>
+          <a className='danger' onClick={() => this.showModal(false)}>ZHIDelete</a>
           </div>
         )}
       </div>

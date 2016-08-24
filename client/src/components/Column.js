@@ -13,6 +13,8 @@ import { spliceIssueInSync } from 'helpers/tickets'
 import IssuesDropTarget from './IssuesDropTarget'
 import { calcColumnRanking } from 'helpers/ranking'
 import ColumnConfigPopup from './ColumnConfigPopup'
+import Gear from 'components/icons/Gear'
+import DraggingHandler from 'components/icons/DraggingHandler'
 
 
 const dragTarget = {
@@ -152,28 +154,12 @@ export default class Column extends Component {
             className={switcherClassName}
             onClick={() => this.modifyPopupDisplay()}
           >
-            <svg
-              aria-hidden='true'
-              className='icon'
-              height='16'
-              version='1.1'
-              viewBox='0 0 14 16'
-              width='14'>
-                <path d='M14 8.77v-1.6l-1.94-.64-.45-1.09.88-1.84-1.13-1.13-1.81.91-1.09-.45-.69-1.92h-1.6l-.63 1.94-1.11.45-1.84-.88-1.13 1.13.91 1.81-.45 1.09L0 7.23v1.59l1.94.64.45 1.09-.88 1.84 1.13 1.13 1.81-.91 1.09.45.69 1.92h1.59l.63-1.94 1.11-.45 1.84.88 1.13-1.13-.92-1.81.47-1.09L14 8.75v.02zM7 11c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z'></path>
-            </svg>
+            <Gear />
           </button>
           <button
             className='button-icon drag'
           >
-            <svg
-              aria-hidden='true'
-              className='icon'
-              height='16'
-              version='1.1'
-              viewBox='0 0 16 16'
-              width='16'>
-                <path d='M8,10 L6,10 L6,13 L0,8 L6,3 L6,6 L8,6 L10,6 L10,3 L16,8 L10,13 L10,10 L8,10 Z'></path>
-            </svg>
+            <DraggingHandler />
           </button>
           { title } <span className='count'>{ count }</span>
           <ColumnConfigPopup
