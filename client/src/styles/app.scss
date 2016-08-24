@@ -163,12 +163,11 @@ textarea {
   box-shadow: rgba(0, 0, 0, 0.14902) 0px 3px 12px;
   margin-top: 4px;
   position: absolute;
-  min-width: 140px;
-  max-width: 200px;
   .dropdown-header {
     background: #f6f6f6;
     border-bottom: 1px solid #d8d8d8;
     font-size: 12px;
+    font-weight: bold;
     padding: 8px 10px;
     .button-icon {
       float: right;
@@ -177,9 +176,9 @@ textarea {
   .dropdown-menu {
     a {
       border-bottom: 1px solid #eee;
+      color: inherit;
       display: block;
-      font-weight: bold;
-      padding: 8px;
+      padding: 8px 10px;
       &:hover {
         background: #4078c0;
         color: #FFF;
@@ -192,6 +191,9 @@ textarea {
         border-radius: 0 0 3px 3px;
       }
     }
+  }
+  .dropdown-body {
+    padding: 8px 10px;
   }
 }
 

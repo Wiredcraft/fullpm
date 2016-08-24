@@ -95,13 +95,13 @@ export default class ColumnConfigPopup extends Component {
         )}
         {
           !hideModal && (isRenameMode ? (
-            <div className='dropdown-form'>
+            <div className='dropdown-body'>
               <label>Name</label>
               <input type='text' ref='newName' />
               <button className='button primary' onClick={() => this.onRename()}>Save</button>
             </div>
           ) : (
-            <div className='dropdown-form'>
+            <div className='dropdown-body'>
               <p>This action can not be undone! To confirm, please fill in the name
               of the column you are trying to delete.</p>
               <input className='danger' type='text' placeholder='Column name' />

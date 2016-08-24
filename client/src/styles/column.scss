@@ -34,6 +34,9 @@ $column-width: 244px;
       margin-left: 3px;
     }
     .dropdown-options {
+      font-weight: normal;
+      min-width: 80px;
+      max-width: 200px;
       right: 8px;
     }
     .button-icon {
