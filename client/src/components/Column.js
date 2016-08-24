@@ -60,6 +60,7 @@ export default class Column extends Component {
   constructor() {
     super()
     this.state = { bodyMaxHeight: 0, forceUpdater: 0, hidePopup: true }
+    this.isProcessingHandler = false
   }
 
   componentWillMount() {
@@ -103,6 +104,10 @@ export default class Column extends Component {
   }
 
   modifyPopupDisplay(display) {
+    // In case calling this handler too often
+    if(this.isProcessingHandler) return
+    this.isProcessingHandler = true
+    setTimeout(() => this.isProcessingHandler = false, 10)
     const { hidePopup } = this.state
     this.setState({ hidePopup: display === undefined ? !hidePopup : display })
   }
@@ -134,7 +139,7 @@ export default class Column extends Component {
       const dropedToSameColumn = newCol === col === id
       if (dropedToNewColumn || dropedToSameColumn) count -= 1
     }
-    const switcherClassName = 'popup-controller'
+    const switcherClassName = 'button-icon'
 
     return connectDropTarget(connectDragSource(
       <section className={`column ${className}`} id={`column${id}`}>
@@ -144,7 +149,8 @@ export default class Column extends Component {
         />
         <header className='header'>
           <button
-            className='button-icon'
+            className={switcherClassName}
+            onClick={() => this.modifyPopupDisplay()}
           >
             <svg
               aria-hidden='true'
@@ -157,12 +163,6 @@ export default class Column extends Component {
             </svg>
           </button>
           { title } <span className='count'>{ count }</span>
-          <i
-            className={switcherClassName}
-            onClick={() => this.modifyPopupDisplay()}
-          >
-            +
-          </i>
         </header>
         <ColumnConfigPopup
           columnId={id}
