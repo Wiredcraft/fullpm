@@ -29,9 +29,11 @@
     }
     .credit {
       color: #d8d8d8;
+      display: inline-block;
       font-size: 12px;
-      padding: 5px 0;
+      padding: 4px 0;
       text-decoration: none;
+      vertical-align: middle;
       svg {
         fill: #d8d8d8;
         margin-left: 3px;
