@@ -1,12 +1,18 @@
-.searchBar {
+.search {
   display: inline-block;
+  position: relative;
   text-align: center;
   input {
     font-size: 12px;
-    padding: 3px 10px;
+    padding: 3px 10px 3px 25px;
     width: 320px;
   }
-
+  .icon {
+    fill: #ccc;
+    left: 6px;
+    position: absolute;
+    top: 6px;
+  }
   .dropdown {
     background-color: #FFF;
     border: 1px solid rgba(200,200,200,0.4);
