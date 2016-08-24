@@ -8,16 +8,17 @@
   }
 
   .dropdown {
-    background-color: grey;
+    background-color: #FFF;
+    border: 1px solid rgba(200,200,200,0.4);
+    border-radius: 3px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.15);
     display: none;
-    opacity: 0.5;
     position: fixed;
     width: 320px;
   }
 
   .hint {
     border: 1px solid #fff;
-    color: #fff;
     cursor: pointer;
     display: inline-block;
     margin: 5px;

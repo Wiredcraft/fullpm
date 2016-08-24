@@ -28,8 +28,23 @@
       font-size: 12px;
       padding: 3px 10px;
     }
-    .primary {
-      margin-right: 5px;
+    .button {
+      margin-left: 5px;
+    }
+    .credit {
+      color: #d8d8d8;
+      float: right;
+      font-size: 12px;
+      text-decoration: none;
+      svg {
+        fill: #d8d8d8;
+      }
+      &:hover {
+        color: #333;
+        svg {
+          fill: #333;
+        }
+      }
     }
     .status {
       background-color: #ffefc6;
