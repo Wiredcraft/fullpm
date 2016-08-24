@@ -163,6 +163,7 @@ textarea {
   box-shadow: rgba(0, 0, 0, 0.14902) 0px 3px 12px;
   margin-top: 4px;
   position: absolute;
+  z-index: 2;
   .dropdown-header {
     background: #f6f6f6;
     border-bottom: 1px solid #d8d8d8;

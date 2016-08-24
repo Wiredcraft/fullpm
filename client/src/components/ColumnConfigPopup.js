@@ -23,7 +23,7 @@ export default class ColumnConfigPopup extends Component {
   }
 
   domClickHandler(e) {
-    const { container, modal } = this.refs
+    const { container, header, modal } = this.refs
     const { closePopup, columnId, switcherClassName } = this.props
     const { hideModal } = this.state
 
@@ -35,8 +35,9 @@ export default class ColumnConfigPopup extends Component {
         closePopup()
       }
     } else {
-      if(!modal.contains(e.target)) {
+      if(!modal.contains(e.target) && !header.contains(e.target)) {
         this.setState({ hideModal: true })
+        closePopup()
       }
     }
   }
@@ -74,6 +75,7 @@ export default class ColumnConfigPopup extends Component {
           <header
             className='dropdown-header'
             onClick={closePopup}
+            ref='header'
           >
             <button
               className='button-icon'
@@ -90,18 +92,18 @@ export default class ColumnConfigPopup extends Component {
                 <path d='M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48z'></path>
               </svg>
             </button>
-            Renaming or deleting
+            { isRenameMode ? 'Renaming' : 'Deleting' }
           </header>
         )}
         {
           !hideModal && (isRenameMode ? (
-            <div className='dropdown-body'>
+            <div className='dropdown-body' ref='modal'>
               <label>Name</label>
               <input type='text' ref='newName' />
               <button className='button primary' onClick={() => this.onRename()}>Save</button>
             </div>
           ) : (
-            <div className='dropdown-body'>
+            <div className='dropdown-body' ref='modal'>
               <p>This action can not be undone! To confirm, please fill in the name
               of the column you are trying to delete.</p>
               <input className='danger' type='text' placeholder='Column name' />
