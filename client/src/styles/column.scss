@@ -24,6 +24,7 @@ $column-width: 244px;
   }
   .header {
     border-bottom: 1px solid #d8d8d8;
+    cursor: move;
     font-weight: bold;
     padding: 6px 8px;
     .count {
@@ -35,6 +36,11 @@ $column-width: 244px;
     .popup-controller {
       cursor: pointer;
       float: right;
+    }
+    .button-icon {
+      float: right;
+      margin-top: -2px;
+      padding-right: 0;
     }
   }
   .container {
