@@ -35,9 +35,14 @@ $column-width: 244px;
     }
     .dropdown-options {
       font-weight: normal;
-      min-width: 80px;
-      max-width: 200px;
+      left: auto;
+      min-width: 120px;
+      max-width: 220px;
       right: 8px;
+      input,
+      .button {
+        width: 100%;
+      }
     }
     .button-icon {
       float: right;

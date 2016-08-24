@@ -111,39 +111,43 @@ export default class ColumnConfigPopup extends Component {
             <button className='button-icon'>
               <Close />
             </button>
-            { isRenameMode ? 'Renaming' : 'Deleting' }
+            { isRenameMode ? 'Rename' : 'Delete' }
           </header>
         )}
         {
           !hideSettingPopup && (isRenameMode ? (
             <div className='dropdown-body' ref='modal'>
-              <label>Name</label>
-              <input type='text' ref='newName'/>
+              <div className='field'>
+                <label>Name</label>
+                <input type='text' ref='newName'/>
+              </div>
               <button
                 className='button primary'
                 onClick={() => this.onRename()}
               >
-                Save
+                Rename
               </button>
             </div>
           ) : (
             <div className='dropdown-body' ref='modal'>
-              <p>This action can not be undone! To confirm, please fill in the name
-              of the column you are trying to delete.</p>
-              <input
-                className='danger'
-                onChange={() => this.checkDeleting()}
-                placeholder='Column name'
-                ref='columnName'
-                type='text'
-              />
+              <p><b>This action can not be undone!</b> Type in the name of the column to
+              confirm.</p>
+              <div className='field'>
+                <input
+                  className='danger'
+                  onChange={() => this.checkDeleting()}
+                  placeholder='Column name'
+                  ref='columnName'
+                  type='text'
+                />
+              </div>
               <button
                 className='button danger'
                 style={{ cursor: deletingConfirmed ? '' : 'not-allowed' }}
                 disabled={!deletingConfirmed}
                 onClick={() => this.onDelete()}
               >
-                Delete
+                Delete this column
               </button>
             </div>
           ))

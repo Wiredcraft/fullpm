@@ -153,11 +153,19 @@ export default class Board extends React.Component {
               </button>
             )
           }
-          <button
-            className='button dropdown small'
-          >
-            Settings
-          </button>
+          <span className='dropdown'>
+            <button
+              className='button small'
+            >
+              Settings
+            </button>
+            <div className='dropdown-options'>
+              <div className='dropdown-menu'>
+                <a>Add a column</a>
+                <a>Board settings</a>
+              </div>
+            </div>
+          </span>
           <a
             className='credit'
             href='https://wirecraft.com/products/fullpm'
