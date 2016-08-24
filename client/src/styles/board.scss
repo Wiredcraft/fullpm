@@ -30,7 +30,6 @@
     .credit {
       color: #d8d8d8;
       font-size: 12px;
-      margin-left: 8px;
       padding: 5px 0;
       text-decoration: none;
       svg {
@@ -40,7 +39,7 @@
       &:hover {
         color: #333;
         svg {
-          fill: #333;
+          fill: #0079D1;
         }
       }
     }
