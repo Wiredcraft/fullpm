@@ -20,7 +20,7 @@ import { openPage } from '../helpers/webPage'
 import { generateSortedIndexList } from '../helpers/ranking'
 import SearchBar from './SearchBar'
 import Logo from 'components/icons/Logo'
-import Gear from 'components/icons/Gear'
+import BoardSetting from './BoardSetting'
 
 
 let intervalId
@@ -154,19 +154,7 @@ export default class Board extends React.Component {
               </button>
             )
           }
-          <span className='dropdown'>
-            <button
-              className='button small'
-            >
-              <Gear />
-            </button>
-            <div className='dropdown-options'>
-              <div className='dropdown-menu'>
-                <a>Add a column</a>
-                <a>Board settings</a>
-              </div>
-            </div>
-          </span>
+          <BoardSetting />
           <a
             className='credit'
             href='https://wirecraft.com/products/fullpm'
