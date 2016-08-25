@@ -42,7 +42,7 @@ const dragSource = {
       dropManager.draggingColumnId = undefined
       dropManager.isDraggingColumn = false
       // The magic number here shall be larger than count of columns
-      dropManager.draggingFinished = 5
+      dropManager.draggingFinished = 15
     }
   },
   collect(connect) {
@@ -70,7 +70,7 @@ export default class Column extends Component {
       captureDraggingState: true
     })
 
-    intervalId = setInterval(() => {
+    const updateColumnHeight = () => {
       const { id, isDragging, isOver, onSync, tickets } = this.props
       const { bodyMaxHeight, forceUpdater } = this.state
       if(tickets && tickets[id].hide) return
@@ -87,7 +87,10 @@ export default class Column extends Component {
         this.setState({ forceUpdater: forceUpdater + 1 })
         dropManager.draggingFinished--
       }
-    }, 50)
+    }
+
+    if(this.props.isCustom) return updateColumnHeight()
+    intervalId = setInterval(() => updateColumnHeight(), 50)
   }
 
   componentWillUpdate(props) {
