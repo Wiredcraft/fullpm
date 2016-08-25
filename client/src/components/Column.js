@@ -198,7 +198,7 @@ export default class Column extends Component {
             })
           }
           </div>
-          <IssuesDropTarget id={id} issues={issues} />
+          { !isCustom && <IssuesDropTarget id={id} issues={issues} /> }
         </div>
       </section>
     ))
