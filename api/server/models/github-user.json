@@ -1,6 +1,6 @@
 {
-  "name": "GithubRepo",
-  "plural": "GithubRepos",
+  "name": "GithubUser",
+  "plural": "GithubUsers",
   "base": "PersistedModel",
   "strict": true,
   "idInjection": false,
@@ -8,14 +8,14 @@
     "validateUpsert": true
   },
   "http": {
-    "path": "/repos/github"
+    "path": "/users/github"
   },
   "properties": {
     "id": {
-      "type": "string",
+      "type": "number",
       "id": true
     },
-    "owner": {
+    "login": {
       "type": "string",
       "required": true
     },
@@ -23,17 +23,21 @@
       "type": "string",
       "required": true
     },
-    "description": {
+    "email": {
       "type": "string",
-      "required": false
+      "required": true
     },
     "url": {
       "type": "string",
-      "required": false
+      "required": true
     },
     "html_url": {
       "type": "string",
-      "required": false
+      "required": true
+    },
+    "avatar_url": {
+      "type": "string",
+      "required": true
     },
     "created_at": {
       "type": "date",

@@ -13,6 +13,10 @@
       "./mixins"
     ]
   },
+  "GithubUser": {
+    "dataSource": "githubUsers",
+    "public": false
+  },
   "GithubRepo": {
     "dataSource": "githubRepos",
     "public": true

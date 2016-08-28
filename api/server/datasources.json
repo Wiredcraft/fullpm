@@ -1,4 +1,10 @@
 {
+  "githubUsers": {
+    "url": "http://127.0.0.1:5984",
+    "database": "fullpm/users/github",
+    "name": "githubUsers",
+    "connector": "couchdb"
+  },
   "githubRepos": {
     "url": "http://127.0.0.1:5984",
     "database": "fullpm/repos/github",
