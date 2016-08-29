@@ -28,6 +28,14 @@
       "type": "string",
       "required": true
     },
+    "assignees": {
+      "type": [{
+        "type": "Object"
+      }]
+    },
+    "comments": {
+      "type": "number"
+    },
     "createdAt": {
       "type": "date",
       "required": true
@@ -39,14 +47,6 @@
     "cachedAt": {
       "type": "date",
       "required": true
-    },
-    "assignees": [
-      {
-        "type": "Object"
-      }
-    ],
-    "comments": {
-      "type": "number"
     }
   },
   "validations": [],

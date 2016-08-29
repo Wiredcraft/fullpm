@@ -7,6 +7,7 @@ const Joi = require('joi');
 const moment = require('moment');
 const Promise = require('bluebird');
 const GithubAPI = require('github-api');
+const httpError = require('http-errors');
 
 const lib = require('../lib');
 const app = lib.app;
@@ -143,6 +144,50 @@ module.exports = function(GithubRepo) {
   };
 
   /**
+   * Access control.
+   */
+
+  /**
+   * Is user an assignee.
+   */
+  GithubRepo.prototype.isAssignee = function(user) {
+    if (this.assignees == null) {
+      return Promise.reject(httpError(403));
+    }
+    return Promise.filter(this.assignees, (assignee) => {
+      return assignee.id === user.id;
+    }).then((res) => {
+      if (res[0] == null) {
+        throw httpError(403);
+      }
+      return user;
+    });
+  };
+
+  /**
+   * Is writable by a user.
+   */
+  GithubRepo.prototype.isWritable = function(user) {
+    // Block if no owner.
+    if (this.owner == null || user == null || user.login == null) {
+      return Promise.reject(httpError(403));
+    }
+    // Pass if user is owner.
+    if (user.login.toLowerCase() === this.owner) {
+      return Promise.resolve(true);
+    }
+    // Pass if user is an assignee.
+    return this.isAssignee(user);
+  };
+
+  /**
+   * Is readable by a user.
+   */
+  GithubRepo.prototype.isReadable = function(user) {
+    // TODO
+  };
+
+  /**
    * Remote methods.
    */
 
@@ -163,9 +208,19 @@ module.exports = function(GithubRepo) {
     }
 
     const repoAPI = Promise.promisifyAll(github.getRepo(orgName, repoName));
+    repoAPI._requestAsync = Promise.promisify(repoAPI._request);
     return repoAPI.getDetailsAsync()
       .catchReturn(utils.reject(404)) // TODO: more details?
       .then(GithubRepo.setAttributes)
+      .then((data) => {
+        // Get assignees.
+        return repoAPI._requestAsync('GET', `/repos/${repoAPI.__fullname}/assignees`, null)
+          .map(utils.cleanGithubRes)
+          .then((assignees) => {
+            data.assignees = assignees;
+            return data;
+          });
+      })
       .then((data) => {
         return GithubRepo.findById(data.id).then((repo) => {
           let promise;
