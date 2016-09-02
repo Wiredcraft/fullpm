@@ -4,7 +4,7 @@ import createLogger from 'redux-logger'
 import rootReducer from 'reducers'
 
 const logger = createLogger()
- const store = createStore(
+const store = createStore(
   rootReducer,
   process.env.NODE_ENV === 'dev' ?
     applyMiddleware(thunkMiddleware, logger) :

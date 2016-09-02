@@ -5,3 +5,8 @@ export function updateUserLoginState (payload) {
     dispatch({ type: CHANGE_LOGIN_STATE, payload })
   )
 }
+
+export function githubAuth() {
+  const url = `${API_BASE_URL}/auth/github?redirect=${window.location.href}`
+  window.location = url
+}

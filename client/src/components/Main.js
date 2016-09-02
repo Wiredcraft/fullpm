@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux'
 
 import Board from './Board'
 import '../styles/main'
-import { updateUserLoginState } from 'actions/userActions'
+import { githubAuth, updateUserLoginState } from 'actions/userActions'
 
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -36,8 +36,7 @@ export default class Main extends Component {
   }
 
   login() {
-    const url = `${API_BASE_URL}/auth/github?redirect=${window.location.href}`
-    window.location = url
+    this.props.githubAuth()
   }
 
   render() {
@@ -54,7 +53,7 @@ export default class Main extends Component {
             issues on a board.</p>
             <button
               className='button primary'
-              onClick={this.login}
+              onClick={() => this.login()}
             >
               Login with GitHub
             </button>
@@ -71,5 +70,5 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps (dispatch) {
-  return bindActionCreators({ updateUserLoginState }, dispatch)
+  return bindActionCreators({ githubAuth, updateUserLoginState }, dispatch)
 }
