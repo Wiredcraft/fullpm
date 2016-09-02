@@ -1,12 +1,10 @@
-/* global API_BASE_URL */
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import request from 'superagent'
 import { bindActionCreators } from 'redux'
 
 import Board from './Board'
 import '../styles/main'
-import { githubAuth, updateUserLoginState } from 'actions/userActions'
+import { githubAuth, checkIsUserLogged } from 'actions/userActions'
 
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -20,19 +18,8 @@ export default class Main extends Component {
     // Prevent the flash of content
     setTimeout(() => this.setState({ promptLogin: true }), 700)
 
-    const { updateUserLoginState } = this.props
-    const url = `${API_BASE_URL}/auth/user`
-    request
-      .get(url)
-      .withCredentials()
-      .end((err, res) => {
-        // User haven't authenticated
-        if (res.status === 401) return
-        if (err) return console.error(err)
-
-        const result = JSON.parse(res.text)
-        updateUserLoginState({ isLogin: true, userName: result.login })
-      })
+    const { checkIsUserLogged } = this.props
+    checkIsUserLogged()
   }
 
   login() {
@@ -70,5 +57,5 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps (dispatch) {
-  return bindActionCreators({ githubAuth, updateUserLoginState }, dispatch)
+  return bindActionCreators({ githubAuth, checkIsUserLogged }, dispatch)
 }
