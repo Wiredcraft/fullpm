@@ -8,8 +8,6 @@ export const CHANGE_TICKETS = 'CHANGE_TICKETS'
 export const CHANGE_FILTER = 'CHANGE_FILTER'
 export const CHANGE_SYNC_MODE = 'CHANGE_SYNC_MODE'
 export const CHANGE_COLUMN_RANKING = 'CHANGE_COLUMN_RANKING'
-export const CHANGE_COLUMN_NAME = 'CHANGE_COLUMN_NAME'
-export const DELETE_COLUMN = 'DELETE_COLUMN'
 
 export function fetchIssues(cacheDbUrl, metaDbUrl, name, next) {
   return dispatch => {
@@ -56,19 +54,6 @@ export function updateIssue(issueId, columnId, ranking) {
 export function updateColumnRanking(columnId, ranking) {
   return dispatch => {
     dispatch({ type: CHANGE_COLUMN_RANKING, payload: { columnId, ranking } })
-  }
-}
-
-export function updateColumnName(columnId, name) {
-  return dispatch => {
-    dispatch({ type: CHANGE_COLUMN_NAME, payload: { columnId, name } })
-  }
-}
-
-export function deleteColumn(columnId) {
-  // Call API from back-end API here.
-  return dispatch => {
-    dispatch({ type: DELETE_COLUMN, payload: columnId })
   }
 }
 
