@@ -12,6 +12,9 @@ import dropManager from 'helpers/dropManager'
 import { spliceIssueInSync } from 'helpers/tickets'
 import IssuesDropTarget from './IssuesDropTarget'
 import { calcColumnRanking } from 'helpers/ranking'
+import ColumnConfigPopup from './ColumnConfigPopup'
+import Gear from 'components/icons/Gear'
+import DraggingHandler from 'components/icons/DraggingHandler'
 
 
 const dragTarget = {
@@ -39,7 +42,7 @@ const dragSource = {
       dropManager.draggingColumnId = undefined
       dropManager.isDraggingColumn = false
       // The magic number here shall be larger than count of columns
-      dropManager.draggingFinished = 5
+      dropManager.draggingFinished = 15
     }
   },
   collect(connect) {
@@ -58,7 +61,8 @@ let intervalId
 export default class Column extends Component {
   constructor() {
     super()
-    this.state = { bodyMaxHeight: 0, forceUpdater: 0 }
+    this.state = { bodyMaxHeight: 0, forceUpdater: 0, hidePopup: true }
+    this.isProcessingHandler = false
   }
 
   componentWillMount() {
@@ -66,9 +70,10 @@ export default class Column extends Component {
       captureDraggingState: true
     })
 
-    intervalId = setInterval(() => {
-      const { id, isDragging, isOver, onSync } = this.props
+    const updateColumnHeight = () => {
+      const { id, isDragging, isOver, onSync, tickets } = this.props
       const { bodyMaxHeight, forceUpdater } = this.state
+      if(tickets && tickets[id].hide) return
 
       // Restrict column contained in page without vertical scroll
       const maxHeight = calcColumnBodyMaxHeight(id)
@@ -82,7 +87,10 @@ export default class Column extends Component {
         this.setState({ forceUpdater: forceUpdater + 1 })
         dropManager.draggingFinished--
       }
-    }, 50)
+    }
+
+    if(this.props.isCustom) return updateColumnHeight()
+    intervalId = setInterval(() => updateColumnHeight(), 50)
   }
 
   componentWillUpdate(props) {
@@ -101,6 +109,15 @@ export default class Column extends Component {
     clearInterval(intervalId)
   }
 
+  modifyPopupDisplay(display) {
+    // In case calling this handler too often
+    if(this.isProcessingHandler) return
+    this.isProcessingHandler = true
+    setTimeout(() => this.isProcessingHandler = false, 10)
+    const { hidePopup } = this.state
+    this.setState({ hidePopup: display === undefined ? !hidePopup : display })
+  }
+
   render() {
     const {
       className,
@@ -113,7 +130,7 @@ export default class Column extends Component {
     } = this.props
     let { issues } = this.props
 
-    const { bodyMaxHeight } = this.state
+    const { bodyMaxHeight, hidePopup } = this.state
     const { draggingItem } = dropManager
 
     const needClone = draggingItem && onSync
@@ -128,6 +145,7 @@ export default class Column extends Component {
       const dropedToSameColumn = newCol === col === id
       if (dropedToNewColumn || dropedToSameColumn) count -= 1
     }
+    const switcherClassName = 'button-icon'
 
     return connectDropTarget(connectDragSource(
       <section className={`column ${className}`} id={`column${id}`}>
@@ -137,19 +155,23 @@ export default class Column extends Component {
         />
         <header className='header'>
           <button
-            className='button-icon'
+            className={switcherClassName}
+            onClick={() => this.modifyPopupDisplay()}
           >
-            <svg
-              aria-hidden='true'
-              className='icon'
-              height='16'
-              version='1.1'
-              viewBox='0 0 14 16'
-              width='14'>
-                <path d='M14 8.77v-1.6l-1.94-.64-.45-1.09.88-1.84-1.13-1.13-1.81.91-1.09-.45-.69-1.92h-1.6l-.63 1.94-1.11.45-1.84-.88-1.13 1.13.91 1.81-.45 1.09L0 7.23v1.59l1.94.64.45 1.09-.88 1.84 1.13 1.13 1.81-.91 1.09.45.69 1.92h1.59l.63-1.94 1.11-.45 1.84.88 1.13-1.13-.92-1.81.47-1.09L14 8.75v.02zM7 11c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z'></path>
-            </svg>
+            <Gear />
+          </button>
+          <button
+            className='button-icon drag'
+          >
+            <DraggingHandler />
           </button>
           { title } <span className='count'>{ count }</span>
+          <ColumnConfigPopup
+            columnId={id}
+            hide={hidePopup}
+            switcherClassName={switcherClassName}
+            closePopup={() => this.modifyPopupDisplay(true)}
+          />
         </header>
         <div
           className='container'
@@ -179,7 +201,7 @@ export default class Column extends Component {
             })
           }
           </div>
-          <IssuesDropTarget id={id} issues={issues} />
+          { !isCustom && <IssuesDropTarget id={id} issues={issues} /> }
         </div>
       </section>
     ))

@@ -7,6 +7,7 @@ import '../styles/main'
 import { githubAuth, checkIsUserLogged } from 'actions/userActions'
 
 
+// TODO: Add the button for adding new column
 @connect(mapStateToProps, mapDispatchToProps)
 export default class Main extends Component {
   constructor() {

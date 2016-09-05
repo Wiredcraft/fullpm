@@ -23,14 +23,17 @@
   }
   .controls {
     margin: 0 10px 10px;
+    input,
     .button {
-      margin-left: 5px;
+      margin-right: 8px;
     }
     .credit {
       color: #d8d8d8;
-      float: right;
+      display: inline-block;
       font-size: 12px;
+      padding: 4px 0;
       text-decoration: none;
+      vertical-align: middle;
       svg {
         fill: #d8d8d8;
         margin-left: 3px;
@@ -38,7 +41,7 @@
       &:hover {
         color: #333;
         svg {
-          fill: #333;
+          fill: #0079D1;
         }
       }
     }
