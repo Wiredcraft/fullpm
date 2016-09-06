@@ -55,6 +55,11 @@ For staging & production, it will deploy master by default. If you want to deplo
 ansible-playbook -i inventory.xxx -e version_fullpm=master deploy-fullpm.yml --ask-vault-pass
 ```
 
+Force the deployment (set environment variables even if there is no code changes)
+```
+ansible-playbook -i inventory.xxx -e version_fullpm=master -e forced=yes deploy-fullpm.yml --ask-vault-pass
+```
+
 ## Server Specification
 
 - Dev Server
