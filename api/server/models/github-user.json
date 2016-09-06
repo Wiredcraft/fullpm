@@ -1,52 +1,55 @@
 {
-  "name": "Cache",
-  "plural": "Cache",
+  "name": "GithubUser",
+  "plural": "GithubUsers",
   "base": "PersistedModel",
   "strict": true,
   "idInjection": false,
   "options": {
     "validateUpsert": true
   },
+  "http": {
+    "path": "/users/github"
+  },
   "properties": {
     "id": {
-      "type": "string",
+      "type": "number",
       "id": true
+    },
+    "login": {
+      "type": "string",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string",
+      "required": true
     },
     "url": {
       "type": "string",
       "required": true
     },
-    "htmlUrl": {
+    "html_url": {
       "type": "string",
       "required": true
     },
-    "number": {
-      "type": "number",
-      "required": true
-    },
-    "title": {
+    "avatar_url": {
       "type": "string",
       "required": true
     },
-    "assignees": {
-      "type": [{
-        "type": "Object"
-      }]
-    },
-    "comments": {
-      "type": "number"
-    },
-    "createdAt": {
+    "created_at": {
       "type": "date",
-      "required": true
+      "required": false
     },
-    "updatedAt": {
+    "updated_at": {
       "type": "date",
-      "required": true
+      "required": false
     },
     "cachedAt": {
       "type": "date",
-      "required": true
+      "required": false
     }
   },
   "validations": [],

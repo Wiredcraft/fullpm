@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('kenhq:install');
+const debug = require('debug')('fullpm:install');
 
 const lib = require('./lib');
 

@@ -21,7 +21,7 @@
     ```
     server {
         listen ...;
-        server_name kenhq-staging.wiredcraft.net;
+        server_name staging-fullpm.wiredcraft.net;
 
         # SSL configs
 

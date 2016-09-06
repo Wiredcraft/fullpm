@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('kenhq:middleware:oauthGithub');
+const debug = require('debug')('fullpm:middleware:oauthGithub');
 
 // const lib = require('../');
 

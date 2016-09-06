@@ -1,19 +1,25 @@
 {
+  "githubUsers": {
+    "url": "${couchdbUrl}",
+    "database": "fullpm/users/github",
+    "name": "githubUsers",
+    "connector": "couchdb"
+  },
   "githubRepos": {
-    "url": "http://127.0.0.1:5984",
-    "database": "kenhq/repos/github",
+    "url": "${couchdbUrl}",
+    "database": "fullpm/repos/github",
     "name": "githubRepos",
     "connector": "couchdb"
   },
   "meta": {
-    "url": "http://127.0.0.1:5984",
-    "database": "kenhq/meta",
+    "url": "${couchdbUrl}",
+    "database": "fullpm/meta",
     "name": "meta",
     "connector": "couchdb"
   },
   "cache": {
-    "url": "http://127.0.0.1:5984",
-    "database": "kenhq/cache",
+    "url": "${couchdbUrl}",
+    "database": "fullpm/cache",
     "name": "cache",
     "connector": "couchdb"
   }
