@@ -46,7 +46,13 @@ ansible-playbook -i inventory.xxx main.yml
 This step is part of the build process. If you only want to redeploy code, then use this command.
 
 ```
-ansible-playbook -i inventory.xxx deploy-fullpm.yml
+ansible-playbook -i inventory.xxx deploy-fullpm.yml --ask-vault-pass
+```
+
+For staging & production, it will deploy master by default. If you want to deploy a specific version, run this command:
+
+```
+ansible-playbook -i inventory.xxx -e version_fullpm=master deploy-fullpm.yml --ask-vault-pass
 ```
 
 ## Server Specification
@@ -57,5 +63,9 @@ ansible-playbook -i inventory.xxx deploy-fullpm.yml
   * physical location: dev box in office
 - Staging Server
   * hostname: staging-fullpm.wiredcraft.net
+  * user: root
+  * physical location: singapore
+- Production Server (it is the same machine with staging)
+  * hostname: app.fullpm.com
   * user: root
   * physical location: singapore

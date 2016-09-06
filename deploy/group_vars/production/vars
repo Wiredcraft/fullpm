@@ -2,3 +2,4 @@ node_env: production
 domain: app.fullpm.com
 github_client: "{{ vault_github_client }}"
 github_secret: "{{ vault_github_secret }}"
+version_fullpm: master

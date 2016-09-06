@@ -20,8 +20,7 @@
 
   tasks:
     - name: Run DB initialization script
-      environment:
-        NODE_ENV: "{{ node_env }}"
+      environment: "{{ fullpm_repo_env }}"
       command: node ./server/install.js
       args:
         chdir: /opt/fullpm/fullpm/{{ fullpm_instance_root }}
