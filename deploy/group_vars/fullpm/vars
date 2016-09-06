@@ -8,6 +8,7 @@ fullpm_repo_env:
   NODE_ENV: "{{ node_env }}"
   FULLPM_GITHUB_CLIENT: "{{ github_client }}"
   FULLPM_GITHUB_SECRET: "{{ github_secret }}"
+  FULLPM_BASEURL: "{{ fullpm_api_base_url }}"
 nodejs_version: 4.4.6
 fullpm_instance_root: api
 fullpm_api_base_url: https://{{ domain }}
