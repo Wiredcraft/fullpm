@@ -1,4 +1,4 @@
 node_env: staging
 domain: staging-fullpm.wiredcraft.net
-github_client: {{ vault_github_client }}
-github_secret: {{ vault_github_secret }}
+github_client: "{{ vault_github_client }}"
+github_secret: "{{ vault_github_secret }}"
