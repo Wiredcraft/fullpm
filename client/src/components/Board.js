@@ -159,7 +159,7 @@ export default class Board extends React.Component {
           </button>
           <a
             className='credit'
-            href='https://wirecraft.com/products/fullpm'
+            href='https://wiredcraft.com/products/fullpm'
             target='_blank'
           >
             Powered by
