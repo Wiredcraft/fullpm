@@ -21,11 +21,11 @@
     },
     "name": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "email": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "url": {
       "type": "string",
@@ -37,7 +37,7 @@
     },
     "avatar_url": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "created_at": {
       "type": "date",
