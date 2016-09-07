@@ -4,7 +4,7 @@
   roles:
     # Base setup
     - role: wcl-common
-      enable_swap: yes
+      enable_swapfile: yes
       swap_size: 4G
     - role: dj-wasabi.zabbix-agent
       agent_server: "zabbix.service.wiredcraft.com,127.0.0.1"
