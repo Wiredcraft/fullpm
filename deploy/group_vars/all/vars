@@ -1,5 +1,5 @@
 webroot: "/var/www/fullpm"
 web_user: www-data
 web_group: www-data
-ssl_key_path: "/etc/nginx/ssl/star.wiredcraft.net.key"
-ssl_cert_path: "/etc/nginx/ssl/star.wiredcraft.net.crt"
+ssl_key_path: "/etc/nginx/ssl/star.fullpm.com.key"
+ssl_cert_path: "/etc/nginx/ssl/star.fullpm.com.crt"
