@@ -230,8 +230,9 @@ module.exports = function(GithubRepo) {
             promise = GithubRepo.create(data).then((repo) => {
               return Promise.join(repo.ensureMeta(), repo.ensureCache(), () => repo);
             });
-            // Sync on the side.
-            promise.then(syncIssues);
+            // Block the init process (only for creating).
+            // TODO: better to figure out what's wrong with PouchDB.
+            promise = promise.then(syncIssues);
           } else if (repo.cachedAt == null || moment().diff(moment(repo.cachedAt)) > cacheTTL) {
             // Replace.
             debug('updating:', data.full_name);
