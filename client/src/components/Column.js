@@ -167,7 +167,7 @@ export default class Column extends Component {
                   col={id}
                   comments={d.comments}
                   hide={d.hide}
-                  id={d.id}
+                  id={d._id}
                   isPullRequest={d.isPullRequest}
                   key={i}
                   name={d.title || d.name}

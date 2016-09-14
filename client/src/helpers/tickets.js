@@ -11,12 +11,12 @@ import { sort } from './sort'
 export function docsToTickets(cacheDocs, metaDocs, name) {
   const metaTicketsMap = {}
   metaDocs.forEach(d => {
-    metaTicketsMap[d.id] = d
+    metaTicketsMap[d._id] = d
   })
   return cacheDocs.filter(d => d.url.toLowerCase().indexOf(name) !== -1)
     .map(d => {
-      d.column = metaTicketsMap[d.id].column
-      d.ranking = metaTicketsMap[d.id].ranking
+      d.column = metaTicketsMap[d._id].column
+      d.ranking = metaTicketsMap[d._id].ranking
       d.isPullRequest = d.htmlUrl.indexOf('/pull/') !== -1
       return d
     })
